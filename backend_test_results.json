@@ -1,0 +1,86 @@
+{
+  "summary": {
+    "passed": 11,
+    "failed": 0,
+    "success_rate": 100.0
+  },
+  "detailed_results": [
+    {
+      "test": "Health Check",
+      "success": true,
+      "message": "Status: healthy",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:06.485788"
+    },
+    {
+      "test": "User Registration",
+      "success": true,
+      "message": "User registered successfully with JWT token",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:07.266721"
+    },
+    {
+      "test": "Get Current User",
+      "success": true,
+      "message": "User info retrieved: Sarah Johnson (sarah.johnson@newspaper.com)",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:08.092740"
+    },
+    {
+      "test": "Story Creation",
+      "success": true,
+      "message": "Story created: Local Community Garden Flourishes",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:08.615289"
+    },
+    {
+      "test": "Story Image Upload",
+      "success": true,
+      "message": "Image uploaded successfully: a56835fa-1b8a-436f-b66a-8744166a8fdc",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:09.153157"
+    },
+    {
+      "test": "Get My Stories",
+      "success": true,
+      "message": "Retrieved 1 stories",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:09.664403"
+    },
+    {
+      "test": "Weekly Story Limit",
+      "success": true,
+      "message": "Weekly story limit properly enforced",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:10.188685"
+    },
+    {
+      "test": "Friend Request",
+      "success": true,
+      "message": "Friend request sent successfully",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:13.037329"
+    },
+    {
+      "test": "Get Friends",
+      "success": true,
+      "message": "Retrieved 1 friends",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:13.549481"
+    },
+    {
+      "test": "Current Edition",
+      "success": true,
+      "message": "Current edition for week: 2025-W27",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:14.075992"
+    },
+    {
+      "test": "Edition Archive",
+      "success": true,
+      "message": "Retrieved 1 archived editions",
+      "details": null,
+      "timestamp": "2025-07-11T21:39:14.587055"
+    }
+  ]
+}
