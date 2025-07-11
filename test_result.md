@@ -306,7 +306,8 @@ test_plan:
     - "Weekly Edition Generation"
     - "Authentication System"
     - "Flipbook Newspaper Interface"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Authentication System"
   test_all: true
   test_priority: "high_first"
 
