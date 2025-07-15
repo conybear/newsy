@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Chronicles - User Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1f2937;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .app-link {
+            background-color: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .app-link:hover {
+            background-color: #2563eb;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #1f2937;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-left: 4px solid #3b82f6;
+            padding-left: 15px;
+        }
+
+        .section h3 {
+            color: #374151;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .feature-card h4 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .steps {
+            background-color: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin: 15px 0;
+        }
+
+        .steps ol {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background-color: #fef3c7;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+            margin: 15px 0;
+        }
+
+        .tips {
+            background-color: #f0fdf4;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #22c55e;
+            margin: 15px 0;
+        }
+
+        .checklist {
+            background-color: #faf5ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+            margin: 15px 0;
+        }
+
+        .checklist ul {
+            list-style: none;
+        }
+
+        .checklist li {
+            margin-bottom: 8px;
+        }
+
+        .checklist li::before {
+            content: "☐ ";
+            color: #8b5cf6;
+            font-weight: bold;
+        }
+
+        .rules {
+            background-color: #fef2f2;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #ef4444;
+            margin: 15px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 2px solid #e5e7eb;
+            margin-top: 40px;
+            color: #6b7280;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📰 Weekly Chronicles</h1>
+            <p>Your Social Newspaper Network</p>
+            <a href="https://cd4ca7cd-5926-4965-9441-a55d5c9a9587.preview.emergentagent.com" class="app-link" target="_blank">
+                🚀 Start Using Weekly Chronicles
+            </a>
+        </div>
+
+        <div class="section">
+            <h2>🎯 What is Weekly Chronicles?</h2>
+            <p>Weekly Chronicles is a social newspaper network where you and your friends share weekly stories in a beautiful flipbook format. Think of it as your personal newspaper where everyone contributes stories about their week!</p>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Getting Started</h2>
+            
+            <div class="steps">
+                <h3>Create Your Account</h3>
+                <ol>
+                    <li>Visit the Weekly Chronicles website</li>
+                    <li>Click "Don't have an account? Sign up"</li>
+                    <li>Enter your <strong>email</strong>, <strong>password</strong>, and <strong>full name</strong></li>
+                    <li>Click "Sign up" - you'll be automatically logged in!</li>
+                </ol>
+            </div>
+
+            <div class="highlight">
+                <strong>💡 Pro Tip:</strong> Use your real name and a valid email address - your friends will use your email to add you to their network!
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📱 Main Features</h2>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📝 My Stories</h4>
+                    <p>Submit your weekly adventures with photos and choose whether it's a headline (major life event) or regular story.</p>
+                    <div class="rules">
+                        <strong>Rules:</strong>
+                        <ul>
+                            <li>⏰ One story per week</li>
+                            <li>📸 Up to 3 images per story</li>
+                            <li>🌟 Headlines appear first</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h4>👥 Friends</h4>
+                    <p>Add friends by email to build your social newspaper network. All friends contribute to your weekly edition.</p>
+                    <div class="rules">
+                        <strong>Limits:</strong>
+                        <ul>
+                            <li>👥 Up to 50 friends</li>
+                            <li>🔄 Bidirectional friendship</li>
+                            <li>📧 Add by email address</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h4>📰 Weekly Edition</h4>
+                    <p>Read your personalized newspaper with stories from all your friends in a beautiful flipbook format.</p>
+                    <div class="tips">
+                        <strong>Features:</strong>
+                        <ul>
+                            <li>🌟 Headlines first</li>
+                            <li>📄 Page navigation</li>
+                            <li>📊 Story statistics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h4>📚 Archive</h4>
+                    <p>Browse all your past weekly editions. Perfect for nostalgia and seeing how your friend network has grown!</p>
+                    <div class="tips">
+                        <strong>Benefits:</strong>
+                        <ul>
+                            <li>📅 Organized by week</li>
+                            <li>🔍 Easy browsing</li>
+                            <li>💾 All stories saved</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📝 How to Submit a Great Story</h2>
+            
+            <div class="steps">
+                <h3>Step-by-Step Story Submission</h3>
+                <ol>
+                    <li>Go to "<strong>My Stories</strong>" page</li>
+                    <li>Click "<strong>Write Story</strong>" button</li>
+                    <li>Fill out your story:
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li><strong>Title:</strong> Catchy headline for your story</li>
+                            <li><strong>Content:</strong> Write about your week (big or small!)</li>
+                            <li><strong>Headline:</strong> ✅ Check for major life events</li>
+                            <li><strong>Images:</strong> Upload up to 3 photos</li>
+                        </ul>
+                    </li>
+                    <li>Click "<strong>Submit Story</strong>"</li>
+                </ol>
+            </div>
+
+            <div class="tips">
+                <h4>💡 Story Writing Tips</h4>
+                <ul>
+                    <li><strong>Be Personal:</strong> Share genuine moments from your week</li>
+                    <li><strong>Include Details:</strong> What, where, when, why?</li>
+                    <li><strong>Use Headlines Wisely:</strong> Save for truly special events</li>
+                    <li><strong>Add Photos:</strong> Pictures make stories come alive</li>
+                </ul>
+            </div>
+
+            <div class="highlight">
+                <h4>🌟 Headlines vs Regular Stories</h4>
+                <p><strong>Headlines:</strong> Promotions, engagements, births, graduations, major travels</p>
+                <p><strong>Regular:</strong> Weekly updates, small adventures, daily life moments</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>👥 Building Your Friend Network</h2>
+            
+            <div class="steps">
+                <h3>Adding Friends</h3>
+                <ol>
+                    <li>Go to "<strong>Friends</strong>" page</li>
+                    <li>Click "<strong>Add Friend</strong>" button</li>
+                    <li>Enter their <strong>email address</strong></li>
+                    <li>Click "<strong>Add Friend</strong>"</li>
+                    <li>They'll automatically be added to your network!</li>
+                </ol>
+            </div>
+
+            <div class="tips">
+                <h4>🎯 Network Building Tips</h4>
+                <ul>
+                    <li><strong>Start Small:</strong> Add 3-5 close friends first</li>
+                    <li><strong>Encourage Participation:</strong> Ask friends to submit stories</li>
+                    <li><strong>Grow Gradually:</strong> Add more friends as you get comfortable</li>
+                    <li><strong>Stay Engaged:</strong> Read and enjoy each other's stories</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📅 Weekly Schedule</h2>
+            <div class="highlight">
+                <ul>
+                    <li><strong>📝 Stories Due:</strong> Monday night</li>
+                    <li><strong>📰 New Edition:</strong> Tuesday morning</li>
+                    <li><strong>📚 Archive:</strong> Available immediately</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏁 Quick Start Checklist</h2>
+            
+            <div class="checklist">
+                <h3>Your First Week</h3>
+                <ul>
+                    <li>Create account and log in</li>
+                    <li>Add 2-3 friends by email</li>
+                    <li>Submit your first story (with photos!)</li>
+                    <li>Check your Weekly Edition</li>
+                    <li>Explore the Archive</li>
+                    <li>Invite more friends to join</li>
+                </ul>
+            </div>
+
+            <div class="checklist">
+                <h3>Weekly Routine</h3>
+                <ul>
+                    <li>Check for new stories from friends</li>
+                    <li>Submit your weekly story by Monday</li>
+                    <li>Read the new edition on Tuesday</li>
+                    <li>Add new friends occasionally</li>
+                    <li>Share interesting moments with photos</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Design Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📰 Classic Newspaper Aesthetic</h4>
+                    <p>Professional newspaper design with traditional typography and layout that makes reading stories feel special.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Mobile Friendly</h4>
+                    <p>Works perfectly on phones, tablets, and computers. Take it anywhere and stay connected with friends.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Fun Testing Ideas</h2>
+            <div class="tips">
+                <ul>
+                    <li><strong>Story Themes:</strong> Week's highlights, funny moments, achievements</li>
+                    <li><strong>Photo Challenges:</strong> "Best meal of the week" or "Beautiful moment"</li>
+                    <li><strong>Friend Challenges:</strong> Everyone submits a story in the same week</li>
+                    <li><strong>Seasonal Content:</strong> Holiday stories, vacation updates</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>🎊 Welcome to Weekly Chronicles!</h3>
+            <p>You're now part of a social newspaper network where friends share their weekly adventures.</p>
+            <p>Start by adding friends, submit your first story, and enjoy reading about your friends' lives!</p>
+            <br>
+            <p><strong>Happy Story-Telling!</strong> 📰✨</p>
+            <br>
+            <p><em>Weekly Chronicles - Making weekly moments memorable, one story at a time</em></p>
+        </div>
+    </div>
+</body>
+</html>
