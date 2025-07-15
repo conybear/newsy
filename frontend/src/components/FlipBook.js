@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Calendar, User, Image as ImageIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, User, Image as ImageIcon, BookOpen } from 'lucide-react';
 
 const FlipBook = ({ stories = [] }) => {
   const [currentPage, setCurrentPage] = useState(0);
