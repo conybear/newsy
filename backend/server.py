@@ -186,6 +186,29 @@ async def register(user_data: UserCreate):
     user_dict['password'] = hashed_password
     await db.users.insert_one(user_dict)
     
+    # Check for pending invitations and auto-accept them
+    pending_invitations = await db.invitations.find({
+        "to_email": user_data.email,
+        "status": "pending"
+    }).to_list(100)
+    
+    for invitation in pending_invitations:
+        # Add both users as friends
+        await db.users.update_one(
+            {"id": user.id},
+            {"$addToSet": {"friends": invitation["from_user_id"]}}
+        )
+        await db.users.update_one(
+            {"id": invitation["from_user_id"]},
+            {"$addToSet": {"friends": user.id}}
+        )
+        
+        # Mark invitation as accepted
+        await db.invitations.update_one(
+            {"id": invitation["id"]},
+            {"$set": {"status": "accepted"}}
+        )
+    
     # Create access token
     access_token = create_access_token(data={"sub": user.email})
     return AuthToken(access_token=access_token)
