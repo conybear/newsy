@@ -246,35 +246,89 @@ async def search_users(email: str, current_user: User = Depends(get_current_user
 
 # ===== FRIEND MANAGEMENT ENDPOINTS =====
 
-@app.post("/api/friends/request")
-async def send_friend_request(request: FriendRequest, current_user: User = Depends(get_current_user)):
-    """Send a friend request"""
-    # Find the user to befriend
-    friend = await db.users.find_one({"email": request.email})
-    if not friend:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    friend_user = User(**friend)
-    
-    # Check if already friends
-    if friend_user.id in current_user.friends:
-        raise HTTPException(status_code=400, detail="Already friends")
-    
+@app.post("/api/friends/invite")
+async def send_friend_invitation(request: InvitationCreate, current_user: User = Depends(get_current_user)):
+    """Send a friend invitation"""
     # Check friend limit (50)
     if len(current_user.friends) >= 50:
         raise HTTPException(status_code=400, detail="Friend limit reached (50)")
     
-    # Add to friends list (both ways)
-    await db.users.update_one(
-        {"id": current_user.id},
-        {"$addToSet": {"friends": friend_user.id}}
-    )
-    await db.users.update_one(
-        {"id": friend_user.id},
-        {"$addToSet": {"friends": current_user.id}}
+    # Check if user is trying to invite themselves
+    if request.email == current_user.email:
+        raise HTTPException(status_code=400, detail="Cannot invite yourself")
+    
+    # Check if the email belongs to an existing user
+    existing_user = await db.users.find_one({"email": request.email})
+    if existing_user:
+        existing_user_obj = User(**existing_user)
+        # Check if already friends
+        if existing_user_obj.id in current_user.friends:
+            raise HTTPException(status_code=400, detail="Already friends with this user")
+        
+        # If user exists, add as friend immediately
+        await db.users.update_one(
+            {"id": current_user.id},
+            {"$addToSet": {"friends": existing_user_obj.id}}
+        )
+        await db.users.update_one(
+            {"id": existing_user_obj.id},
+            {"$addToSet": {"friends": current_user.id}}
+        )
+        
+        return {"message": f"Successfully added {existing_user_obj.full_name} as a friend!"}
+    
+    # Check if invitation already exists
+    existing_invitation = await db.invitations.find_one({
+        "from_user_id": current_user.id,
+        "to_email": request.email,
+        "status": "pending"
+    })
+    if existing_invitation:
+        raise HTTPException(status_code=400, detail="Invitation already sent to this email")
+    
+    # Create invitation
+    invitation = Invitation(
+        from_user_id=current_user.id,
+        from_user_name=current_user.full_name,
+        to_email=request.email
     )
     
-    return {"message": "Friend request sent successfully"}
+    # Store invitation
+    await db.invitations.insert_one(invitation.dict())
+    
+    return {
+        "message": f"Invitation sent to {request.email}! They will be added as a friend when they join Weekly Chronicles.",
+        "invitation_id": invitation.id
+    }
+
+@app.get("/api/friends/invitations")
+async def get_pending_invitations(current_user: User = Depends(get_current_user)):
+    """Get pending invitations sent by current user"""
+    invitations = await db.invitations.find({
+        "from_user_id": current_user.id,
+        "status": "pending"
+    }).to_list(100)
+    
+    return [Invitation(**invitation) for invitation in invitations]
+
+@app.delete("/api/friends/invitations/{invitation_id}")
+async def cancel_invitation(invitation_id: str, current_user: User = Depends(get_current_user)):
+    """Cancel a pending invitation"""
+    invitation = await db.invitations.find_one({
+        "id": invitation_id,
+        "from_user_id": current_user.id,
+        "status": "pending"
+    })
+    
+    if not invitation:
+        raise HTTPException(status_code=404, detail="Invitation not found")
+    
+    await db.invitations.update_one(
+        {"id": invitation_id},
+        {"$set": {"status": "cancelled"}}
+    )
+    
+    return {"message": "Invitation cancelled successfully"}
 
 @app.get("/api/friends", response_model=List[User])
 async def get_friends(current_user: User = Depends(get_current_user)):
