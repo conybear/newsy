@@ -1,12 +1,36 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './components/AuthContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import LoginRegister from './components/LoginRegister';
 import WeeklyEdition from './pages/WeeklyEdition';
 import Stories from './pages/Stories';
 import Friends from './pages/Friends';
 import Archive from './pages/Archive';
+import { AlertTriangle, X } from 'lucide-react';
 import './App.css';
+
+// Network Error Banner Component
+const NetworkErrorBanner = ({ error, onClearError }) => {
+  if (!error) return null;
+
+  return (
+    <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-3">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
+        <div className="flex items-center space-x-2">
+          <AlertTriangle className="h-5 w-5 text-yellow-600" />
+          <span className="text-sm text-yellow-800">{error}</span>
+        </div>
+        <button
+          onClick={onClearError}
+          className="text-yellow-600 hover:text-yellow-800"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+};
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -25,7 +49,7 @@ const ProtectedRoute = ({ children }) => {
 
 // App content component
 const AppContent = () => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, error, clearError } = useAuth();
   
   if (loading) {
     return (
@@ -35,30 +59,35 @@ const AppContent = () => {
     );
   }
   
-  if (!isAuthenticated) {
-    return <LoginRegister />;
-  }
-  
   return (
-    <Routes>
-      <Route path="/" element={<Navigate to="/edition" replace />} />
-      <Route path="/edition" element={<WeeklyEdition />} />
-      <Route path="/stories" element={<Stories />} />
-      <Route path="/friends" element={<Friends />} />
-      <Route path="/archive" element={<Archive />} />
-    </Routes>
+    <div>
+      <NetworkErrorBanner error={error} onClearError={clearError} />
+      {!isAuthenticated ? (
+        <LoginRegister />
+      ) : (
+        <Routes>
+          <Route path="/" element={<Navigate to="/edition" replace />} />
+          <Route path="/edition" element={<WeeklyEdition />} />
+          <Route path="/stories" element={<Stories />} />
+          <Route path="/friends" element={<Friends />} />
+          <Route path="/archive" element={<Archive />} />
+        </Routes>
+      )}
+    </div>
   );
 };
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="App">
-          <AppContent />
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <BrowserRouter>
+          <div className="App">
+            <AppContent />
+          </div>
+        </BrowserRouter>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
