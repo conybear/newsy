@@ -95,6 +95,18 @@ class WeeklyEdition(BaseModel):
 class FriendRequest(BaseModel):
     email: EmailStr
 
+class Invitation(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    from_user_id: str
+    from_user_name: str
+    to_email: EmailStr
+    status: str = "pending"  # pending, accepted, expired
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    expires_at: datetime = Field(default_factory=lambda: datetime.utcnow() + timedelta(days=30))
+
+class InvitationCreate(BaseModel):
+    email: EmailStr
+
 class AuthToken(BaseModel):
     access_token: str
     token_type: str = "bearer"
