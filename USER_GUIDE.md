@@ -39,16 +39,20 @@ Welcome to **Weekly Chronicles**, your social newspaper network! This guide will
 
 ### 👥 **Friends** - Build Your Network
 
-**How to Add Friends:**
+**How to Invite Friends:**
 1. Click "**Friends**" in the navigation
-2. Click "**Add Friend**" button
+2. Click "**Invite Friend**" button
 3. Enter their **email address**
-4. Click "**Add Friend**"
-5. They'll automatically be added to your network!
+4. Click "**Send Invitation**"
 
-**Friend Limits:**
+**How It Works:**
+- 📧 **Existing Users**: If they already have an account, they'll be added as a friend immediately
+- 💌 **New Users**: They'll receive an invitation and become your friend automatically when they sign up
+- ⏰ **Pending Invitations**: You can see who you've invited and cancel invitations if needed
+
+**Friend Features:**
 - 👥 **Up to 50 friends** per person
-- 🔄 **Bidirectional**: When you add someone, they become your friend too
+- 🔄 **Automatic Connection**: No need for them to accept - they become friends when they join
 - 📰 **Contributors**: All friends contribute to your weekly edition
 
 ---
