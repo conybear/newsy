@@ -41,6 +41,15 @@ const StoryForm = ({ onStoryCreated }) => {
       contentRef.current.setAttribute('dir', 'ltr');
       contentRef.current.style.textAlign = 'left';
       contentRef.current.style.direction = 'ltr';
+      contentRef.current.style.textIndent = '0px';
+      
+      // Ensure cursor starts at the beginning
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.setStart(contentRef.current, 0);
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
   }, []);
 
