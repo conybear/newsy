@@ -61,8 +61,20 @@ const StoryForm = ({ onStoryCreated }) => {
     const handleFocus = () => {
       if (editor.innerHTML === '' || editor.innerHTML === '<br>') {
         editor.innerHTML = '';
+        
+        // Ensure cursor starts at the left
+        setTimeout(() => {
+          const range = document.createRange();
+          const selection = window.getSelection();
+          range.setStart(editor, 0);
+          range.collapse(true);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }, 0);
       }
       editor.style.color = '#000';
+      editor.style.textAlign = 'left';
+      editor.style.direction = 'ltr';
     };
 
     const handleBlur = () => {
