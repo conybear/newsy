@@ -52,6 +52,7 @@ const Stories = () => {
 
   const onStoryCreated = () => {
     setShowForm(false);
+    // Force refresh of stories and submission status
     fetchMyStories();
   };
 
