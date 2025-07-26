@@ -34,14 +34,12 @@ const Stories = () => {
   };
 
   const getCurrentWeek = () => {
-    // Match backend calculation exactly
+    // Match backend calculation: datetime.now().strftime("%Y-W%U")
     const now = new Date();
-    return now.toLocaleDateString('en-CA', { 
-      year: 'numeric', 
-      month: '2-digit', 
-      day: '2-digit' 
-    }).replace(/-/g, '') + '-W' + 
-    String(Math.ceil((now.getTime() - new Date(now.getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000))).padStart(2, '0');
+    const year = now.getFullYear();
+    const startOfYear = new Date(year, 0, 1);
+    const weekNumber = Math.ceil(((now.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7);
+    return `${year}-W${weekNumber.toString().padStart(2, '0')}`;
   };
 
   const formatDate = (dateString) => {
