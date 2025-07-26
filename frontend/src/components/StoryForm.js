@@ -233,9 +233,11 @@ const StoryForm = ({ onStoryCreated }) => {
       });
       setImages([]);
       
-      // Clear the content editor
+      // Clear the content editor properly
       if (contentRef.current) {
         contentRef.current.innerHTML = '';
+        contentRef.current.style.direction = 'ltr';
+        contentRef.current.style.textAlign = 'left';
       }
       
       // Notify parent component
