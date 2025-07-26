@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Upload, X, Plus, Save } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Upload, X, Plus, Save, Bold, Italic, Underline, FileText } from 'lucide-react';
 import axios from 'axios';
 
 const StoryForm = ({ onStoryCreated }) => {
@@ -11,14 +11,71 @@ const StoryForm = ({ onStoryCreated }) => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [draftSaved, setDraftSaved] = useState(false);
+  const contentRef = useRef(null);
 
   const API_BASE = `${process.env.REACT_APP_BACKEND_URL}/api`;
+  const DRAFT_KEY = 'weekly_story_draft';
+
+  // Load draft on component mount
+  useEffect(() => {
+    const savedDraft = localStorage.getItem(DRAFT_KEY);
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft);
+        setFormData(draft.formData || formData);
+        setImages(draft.images || []);
+        setDraftSaved(true);
+      } catch (error) {
+        console.error('Failed to load draft:', error);
+      }
+    }
+  }, []);
+
+  // Auto-save draft as user types
+  useEffect(() => {
+    const saveDraft = () => {
+      if (formData.title || formData.content) {
+        const draft = {
+          formData,
+          images,
+          timestamp: new Date().toISOString()
+        };
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+        setDraftSaved(true);
+        
+        // Clear the saved indicator after 2 seconds
+        setTimeout(() => setDraftSaved(false), 2000);
+      }
+    };
+
+    // Debounce the save operation
+    const timeoutId = setTimeout(saveDraft, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [formData, images]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleContentChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      content: e.target.innerHTML
+    }));
+  };
+
+  const formatText = (command) => {
+    document.execCommand(command, false, null);
+    contentRef.current.focus();
+    // Update the content in state
+    setFormData(prev => ({
+      ...prev,
+      content: contentRef.current.innerHTML
     }));
   };
 
@@ -54,14 +111,32 @@ const StoryForm = ({ onStoryCreated }) => {
     setImages(prev => prev.filter(img => img.id !== id));
   };
 
+  const clearDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setDraftSaved(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
+      // Clean HTML content - remove formatting tags but keep line breaks
+      const cleanContent = formData.content
+        .replace(/<div>/g, '\n')
+        .replace(/<\/div>/g, '')
+        .replace(/<br>/g, '\n')
+        .replace(/<[^>]*>/g, '')
+        .trim();
+
       // Create the story first
-      const storyResponse = await axios.post(`${API_BASE}/stories`, formData);
+      const storyData = {
+        ...formData,
+        content: cleanContent
+      };
+      
+      const storyResponse = await axios.post(`${API_BASE}/stories`, storyData);
       const storyId = storyResponse.data.id;
 
       // Upload images if any
@@ -76,6 +151,9 @@ const StoryForm = ({ onStoryCreated }) => {
         });
       }
 
+      // Clear draft after successful submission
+      clearDraft();
+      
       // Reset form
       setFormData({
         title: '',
@@ -83,6 +161,11 @@ const StoryForm = ({ onStoryCreated }) => {
         is_headline: false
       });
       setImages([]);
+      
+      // Clear the content editor
+      if (contentRef.current) {
+        contentRef.current.innerHTML = '';
+      }
       
       // Notify parent component
       if (onStoryCreated) {
@@ -99,7 +182,15 @@ const StoryForm = ({ onStoryCreated }) => {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Submit Your Weekly Story</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Submit Your Weekly Story</h2>
+          {draftSaved && (
+            <div className="flex items-center space-x-2 text-green-600">
+              <FileText className="h-4 w-4" />
+              <span className="text-sm">Draft saved</span>
+            </div>
+          )}
+        </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
@@ -135,21 +226,58 @@ const StoryForm = ({ onStoryCreated }) => {
             </label>
           </div>
 
-          {/* Content */}
+          {/* Content with formatting */}
           <div>
-            <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Story Content
             </label>
-            <textarea
-              id="content"
-              name="content"
-              value={formData.content}
-              onChange={handleChange}
-              required
-              rows={8}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            
+            {/* Formatting toolbar */}
+            <div className="border border-gray-300 rounded-t-lg bg-gray-50 px-4 py-2 flex items-center space-x-2">
+              <button
+                type="button"
+                onClick={() => formatText('bold')}
+                className="p-2 rounded hover:bg-gray-200 transition-colors"
+                title="Bold"
+              >
+                <Bold className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => formatText('italic')}
+                className="p-2 rounded hover:bg-gray-200 transition-colors"
+                title="Italic"
+              >
+                <Italic className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => formatText('underline')}
+                className="p-2 rounded hover:bg-gray-200 transition-colors"
+                title="Underline"
+              >
+                <Underline className="h-4 w-4" />
+              </button>
+              <span className="text-gray-400">|</span>
+              <span className="text-sm text-gray-600">Select text and click to format</span>
+            </div>
+            
+            <div
+              ref={contentRef}
+              contentEditable
+              onInput={handleContentChange}
+              dangerouslySetInnerHTML={{ __html: formData.content }}
+              className="w-full min-h-[200px] px-4 py-3 border-l border-r border-b border-gray-300 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              style={{ 
+                minHeight: '200px',
+                maxHeight: '400px',
+                overflowY: 'auto'
+              }}
               placeholder="Tell your story... Share what's been happening in your life this week."
             />
+            <p className="text-sm text-gray-500 mt-1">
+              💡 Auto-saves as you type. Use the toolbar to format your text.
+            </p>
           </div>
 
           {/* Image upload */}
@@ -212,7 +340,14 @@ const StoryForm = ({ onStoryCreated }) => {
           )}
 
           {/* Submit button */}
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={clearDraft}
+              className="text-sm text-gray-500 hover:text-gray-700"
+            >
+              Clear Draft
+            </button>
             <button
               type="submit"
               disabled={loading}
