@@ -347,7 +347,10 @@ const StoryForm = ({ onStoryCreated }) => {
                 direction: 'ltr',
                 textAlign: 'left',
                 unicodeBidi: 'normal',
-                writingMode: 'lr-tb'
+                writingMode: 'lr-tb',
+                textIndent: '0px',
+                paddingLeft: '16px',
+                paddingRight: '16px'
               }}
               data-placeholder="Tell your story... Share what's been happening in your life this week."
             />
@@ -358,15 +361,22 @@ const StoryForm = ({ onStoryCreated }) => {
                 text-align: left !important;
                 unicode-bidi: normal !important;
                 writing-mode: lr-tb !important;
+                text-indent: 0 !important;
               }
               .content-editable-fix:empty:before {
                 content: attr(data-placeholder);
                 color: #9CA3AF;
                 pointer-events: none;
                 position: absolute;
+                left: 16px;
+                top: 12px;
               }
               .content-editable-fix:focus:empty:before {
                 content: '';
+              }
+              .content-editable-fix * {
+                text-align: left !important;
+                direction: ltr !important;
               }
             `}</style>
             <p className="text-sm text-gray-500 mt-1">
