@@ -131,10 +131,18 @@ const StoryForm = ({ onStoryCreated }) => {
   };
 
   const handleContentChange = (e) => {
-    // Ensure proper text direction
+    // Ensure proper text direction and alignment
     if (contentRef.current) {
       contentRef.current.style.direction = 'ltr';
       contentRef.current.style.textAlign = 'left';
+      contentRef.current.style.textIndent = '0px';
+      
+      // Fix any nested elements that might have wrong alignment
+      const allElements = contentRef.current.querySelectorAll('*');
+      allElements.forEach(el => {
+        el.style.textAlign = 'left';
+        el.style.direction = 'ltr';
+      });
     }
     
     setFormData(prev => ({
