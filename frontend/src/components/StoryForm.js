@@ -110,6 +110,12 @@ const StoryForm = ({ onStoryCreated }) => {
   };
 
   const handleContentChange = (e) => {
+    // Ensure proper text direction
+    if (contentRef.current) {
+      contentRef.current.style.direction = 'ltr';
+      contentRef.current.style.textAlign = 'left';
+    }
+    
     setFormData(prev => ({
       ...prev,
       content: e.target.innerHTML
@@ -117,8 +123,26 @@ const StoryForm = ({ onStoryCreated }) => {
   };
 
   const formatText = (command) => {
+    if (!contentRef.current) return;
+    
+    // Save selection
+    const selection = window.getSelection();
+    const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+    
+    // Apply formatting
     document.execCommand(command, false, null);
+    
+    // Restore focus and ensure proper direction
     contentRef.current.focus();
+    if (range) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    
+    // Ensure text direction remains correct
+    contentRef.current.style.direction = 'ltr';
+    contentRef.current.style.textAlign = 'left';
+    
     // Update the content in state
     setFormData(prev => ({
       ...prev,
