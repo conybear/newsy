@@ -26,11 +26,58 @@ const StoryForm = ({ onStoryCreated }) => {
         setFormData(draft.formData || formData);
         setImages(draft.images || []);
         setDraftSaved(true);
+        
+        // Set content in the editor
+        if (contentRef.current && draft.formData?.content) {
+          contentRef.current.innerHTML = draft.formData.content;
+        }
       } catch (error) {
         console.error('Failed to load draft:', error);
       }
     }
+    
+    // Initialize contentEditable properly
+    if (contentRef.current) {
+      contentRef.current.setAttribute('dir', 'ltr');
+      contentRef.current.style.textAlign = 'left';
+      contentRef.current.style.direction = 'ltr';
+    }
   }, []);
+
+  // Handle contentEditable focus and blur for placeholder
+  useEffect(() => {
+    const editor = contentRef.current;
+    if (!editor) return;
+
+    const handleFocus = () => {
+      if (editor.innerHTML === '' || editor.innerHTML === '<br>') {
+        editor.innerHTML = '';
+      }
+      editor.style.color = '#000';
+    };
+
+    const handleBlur = () => {
+      if (editor.innerHTML === '' || editor.innerHTML === '<br>') {
+        editor.innerHTML = '';
+        editor.style.color = '#9CA3AF';
+      } else {
+        editor.style.color = '#000';
+      }
+    };
+
+    editor.addEventListener('focus', handleFocus);
+    editor.addEventListener('blur', handleBlur);
+
+    // Initial setup
+    if (!formData.content) {
+      editor.style.color = '#9CA3AF';
+    }
+
+    return () => {
+      editor.removeEventListener('focus', handleFocus);
+      editor.removeEventListener('blur', handleBlur);
+    };
+  }, [formData.content]);
 
   // Auto-save draft as user types
   useEffect(() => {
