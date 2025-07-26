@@ -337,19 +337,36 @@ const StoryForm = ({ onStoryCreated }) => {
               ref={contentRef}
               contentEditable
               onInput={handleContentChange}
-              dangerouslySetInnerHTML={{ __html: formData.content }}
-              className="w-full min-h-[200px] px-4 py-3 border-l border-r border-b border-gray-300 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full min-h-[200px] px-4 py-3 border-l border-r border-b border-gray-300 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none content-editable-fix"
               style={{ 
                 minHeight: '200px',
                 maxHeight: '400px',
                 overflowY: 'auto',
                 direction: 'ltr',
                 textAlign: 'left',
-                unicodeBidi: 'normal'
+                unicodeBidi: 'normal',
+                writingMode: 'lr-tb'
               }}
-              placeholder="Tell your story... Share what's been happening in your life this week."
               data-placeholder="Tell your story... Share what's been happening in your life this week."
             />
+            
+            <style jsx>{`
+              .content-editable-fix {
+                direction: ltr !important;
+                text-align: left !important;
+                unicode-bidi: normal !important;
+                writing-mode: lr-tb !important;
+              }
+              .content-editable-fix:empty:before {
+                content: attr(data-placeholder);
+                color: #9CA3AF;
+                pointer-events: none;
+                position: absolute;
+              }
+              .content-editable-fix:focus:empty:before {
+                content: '';
+              }
+            `}</style>
             <p className="text-sm text-gray-500 mt-1">
               💡 Auto-saves as you type. Use the toolbar to format your text.
             </p>
