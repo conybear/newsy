@@ -271,9 +271,13 @@ const StoryForm = ({ onStoryCreated }) => {
               style={{ 
                 minHeight: '200px',
                 maxHeight: '400px',
-                overflowY: 'auto'
+                overflowY: 'auto',
+                direction: 'ltr',
+                textAlign: 'left',
+                unicodeBidi: 'normal'
               }}
               placeholder="Tell your story... Share what's been happening in your life this week."
+              data-placeholder="Tell your story... Share what's been happening in your life this week."
             />
             <p className="text-sm text-gray-500 mt-1">
               💡 Auto-saves as you type. Use the toolbar to format your text.
