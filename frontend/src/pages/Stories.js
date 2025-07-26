@@ -34,11 +34,15 @@ const Stories = () => {
   };
 
   const getCurrentWeek = () => {
-    // Match backend calculation: datetime.now().strftime("%Y-W%U")
+    // Match backend calculation exactly: datetime.now().strftime("%Y-W%U")
     const now = new Date();
     const year = now.getFullYear();
+    
+    // JavaScript equivalent of Python's strftime("%Y-W%U")
     const startOfYear = new Date(year, 0, 1);
-    const weekNumber = Math.ceil(((now.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7);
+    const dayOfYear = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000)) + 1;
+    const weekNumber = Math.floor((dayOfYear + startOfYear.getDay() - 1) / 7);
+    
     return `${year}-W${weekNumber.toString().padStart(2, '0')}`;
   };
 
