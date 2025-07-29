@@ -524,8 +524,12 @@ async def simple_debug(current_user: User = Depends(get_current_user)):
     """Simple debug to see what's wrong"""
     # Get user and contributors
     user_data = await db.users.find_one({"email": current_user.email})
-    contributors = user_data.get('contributors', []) if user_data else []
-    friends = user_data.get('friends', []) if user_data else []
+    
+    if not user_data:
+        return {"error": "User not found in database"}
+    
+    contributors = user_data.get('contributors', [])
+    friends = user_data.get('friends', [])
     all_contributors = contributors + [current_user.id]
     
     # Get ALL stories from contributors (any week)
@@ -543,6 +547,17 @@ async def simple_debug(current_user: User = Depends(get_current_user)):
     # Get ALL stories in database
     total_stories = await db.stories.find({}).to_list(100)
     
+    # Convert ObjectIds to strings for all stories to avoid serialization errors
+    for story in all_stories:
+        if '_id' in story:
+            story['_id'] = str(story['_id'])
+    for story in current_stories:
+        if '_id' in story:
+            story['_id'] = str(story['_id'])
+    for story in total_stories:
+        if '_id' in story:
+            story['_id'] = str(story['_id'])
+    
     return {
         "current_week": current_week,
         "your_id": current_user.id,
@@ -555,7 +570,7 @@ async def simple_debug(current_user: User = Depends(get_current_user)):
         "total_stories_in_db": len(total_stories),
         "stories_from_contributors_any_week": len(all_stories),
         "stories_from_contributors_current_week": len(current_stories),
-        "user_found_in_db": user_data is not None,
+        "user_found_in_db": True,
         "all_stories_details": [
             {
                 "title": s.get("title"),
