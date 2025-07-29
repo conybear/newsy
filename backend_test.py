@@ -476,18 +476,18 @@ class BackendTester:
         try:
             if not self.auth_token:
                 self.log_test("Weekly Stories Endpoint", False, "No auth token available")
-                return False
+                return False, None
             
             # First get current week from debug
             debug_response = self.session.get(f"{BACKEND_URL}/debug/simple")
             if debug_response.status_code != 200:
                 self.log_test("Weekly Stories Endpoint", False, "Could not get current week")
-                return False
+                return False, None
             
             current_week = debug_response.json().get("current_week")
             if not current_week:
                 self.log_test("Weekly Stories Endpoint", False, "No current week in debug response")
-                return False
+                return False, None
                 
             response = self.session.get(f"{BACKEND_URL}/stories/weekly/{current_week}")
             
