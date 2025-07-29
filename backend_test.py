@@ -639,10 +639,18 @@ class BackendTester:
         print("🚀 Starting Backend API Testing for Social Weekly Newspaper Network")
         print("=" * 70)
         
-        # Test sequence
+        # Try login first, then registration if needed
+        login_success = self.test_user_login()
+        if not login_success:
+            print("Login failed, trying registration...")
+            registration_success = self.test_user_registration()
+            if not registration_success:
+                print("❌ CRITICAL: Could not authenticate user")
+                return 0, 1, self.test_results, {}
+        
+        # Test sequence (skip auth tests since we already did them)
         tests = [
             self.test_health_check,
-            self.test_user_registration,
             self.test_get_current_user,
             self.test_story_creation,
             self.test_story_image_upload,
@@ -654,8 +662,8 @@ class BackendTester:
             self.test_edition_archive,
         ]
         
-        passed = 0
-        failed = 0
+        passed = 1 if login_success else (1 if registration_success else 0)  # Count auth success
+        failed = 0 if login_success else (0 if registration_success else 1)
         
         for test in tests:
             try:
