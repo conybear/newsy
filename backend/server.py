@@ -658,15 +658,18 @@ async def debug_user_info(current_user: User = Depends(get_current_user)):
     # Get full user data from database
     user_data = await db.users.find_one({"email": current_user.email})
     
+    if not user_data:
+        return {"error": "User not found", "diagnosis": {"problem": "User not found in database"}}
+    
     # Convert ObjectId to string for JSON serialization
-    if user_data and '_id' in user_data:
+    if '_id' in user_data:
         user_data['_id'] = str(user_data['_id'])
     
-    # Get friends data
+    # Get friends data - use _id instead of id for MongoDB query
     friends_data = []
-    if user_data and user_data.get('friends'):
+    if user_data.get('friends'):
         friends = await db.users.find(
-            {"id": {"$in": user_data['friends']}},
+            {"_id": {"$in": user_data['friends']}},
             {"password": 0}
         ).to_list(100)
         # Convert ObjectIds to strings
@@ -676,7 +679,7 @@ async def debug_user_info(current_user: User = Depends(get_current_user)):
         friends_data = friends
     
     # Get stories from all contributors
-    contributors = (user_data.get('contributors', []) if user_data else []) + [current_user.id]
+    contributors = user_data.get('contributors', []) + [current_user.id]
     contributor_stories = await db.stories.find({
         "author_id": {"$in": contributors}
     }).to_list(100)
@@ -690,19 +693,19 @@ async def debug_user_info(current_user: User = Depends(get_current_user)):
     current_week = get_current_week()
     
     return {
-        "user_email": user_data.get('email') if user_data else None,
-        "user_name": user_data.get('full_name') if user_data else None,
-        "friends_count": len(user_data.get('friends', [])) if user_data else 0,
-        "contributors_count": len(user_data.get('contributors', [])) if user_data else 0,
+        "user_email": user_data.get('email'),
+        "user_name": user_data.get('full_name'),
+        "friends_count": len(user_data.get('friends', [])),
+        "contributors_count": len(user_data.get('contributors', [])),
         "contributor_stories_count": len(contributor_stories),
         "current_week": current_week,
         "diagnosis": {
-            "has_friends": len(user_data.get('friends', [])) > 0 if user_data else False,
-            "has_contributors": len(user_data.get('contributors', [])) > 0 if user_data else False,
-            "friends_count": len(user_data.get('friends', [])) if user_data else 0,
-            "contributors_count": len(user_data.get('contributors', [])) if user_data else 0,
+            "has_friends": len(user_data.get('friends', [])) > 0,
+            "has_contributors": len(user_data.get('contributors', [])) > 0,
+            "friends_count": len(user_data.get('friends', [])),
+            "contributors_count": len(user_data.get('contributors', [])),
             "contributor_stories_count": len(contributor_stories),
-            "problem": "No contributors" if not user_data or len(user_data.get('contributors', [])) == 0 else None
+            "problem": "No contributors" if len(user_data.get('contributors', [])) == 0 else None
         }
     }
 
