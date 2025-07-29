@@ -7,6 +7,7 @@ import WeeklyEdition from './pages/WeeklyEdition';
 import Stories from './pages/Stories';
 import Friends from './pages/Friends';
 import Archive from './pages/Archive';
+import DebugPage from './pages/DebugPage';
 import { AlertTriangle, X } from 'lucide-react';
 import './App.css';
 
