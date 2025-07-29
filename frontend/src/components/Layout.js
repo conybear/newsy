@@ -9,7 +9,8 @@ const Layout = ({ children, currentPage = 'home' }) => {
     { name: 'Weekly Edition', href: '/edition', icon: BookOpen, key: 'edition' },
     { name: 'My Stories', href: '/stories', icon: Edit3, key: 'stories' },
     { name: 'Friends', href: '/friends', icon: Users, key: 'friends' },
-    { name: 'Archive', href: '/archive', icon: BookOpen, key: 'archive' }
+    { name: 'Archive', href: '/archive', icon: BookOpen, key: 'archive' },
+    { name: '🔍 Debug', href: '/debug', icon: BookOpen, key: 'debug' }
   ];
 
   return (
