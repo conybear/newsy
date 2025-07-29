@@ -650,11 +650,11 @@ async def fix_contributors_migration(current_user: User = Depends(get_current_us
 async def debug_user_info(current_user: User = Depends(get_current_user)):
     """Debug endpoint to see complete user info and relationships"""
     # Get full user data from database
-    user_data = await db.users.find_one({"id": current_user.id})
+    user_data = await db.users.find_one({"email": current_user.email})
     
     # Get friends data
     friends_data = []
-    if user_data.get('friends'):
+    if user_data and user_data.get('friends'):
         friends = await db.users.find(
             {"id": {"$in": user_data['friends']}},
             {"password": 0}
@@ -662,7 +662,7 @@ async def debug_user_info(current_user: User = Depends(get_current_user)):
         friends_data = friends
     
     # Get stories from all contributors
-    contributors = user_data.get('contributors', []) + [current_user.id]
+    contributors = (user_data.get('contributors', []) if user_data else []) + [current_user.id]
     contributor_stories = await db.stories.find({
         "author_id": {"$in": contributors}
     }).to_list(100)
@@ -677,12 +677,12 @@ async def debug_user_info(current_user: User = Depends(get_current_user)):
         "contributor_stories": contributor_stories,
         "current_week": current_week,
         "diagnosis": {
-            "has_friends": len(user_data.get('friends', [])) > 0,
-            "has_contributors": len(user_data.get('contributors', [])) > 0,
-            "friends_count": len(user_data.get('friends', [])),
-            "contributors_count": len(user_data.get('contributors', [])),
+            "has_friends": len(user_data.get('friends', [])) > 0 if user_data else False,
+            "has_contributors": len(user_data.get('contributors', [])) > 0 if user_data else False,
+            "friends_count": len(user_data.get('friends', [])) if user_data else 0,
+            "contributors_count": len(user_data.get('contributors', [])) if user_data else 0,
             "contributor_stories_count": len(contributor_stories),
-            "problem": "No contributors" if len(user_data.get('contributors', [])) == 0 else None
+            "problem": "No contributors" if not user_data or len(user_data.get('contributors', [])) == 0 else None
         }
     }
 
