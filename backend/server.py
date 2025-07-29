@@ -523,8 +523,9 @@ async def get_edition_by_week(week: str, current_user: User = Depends(get_curren
 async def simple_debug(current_user: User = Depends(get_current_user)):
     """Simple debug to see what's wrong"""
     # Get user and contributors
-    user_data = await db.users.find_one({"id": current_user.id})
-    contributors = user_data.get('contributors', [])
+    user_data = await db.users.find_one({"email": current_user.email})
+    contributors = user_data.get('contributors', []) if user_data else []
+    friends = user_data.get('friends', []) if user_data else []
     all_contributors = contributors + [current_user.id]
     
     # Get ALL stories from contributors (any week)
@@ -545,11 +546,16 @@ async def simple_debug(current_user: User = Depends(get_current_user)):
     return {
         "current_week": current_week,
         "your_id": current_user.id,
+        "your_email": current_user.email,
+        "friends": friends,
+        "friends_count": len(friends),
         "contributors": contributors,
+        "contributors_count": len(contributors),
         "search_ids": all_contributors,
         "total_stories_in_db": len(total_stories),
         "stories_from_contributors_any_week": len(all_stories),
         "stories_from_contributors_current_week": len(current_stories),
+        "user_found_in_db": user_data is not None,
         "all_stories_details": [
             {
                 "title": s.get("title"),
