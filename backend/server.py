@@ -524,6 +524,46 @@ async def get_edition_by_week(week: str, current_user: User = Depends(get_curren
     
     return WeeklyEdition(**edition)
 
+@app.get("/api/debug/user-info")
+async def debug_user_info(current_user: User = Depends(get_current_user)):
+    """Debug endpoint to see complete user info and relationships"""
+    # Get full user data from database
+    user_data = await db.users.find_one({"id": current_user.id})
+    
+    # Get friends data
+    friends_data = []
+    if user_data.get('friends'):
+        friends = await db.users.find(
+            {"id": {"$in": user_data['friends']}},
+            {"password": 0}
+        ).to_list(100)
+        friends_data = friends
+    
+    # Get stories from all contributors
+    contributors = user_data.get('contributors', []) + [current_user.id]
+    contributor_stories = await db.stories.find({
+        "author_id": {"$in": contributors}
+    }).to_list(100)
+    
+    # Get current week
+    current_week = get_current_week()
+    
+    return {
+        "user": user_data,
+        "friends_data": friends_data,
+        "contributors": contributors,
+        "contributor_stories": contributor_stories,
+        "current_week": current_week,
+        "diagnosis": {
+            "has_friends": len(user_data.get('friends', [])) > 0,
+            "has_contributors": len(user_data.get('contributors', [])) > 0,
+            "friends_count": len(user_data.get('friends', [])),
+            "contributors_count": len(user_data.get('contributors', [])),
+            "contributor_stories_count": len(contributor_stories),
+            "problem": "No contributors" if len(user_data.get('contributors', [])) == 0 else None
+        }
+    }
+
 # ===== HEALTH CHECK =====
 
 @app.get("/api/health")
