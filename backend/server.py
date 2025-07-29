@@ -652,6 +652,10 @@ async def debug_user_info(current_user: User = Depends(get_current_user)):
     # Get full user data from database
     user_data = await db.users.find_one({"email": current_user.email})
     
+    # Convert ObjectId to string for JSON serialization
+    if user_data and '_id' in user_data:
+        user_data['_id'] = str(user_data['_id'])
+    
     # Get friends data
     friends_data = []
     if user_data and user_data.get('friends'):
@@ -659,6 +663,10 @@ async def debug_user_info(current_user: User = Depends(get_current_user)):
             {"id": {"$in": user_data['friends']}},
             {"password": 0}
         ).to_list(100)
+        # Convert ObjectIds to strings
+        for friend in friends:
+            if '_id' in friend:
+                friend['_id'] = str(friend['_id'])
         friends_data = friends
     
     # Get stories from all contributors
@@ -667,14 +675,20 @@ async def debug_user_info(current_user: User = Depends(get_current_user)):
         "author_id": {"$in": contributors}
     }).to_list(100)
     
+    # Convert ObjectIds to strings in stories
+    for story in contributor_stories:
+        if '_id' in story:
+            story['_id'] = str(story['_id'])
+    
     # Get current week
     current_week = get_current_week()
     
     return {
-        "user": user_data,
-        "friends_data": friends_data,
-        "contributors": contributors,
-        "contributor_stories": contributor_stories,
+        "user_email": user_data.get('email') if user_data else None,
+        "user_name": user_data.get('full_name') if user_data else None,
+        "friends_count": len(user_data.get('friends', [])) if user_data else 0,
+        "contributors_count": len(user_data.get('contributors', [])) if user_data else 0,
+        "contributor_stories_count": len(contributor_stories),
         "current_week": current_week,
         "diagnosis": {
             "has_friends": len(user_data.get('friends', [])) > 0 if user_data else False,
