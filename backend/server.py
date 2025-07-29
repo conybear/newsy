@@ -674,60 +674,32 @@ async def fix_contributors_migration(current_user: User = Depends(get_current_us
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Migration failed: {str(e)}")
 
-@app.get("/api/debug/user-info")
-async def debug_user_info(current_user: User = Depends(get_current_user)):
-    """Debug endpoint to see complete user info and relationships"""
-    # Get full user data from database
-    user_data = await db.users.find_one({"email": current_user.email})
+@app.get("/api/debug/data-consistency")
+async def debug_data_consistency(current_user: User = Depends(get_current_user)):
+    """Debug endpoint to compare database vs User object data"""
+    # Get raw database record
+    raw_user = await db.users.find_one({"email": current_user.email})
     
-    if not user_data:
-        return {"error": "User not found", "diagnosis": {"problem": "User not found in database"}}
+    if not raw_user:
+        return {"error": "User not found in database"}
     
     # Convert ObjectId to string for JSON serialization
-    if '_id' in user_data:
-        user_data['_id'] = str(user_data['_id'])
-    
-    # Get friends data - use _id instead of id for MongoDB query
-    friends_data = []
-    if user_data.get('friends'):
-        friends = await db.users.find(
-            {"_id": {"$in": user_data['friends']}},
-            {"password": 0}
-        ).to_list(100)
-        # Convert ObjectIds to strings
-        for friend in friends:
-            if '_id' in friend:
-                friend['_id'] = str(friend['_id'])
-        friends_data = friends
-    
-    # Get stories from all contributors
-    contributors = user_data.get('contributors', []) + [current_user.id]
-    contributor_stories = await db.stories.find({
-        "author_id": {"$in": contributors}
-    }).to_list(100)
-    
-    # Convert ObjectIds to strings in stories
-    for story in contributor_stories:
-        if '_id' in story:
-            story['_id'] = str(story['_id'])
-    
-    # Get current week
-    current_week = get_current_week()
+    if '_id' in raw_user:
+        raw_user['_id'] = str(raw_user['_id'])
     
     return {
-        "user_email": user_data.get('email'),
-        "user_name": user_data.get('full_name'),
-        "friends_count": len(user_data.get('friends', [])),
-        "contributors_count": len(user_data.get('contributors', [])),
-        "contributor_stories_count": len(contributor_stories),
-        "current_week": current_week,
-        "diagnosis": {
-            "has_friends": len(user_data.get('friends', [])) > 0,
-            "has_contributors": len(user_data.get('contributors', [])) > 0,
-            "friends_count": len(user_data.get('friends', [])),
-            "contributors_count": len(user_data.get('contributors', [])),
-            "contributor_stories_count": len(contributor_stories),
-            "problem": "No contributors" if len(user_data.get('contributors', [])) == 0 else None
+        "user_email": current_user.email,
+        "raw_database_friends": raw_user.get('friends', []),
+        "raw_database_contributors": raw_user.get('contributors', []),
+        "user_object_friends": current_user.friends,
+        "user_object_contributors": current_user.contributors,
+        "friends_count_db": len(raw_user.get('friends', [])),
+        "friends_count_obj": len(current_user.friends),
+        "contributors_count_db": len(raw_user.get('contributors', [])),
+        "contributors_count_obj": len(current_user.contributors),
+        "inconsistency_detected": {
+            "friends_mismatch": len(raw_user.get('friends', [])) != len(current_user.friends),
+            "contributors_mismatch": len(raw_user.get('contributors', [])) != len(current_user.contributors)
         }
     }
 
