@@ -1,0 +1,8 @@
+{
+  "Login as Joel": {
+    "success": false,
+    "message": "Registration failed: {\"detail\":\"Email already registered\"}",
+    "data": null,
+    "timestamp": "2025-07-29T15:57:13.020357"
+  }
+}
