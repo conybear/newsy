@@ -448,16 +448,7 @@ async def get_current_edition(current_user: User = Depends(get_current_user)):
     """Get current week's edition"""
     current_week = get_current_week()
     
-    # Check if edition already exists for current week
-    existing_edition = await db.weekly_editions.find_one({
-        "user_id": current_user.id,
-        "week_of": current_week
-    })
-    
-    if existing_edition:
-        return WeeklyEdition(**existing_edition)
-    
-    # Generate new edition
+    # Generate new edition (always fresh to include new stories)
     user_data = await db.users.find_one({"id": current_user.id})
     contributors = user_data.get('contributors', [])
     all_contributors = contributors + [current_user.id]
@@ -484,10 +475,10 @@ async def get_current_edition(current_user: User = Depends(get_current_user)):
                     weeks_with_stories[week] = []
                 weeks_with_stories[week].append(story)
             
-            # Get the most recent week
+            # Use stories from the most recent week that has content
             if weeks_with_stories:
                 most_recent_week = max(weeks_with_stories.keys())
-                stories = recent_stories
+                stories = weeks_with_stories[most_recent_week]
                 current_week = most_recent_week  # Use the week that actually has content
     
     # Create edition
@@ -497,7 +488,11 @@ async def get_current_edition(current_user: User = Depends(get_current_user)):
         stories=[Story(**story) for story in stories]
     )
     
-    # Store edition
+    # Delete old edition and store new one
+    await db.weekly_editions.delete_many({
+        "user_id": current_user.id,
+        "week_of": current_week
+    })
     await db.weekly_editions.insert_one(edition.dict())
     
     return edition
