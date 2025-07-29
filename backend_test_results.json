@@ -1,8 +1,8 @@
 {
   "summary": {
-    "passed": 9,
-    "failed": 2,
-    "success_rate": 81.81818181818183
+    "passed": 8,
+    "failed": 3,
+    "success_rate": 72.72727272727273
   },
   "detailed_results": [
     {
@@ -10,147 +10,147 @@
       "success": true,
       "message": "Login successful with sarah.johnson@example.com",
       "details": null,
-      "timestamp": "2025-07-29T14:29:41.682399"
+      "timestamp": "2025-07-29T14:49:29.316638"
     },
     {
       "test": "Health Check",
       "success": true,
       "message": "Status: healthy",
       "details": null,
-      "timestamp": "2025-07-29T14:29:41.694568"
+      "timestamp": "2025-07-29T14:49:29.365631"
     },
     {
       "test": "Get Current User",
       "success": true,
       "message": "User info retrieved: Sarah Johnson (sarah.johnson@example.com)",
       "details": null,
-      "timestamp": "2025-07-29T14:29:42.205146"
+      "timestamp": "2025-07-29T14:49:29.880826"
     },
     {
       "test": "Story Creation",
       "success": false,
       "message": "Status code: 400",
       "details": "{\"detail\":\"You already submitted a story this week\"}",
-      "timestamp": "2025-07-29T14:29:42.717319"
+      "timestamp": "2025-07-29T14:49:30.393056"
     },
     {
       "test": "Story Image Upload",
       "success": false,
       "message": "No story ID available",
       "details": null,
-      "timestamp": "2025-07-29T14:29:43.217465"
+      "timestamp": "2025-07-29T14:49:30.893194"
     },
     {
       "test": "Get My Stories",
       "success": true,
       "message": "Retrieved 2 stories",
       "details": null,
-      "timestamp": "2025-07-29T14:29:43.732541"
+      "timestamp": "2025-07-29T14:49:31.409430"
     },
     {
       "test": "Weekly Story Limit",
       "success": true,
       "message": "Weekly story limit properly enforced",
       "details": null,
-      "timestamp": "2025-07-29T14:29:44.244980"
+      "timestamp": "2025-07-29T14:49:31.921889"
     },
     {
       "test": "Friend Request",
-      "success": true,
-      "message": "Successfully added Mike Reporter as a friend!",
-      "details": null,
-      "timestamp": "2025-07-29T14:29:44.813420"
+      "success": false,
+      "message": "Status code: 400",
+      "details": "{\"detail\":\"Already friends with this user\"}",
+      "timestamp": "2025-07-29T14:49:32.442752"
     },
     {
       "test": "Get Friends",
       "success": true,
       "message": "Retrieved 1 friends",
       "details": null,
-      "timestamp": "2025-07-29T14:29:45.325708"
+      "timestamp": "2025-07-29T14:49:32.954489"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:29:45.839908"
+      "timestamp": "2025-07-29T14:49:33.469773"
     },
     {
       "test": "Edition Archive",
       "success": true,
       "message": "Retrieved 2 archived editions",
       "details": null,
-      "timestamp": "2025-07-29T14:29:46.352442"
+      "timestamp": "2025-07-29T14:49:33.981874"
     },
     {
       "test": "Debug User Info",
       "success": false,
       "message": "Status code: 500",
       "details": "Internal Server Error",
-      "timestamp": "2025-07-29T14:29:46.866604"
+      "timestamp": "2025-07-29T14:49:34.495028"
     },
     {
       "test": "Debug Simple",
       "success": true,
       "message": "Week: 2025-W30, Contributors: 1, Total Stories: 5",
       "details": null,
-      "timestamp": "2025-07-29T14:29:46.879879"
+      "timestamp": "2025-07-29T14:49:34.508067"
     },
     {
       "test": "Create Contributor Story",
       "success": false,
       "message": "Could not register friend user: {\"detail\":\"Email already registered\"}",
       "details": null,
-      "timestamp": "2025-07-29T14:29:47.216929"
+      "timestamp": "2025-07-29T14:49:34.798199"
     },
     {
       "test": "Debug Edition Logic",
       "success": true,
       "message": "Week: 2025-W30, Contributors: 1, Current Week Stories: 2",
       "details": null,
-      "timestamp": "2025-07-29T14:29:47.231736"
+      "timestamp": "2025-07-29T14:49:34.810986"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:29:47.246132"
+      "timestamp": "2025-07-29T14:49:34.824155"
     },
     {
       "test": "Weekly Stories Endpoint",
       "success": true,
       "message": "Retrieved 2 stories for week 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:29:47.269894"
+      "timestamp": "2025-07-29T14:49:34.889492"
     },
     {
       "test": "Admin Fix Contributors",
       "success": true,
       "message": "Successfully fixed contributors! Added 1 friends as contributors.",
       "details": null,
-      "timestamp": "2025-07-29T14:29:47.281367"
+      "timestamp": "2025-07-29T14:49:34.942183"
     },
     {
       "test": "Debug User Info",
       "success": false,
       "message": "Status code: 500",
       "details": "Internal Server Error",
-      "timestamp": "2025-07-29T14:29:47.293970"
+      "timestamp": "2025-07-29T14:49:34.953540"
     },
     {
       "test": "Debug Edition Logic",
       "success": true,
       "message": "Week: 2025-W30, Contributors: 1, Current Week Stories: 2",
       "details": null,
-      "timestamp": "2025-07-29T14:29:47.307121"
+      "timestamp": "2025-07-29T14:49:35.006432"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:29:47.320075"
+      "timestamp": "2025-07-29T14:49:35.021004"
     }
   ],
   "contributor_bug_investigation": {
