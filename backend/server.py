@@ -519,6 +519,47 @@ async def get_edition_by_week(week: str, current_user: User = Depends(get_curren
     
     return WeeklyEdition(**edition)
 
+@app.get("/api/debug/simple")
+async def simple_debug(current_user: User = Depends(get_current_user)):
+    """Simple debug to see what's wrong"""
+    # Get user and contributors
+    user_data = await db.users.find_one({"id": current_user.id})
+    contributors = user_data.get('contributors', [])
+    all_contributors = contributors + [current_user.id]
+    
+    # Get ALL stories from contributors (any week)
+    all_stories = await db.stories.find({
+        "author_id": {"$in": all_contributors}
+    }).to_list(100)
+    
+    # Get current week stories
+    current_week = get_current_week()
+    current_stories = await db.stories.find({
+        "author_id": {"$in": all_contributors},
+        "week_of": current_week
+    }).to_list(100)
+    
+    # Get ALL stories in database
+    total_stories = await db.stories.find({}).to_list(100)
+    
+    return {
+        "current_week": current_week,
+        "your_id": current_user.id,
+        "contributors": contributors,
+        "search_ids": all_contributors,
+        "total_stories_in_db": len(total_stories),
+        "stories_from_contributors_any_week": len(all_stories),
+        "stories_from_contributors_current_week": len(current_stories),
+        "all_stories_details": [
+            {
+                "title": s.get("title"),
+                "author_name": s.get("author_name"),
+                "author_id": s.get("author_id"),
+                "week_of": s.get("week_of")
+            } for s in total_stories
+        ]
+    }
+
 @app.get("/api/debug/edition-logic")
 async def debug_edition_logic(current_user: User = Depends(get_current_user)):
     """Debug the weekly edition generation logic"""
