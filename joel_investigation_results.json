@@ -3,13 +3,13 @@
     "success": true,
     "message": "Using sarah.johnson account for investigation (Joel's password unknown)",
     "data": null,
-    "timestamp": "2025-07-29T15:57:49.472002"
+    "timestamp": "2025-07-29T17:22:45.196925"
   },
   "Joel's User Info": {
     "success": false,
-    "message": "Status code: 500",
+    "message": "Status code: 404",
     "data": null,
-    "timestamp": "2025-07-29T15:57:49.615284"
+    "timestamp": "2025-07-29T17:22:45.298755"
   },
   "Joel's Simple Debug": {
     "success": true,
@@ -18,7 +18,7 @@
       "contributors": [
         "4bbdbc50-8071-476c-9505-f18d06e3241b"
       ],
-      "total_stories_in_db": 5,
+      "total_stories_in_db": 7,
       "stories_from_contributors_current_week": 2,
       "all_stories_details": [
         {
@@ -50,10 +50,22 @@
           "author_name": "Sarah Johnson",
           "author_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
           "week_of": "2025-W30"
+        },
+        {
+          "title": "Story from Joel's Contributor 1",
+          "author_name": "Joel's Contributor 1",
+          "author_id": "7958f69e-75b9-424e-b857-85803f035fce",
+          "week_of": "2025-W30"
+        },
+        {
+          "title": "Story from Joel's Contributor 2",
+          "author_name": "Joel's Contributor 2",
+          "author_id": "8cf45053-1fa8-45a5-ac14-3b4ab47ff01c",
+          "week_of": "2025-W30"
         }
       ]
     },
-    "timestamp": "2025-07-29T15:57:49.548588"
+    "timestamp": "2025-07-29T17:22:45.225318"
   },
   "Joel's Edition Logic": {
     "success": true,
@@ -96,7 +108,7 @@
         }
       ]
     },
-    "timestamp": "2025-07-29T15:57:49.629306"
+    "timestamp": "2025-07-29T17:22:45.353366"
   },
   "Joel's Current Edition": {
     "success": true,
@@ -113,7 +125,7 @@
         }
       ]
     },
-    "timestamp": "2025-07-29T15:57:49.643143"
+    "timestamp": "2025-07-29T17:22:45.367482"
   },
   "Joel's Weekly Stories": {
     "success": true,
@@ -130,12 +142,12 @@
         }
       ]
     },
-    "timestamp": "2025-07-29T15:57:49.654516"
+    "timestamp": "2025-07-29T17:22:45.380781"
   },
   "Fix Joel's Contributors": {
     "success": true,
     "message": "Successfully fixed contributors! Added 1 friends as contributors.",
     "data": null,
-    "timestamp": "2025-07-29T15:57:49.600426"
+    "timestamp": "2025-07-29T17:22:45.289132"
   }
 }
