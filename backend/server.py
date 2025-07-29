@@ -428,8 +428,8 @@ async def get_my_stories(current_user: User = Depends(get_current_user)):
 async def get_weekly_stories(week: str, current_user: User = Depends(get_current_user)):
     """Get stories for a specific week"""
     # Get stories from user's contributors
-    user_data = await db.users.find_one({"id": current_user.id})
-    contributors = user_data.get('contributors', [])
+    user_data = await db.users.find_one({"email": current_user.email})
+    contributors = user_data.get('contributors', []) if user_data else []
     
     # Include current user's story
     all_contributors = contributors + [current_user.id]
