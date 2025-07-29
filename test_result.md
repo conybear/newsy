@@ -105,6 +105,21 @@
 user_problem_statement: "Build a Social Weekly Newspaper Network MVP where users can submit weekly stories with up to 3 images, invite friends (up to 50) to contribute, generate automatic weekly editions every Tuesday, and view archives of past editions. Features include user authentication, story submission with local image storage (base64), friend management, flipbook-style newspaper interface, and classic newspaper aesthetic design."
 
 backend:
+  - task: "Contributor Stories Bug Fix"
+    implemented: false
+    working: false
+    file: "server.py"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User reports that contributor stories are not appearing in the weekly edition flipbook despite contributors being correctly registered and having submitted stories. Only the user's own story appears."
+      - working: "NA"
+        agent: "main"
+        comment: "Starting investigation using existing debug endpoints to identify root cause in /api/editions/current logic."
+
   - task: "User Authentication System"
     implemented: true
     working: true
