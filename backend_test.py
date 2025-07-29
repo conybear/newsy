@@ -376,7 +376,7 @@ class BackendTester:
         try:
             if not self.auth_token:
                 self.log_test("Debug User Info", False, "No auth token available")
-                return False
+                return False, None
                 
             response = self.session.get(f"{BACKEND_URL}/debug/user-info")
             
