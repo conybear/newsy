@@ -10,147 +10,147 @@
       "success": true,
       "message": "Login successful with sarah.johnson@example.com",
       "details": null,
-      "timestamp": "2025-07-29T14:49:29.316638"
+      "timestamp": "2025-07-29T16:00:33.158111"
     },
     {
       "test": "Health Check",
       "success": true,
       "message": "Status: healthy",
       "details": null,
-      "timestamp": "2025-07-29T14:49:29.365631"
+      "timestamp": "2025-07-29T16:00:33.209341"
     },
     {
       "test": "Get Current User",
       "success": true,
       "message": "User info retrieved: Sarah Johnson (sarah.johnson@example.com)",
       "details": null,
-      "timestamp": "2025-07-29T14:49:29.880826"
+      "timestamp": "2025-07-29T16:00:33.720417"
     },
     {
       "test": "Story Creation",
       "success": false,
       "message": "Status code: 400",
       "details": "{\"detail\":\"You already submitted a story this week\"}",
-      "timestamp": "2025-07-29T14:49:30.393056"
+      "timestamp": "2025-07-29T16:00:34.231706"
     },
     {
       "test": "Story Image Upload",
       "success": false,
       "message": "No story ID available",
       "details": null,
-      "timestamp": "2025-07-29T14:49:30.893194"
+      "timestamp": "2025-07-29T16:00:34.731841"
     },
     {
       "test": "Get My Stories",
       "success": true,
       "message": "Retrieved 2 stories",
       "details": null,
-      "timestamp": "2025-07-29T14:49:31.409430"
+      "timestamp": "2025-07-29T16:00:35.243859"
     },
     {
       "test": "Weekly Story Limit",
       "success": true,
       "message": "Weekly story limit properly enforced",
       "details": null,
-      "timestamp": "2025-07-29T14:49:31.921889"
+      "timestamp": "2025-07-29T16:00:35.755777"
     },
     {
       "test": "Friend Request",
       "success": false,
       "message": "Status code: 400",
       "details": "{\"detail\":\"Already friends with this user\"}",
-      "timestamp": "2025-07-29T14:49:32.442752"
+      "timestamp": "2025-07-29T16:00:36.278318"
     },
     {
       "test": "Get Friends",
       "success": true,
       "message": "Retrieved 1 friends",
       "details": null,
-      "timestamp": "2025-07-29T14:49:32.954489"
+      "timestamp": "2025-07-29T16:00:36.790649"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:49:33.469773"
+      "timestamp": "2025-07-29T16:00:37.305591"
     },
     {
       "test": "Edition Archive",
       "success": true,
       "message": "Retrieved 2 archived editions",
       "details": null,
-      "timestamp": "2025-07-29T14:49:33.981874"
+      "timestamp": "2025-07-29T16:00:37.817555"
     },
     {
       "test": "Debug User Info",
       "success": false,
       "message": "Status code: 500",
       "details": "Internal Server Error",
-      "timestamp": "2025-07-29T14:49:34.495028"
+      "timestamp": "2025-07-29T16:00:38.330556"
     },
     {
       "test": "Debug Simple",
       "success": true,
-      "message": "Week: 2025-W30, Contributors: 1, Total Stories: 5",
+      "message": "Week: 2025-W30, Contributors: 1, Total Stories: 7",
       "details": null,
-      "timestamp": "2025-07-29T14:49:34.508067"
+      "timestamp": "2025-07-29T16:00:38.343014"
     },
     {
       "test": "Create Contributor Story",
       "success": false,
       "message": "Could not register friend user: {\"detail\":\"Email already registered\"}",
       "details": null,
-      "timestamp": "2025-07-29T14:49:34.798199"
+      "timestamp": "2025-07-29T16:00:38.634014"
     },
     {
       "test": "Debug Edition Logic",
       "success": true,
       "message": "Week: 2025-W30, Contributors: 1, Current Week Stories: 2",
       "details": null,
-      "timestamp": "2025-07-29T14:49:34.810986"
+      "timestamp": "2025-07-29T16:00:38.647436"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:49:34.824155"
+      "timestamp": "2025-07-29T16:00:38.661896"
     },
     {
       "test": "Weekly Stories Endpoint",
       "success": true,
       "message": "Retrieved 2 stories for week 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:49:34.889492"
+      "timestamp": "2025-07-29T16:00:38.729892"
     },
     {
       "test": "Admin Fix Contributors",
       "success": true,
       "message": "Successfully fixed contributors! Added 1 friends as contributors.",
       "details": null,
-      "timestamp": "2025-07-29T14:49:34.942183"
+      "timestamp": "2025-07-29T16:00:38.782206"
     },
     {
       "test": "Debug User Info",
       "success": false,
       "message": "Status code: 500",
       "details": "Internal Server Error",
-      "timestamp": "2025-07-29T14:49:34.953540"
+      "timestamp": "2025-07-29T16:00:38.794457"
     },
     {
       "test": "Debug Edition Logic",
       "success": true,
       "message": "Week: 2025-W30, Contributors: 1, Current Week Stories: 2",
       "details": null,
-      "timestamp": "2025-07-29T14:49:35.006432"
+      "timestamp": "2025-07-29T16:00:38.807500"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:49:35.021004"
+      "timestamp": "2025-07-29T16:00:38.819651"
     }
   ],
   "contributor_bug_investigation": {
@@ -165,7 +165,7 @@
         "4bbdbc50-8071-476c-9505-f18d06e3241b",
         "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf"
       ],
-      "total_stories_in_db": 5,
+      "total_stories_in_db": 7,
       "stories_from_contributors_any_week": 3,
       "stories_from_contributors_current_week": 2,
       "all_stories_details": [
@@ -197,6 +197,18 @@
           "title": "Local Community Garden Flourishes",
           "author_name": "Sarah Johnson",
           "author_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
+          "week_of": "2025-W30"
+        },
+        {
+          "title": "Story from Joel's Contributor 1",
+          "author_name": "Joel's Contributor 1",
+          "author_id": "7958f69e-75b9-424e-b857-85803f035fce",
+          "week_of": "2025-W30"
+        },
+        {
+          "title": "Story from Joel's Contributor 2",
+          "author_name": "Joel's Contributor 2",
+          "author_id": "8cf45053-1fa8-45a5-ac14-3b4ab47ff01c",
           "week_of": "2025-W30"
         }
       ]
