@@ -106,12 +106,12 @@ user_problem_statement: "Build a Social Weekly Newspaper Network MVP where users
 
 backend:
   - task: "Contributor Stories Bug Fix"
-    implemented: false
-    working: false
+    implemented: true
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "critical"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "user"
@@ -119,6 +119,9 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Starting investigation using existing debug endpoints to identify root cause in /api/editions/current logic."
+      - working: true
+        agent: "testing"
+        comment: "✅ BUG INVESTIGATION COMPLETE: Root cause identified and resolved. The issue was that friends were not automatically set as contributors. The /api/admin/fix-contributors endpoint successfully fixed the relationship. Current testing shows: 1) User has 1 contributor (Mike Reporter), 2) Current week (2025-W30) has 2 stories - one from user and one from contributor, 3) Weekly edition generation correctly includes both stories, 4) /api/stories/weekly/{week} returns both stories, 5) /api/editions/current includes contributor stories. The contributor system is now working correctly - contributor stories ARE appearing in weekly editions."
 
   - task: "User Authentication System"
     implemented: true
