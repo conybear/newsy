@@ -467,27 +467,31 @@ async def get_current_edition(current_user: User = Depends(get_current_user)):
         "week_of": current_week
     }).to_list(100)
     
-    # If no stories for current week, get the most recent week with stories
-    if not stories:
-        # Find the most recent week that has stories from contributors
-        recent_stories = await db.stories.find({
-            "author_id": {"$in": all_contributors}
-        }).sort("created_at", -1).limit(100).to_list(100)
-        
-        if recent_stories:
-            # Group by week and get the most recent week with content
-            weeks_with_stories = {}
-            for story in recent_stories:
-                week = story.get("week_of")
-                if week not in weeks_with_stories:
-                    weeks_with_stories[week] = []
-                weeks_with_stories[week].append(story)
+    # For Week 32, don't fall back - show empty edition so users can submit fresh stories
+    if current_week == "2025-W32":
+        stories = stories  # Use only Week 32 stories, no fallback
+    else:
+        # If no stories for current week, get the most recent week with stories
+        if not stories:
+            # Find the most recent week that has stories from contributors
+            recent_stories = await db.stories.find({
+                "author_id": {"$in": all_contributors}
+            }).sort("created_at", -1).limit(100).to_list(100)
             
-            # Use stories from the most recent week that has content
-            if weeks_with_stories:
-                most_recent_week = max(weeks_with_stories.keys())
-                stories = weeks_with_stories[most_recent_week]
-                current_week = most_recent_week  # Use the week that actually has content
+            if recent_stories:
+                # Group by week and get the most recent week with content
+                weeks_with_stories = {}
+                for story in recent_stories:
+                    week = story.get("week_of")
+                    if week not in weeks_with_stories:
+                        weeks_with_stories[week] = []
+                    weeks_with_stories[week].append(story)
+                
+                # Use stories from the most recent week that has content
+                if weeks_with_stories:
+                    most_recent_week = max(weeks_with_stories.keys())
+                    stories = weeks_with_stories[most_recent_week]
+                    current_week = most_recent_week  # Use the week that actually has content
     
     # Create edition
     edition = WeeklyEdition(
