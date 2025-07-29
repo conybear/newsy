@@ -524,6 +524,38 @@ async def get_edition_by_week(week: str, current_user: User = Depends(get_curren
     
     return WeeklyEdition(**edition)
 
+@app.post("/api/admin/fix-contributors")
+async def fix_contributors_migration(current_user: User = Depends(get_current_user)):
+    """One-time migration to fix friend/contributor relationships"""
+    try:
+        # Get current user's friends
+        user_data = await db.users.find_one({"id": current_user.id})
+        friends_list = user_data.get('friends', [])
+        
+        if friends_list:
+            # Add all friends as contributors
+            await db.users.update_one(
+                {"id": current_user.id},
+                {"$addToSet": {"contributors": {"$each": friends_list}}}
+            )
+            
+            # Also add current user as contributor to all friends
+            for friend_id in friends_list:
+                await db.users.update_one(
+                    {"id": friend_id},
+                    {"$addToSet": {"contributors": current_user.id}}
+                )
+            
+            return {
+                "message": f"Successfully fixed contributors! Added {len(friends_list)} friends as contributors.",
+                "friends_added": len(friends_list)
+            }
+        else:
+            return {"message": "No friends found to add as contributors"}
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Migration failed: {str(e)}")
+
 @app.get("/api/debug/user-info")
 async def debug_user_info(current_user: User = Depends(get_current_user)):
     """Debug endpoint to see complete user info and relationships"""
