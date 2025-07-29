@@ -158,7 +158,14 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         if user is None:
             raise HTTPException(status_code=401, detail="User not found")
         
-        return User(**user)
+        # Debug logging to track the inconsistency
+        user_obj = User(**user)
+        logger.info(f"DEBUG: Raw database user friends: {user.get('friends', [])}")
+        logger.info(f"DEBUG: User object friends: {user_obj.friends}")
+        logger.info(f"DEBUG: Raw database user contributors: {user.get('contributors', [])}")
+        logger.info(f"DEBUG: User object contributors: {user_obj.contributors}")
+        
+        return user_obj
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid authentication credentials")
 
