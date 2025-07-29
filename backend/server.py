@@ -524,6 +524,60 @@ async def get_edition_by_week(week: str, current_user: User = Depends(get_curren
     
     return WeeklyEdition(**edition)
 
+@app.get("/api/debug/edition-logic")
+async def debug_edition_logic(current_user: User = Depends(get_current_user)):
+    """Debug the weekly edition generation logic"""
+    current_week = get_current_week()
+    
+    # Get user data
+    user_data = await db.users.find_one({"id": current_user.id})
+    contributors = user_data.get('contributors', [])
+    all_contributors = contributors + [current_user.id]
+    
+    # Check for existing edition
+    existing_edition = await db.weekly_editions.find_one({
+        "user_id": current_user.id,
+        "week_of": current_week
+    })
+    
+    # Get all stories from contributors for current week
+    current_week_stories = await db.stories.find({
+        "author_id": {"$in": all_contributors},
+        "week_of": current_week
+    }).to_list(100)
+    
+    # Get all stories from contributors (any week)
+    all_stories = await db.stories.find({
+        "author_id": {"$in": all_contributors}
+    }).to_list(100)
+    
+    return {
+        "current_week": current_week,
+        "user_id": current_user.id,
+        "contributors": contributors,
+        "all_contributors": all_contributors,
+        "existing_edition_exists": existing_edition is not None,
+        "existing_edition_story_count": len(existing_edition.get("stories", [])) if existing_edition else 0,
+        "current_week_stories_found": len(current_week_stories),
+        "current_week_stories": [
+            {
+                "title": s.get("title"),
+                "author_name": s.get("author_name"), 
+                "author_id": s.get("author_id"),
+                "week_of": s.get("week_of")
+            } for s in current_week_stories
+        ],
+        "total_stories_from_contributors": len(all_stories),
+        "all_stories": [
+            {
+                "title": s.get("title"),
+                "author_name": s.get("author_name"),
+                "author_id": s.get("author_id"), 
+                "week_of": s.get("week_of")
+            } for s in all_stories
+        ]
+    }
+
 @app.post("/api/admin/fix-contributors")
 async def fix_contributors_migration(current_user: User = Depends(get_current_user)):
     """One-time migration to fix friend/contributor relationships"""
