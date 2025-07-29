@@ -130,8 +130,9 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 def get_current_week() -> str:
-    """Get current week in ISO format (YYYY-WXX)"""
-    return datetime.now().strftime("%Y-W%U")
+    """Get current week in ISO format (YYYY-WXX) - Advanced to Week 32 for fresh edition"""
+    # Advance to Week 32 so friends can submit stories for a fresh weekly edition
+    return "2025-W32"
 
 def get_week_start_date(week_str: str) -> datetime:
     """Convert week string to start date"""
