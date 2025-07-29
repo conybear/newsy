@@ -193,14 +193,14 @@ async def register(user_data: UserCreate):
     }).to_list(100)
     
     for invitation in pending_invitations:
-        # Add both users as friends
+        # Add both users as friends and contributors
         await db.users.update_one(
             {"id": user.id},
-            {"$addToSet": {"friends": invitation["from_user_id"]}}
+            {"$addToSet": {"friends": invitation["from_user_id"], "contributors": invitation["from_user_id"]}}
         )
         await db.users.update_one(
             {"id": invitation["from_user_id"]},
-            {"$addToSet": {"friends": user.id}}
+            {"$addToSet": {"friends": user.id, "contributors": user.id}}
         )
         
         # Mark invitation as accepted
