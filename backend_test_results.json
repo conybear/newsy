@@ -1,8 +1,8 @@
 {
   "summary": {
-    "passed": 11,
-    "failed": 0,
-    "success_rate": 100.0
+    "passed": 1,
+    "failed": 10,
+    "success_rate": 9.090909090909092
   },
   "detailed_results": [
     {
@@ -10,77 +10,156 @@
       "success": true,
       "message": "Status: healthy",
       "details": null,
-      "timestamp": "2025-07-11T21:39:06.485788"
+      "timestamp": "2025-07-29T14:28:06.338984"
     },
     {
       "test": "User Registration",
-      "success": true,
-      "message": "User registered successfully with JWT token",
-      "details": null,
-      "timestamp": "2025-07-11T21:39:07.266721"
+      "success": false,
+      "message": "Status code: 400",
+      "details": "{\"detail\":\"Email already registered\"}",
+      "timestamp": "2025-07-29T14:28:06.849410"
     },
     {
       "test": "Get Current User",
-      "success": true,
-      "message": "User info retrieved: Sarah Johnson (sarah.johnson@newspaper.com)",
+      "success": false,
+      "message": "No auth token available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:08.092740"
+      "timestamp": "2025-07-29T14:28:07.349561"
     },
     {
       "test": "Story Creation",
-      "success": true,
-      "message": "Story created: Local Community Garden Flourishes",
+      "success": false,
+      "message": "No auth token available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:08.615289"
+      "timestamp": "2025-07-29T14:28:07.849730"
     },
     {
       "test": "Story Image Upload",
-      "success": true,
-      "message": "Image uploaded successfully: a56835fa-1b8a-436f-b66a-8744166a8fdc",
+      "success": false,
+      "message": "No story ID available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:09.153157"
+      "timestamp": "2025-07-29T14:28:08.349905"
     },
     {
       "test": "Get My Stories",
-      "success": true,
-      "message": "Retrieved 1 stories",
+      "success": false,
+      "message": "No auth token available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:09.664403"
+      "timestamp": "2025-07-29T14:28:08.850056"
     },
     {
       "test": "Weekly Story Limit",
-      "success": true,
-      "message": "Weekly story limit properly enforced",
+      "success": false,
+      "message": "No auth token available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:10.188685"
+      "timestamp": "2025-07-29T14:28:09.350209"
     },
     {
       "test": "Friend Request",
-      "success": true,
-      "message": "Friend request sent successfully",
+      "success": false,
+      "message": "No auth token available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:13.037329"
+      "timestamp": "2025-07-29T14:28:09.850362"
     },
     {
       "test": "Get Friends",
-      "success": true,
-      "message": "Retrieved 1 friends",
+      "success": false,
+      "message": "No auth token available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:13.549481"
+      "timestamp": "2025-07-29T14:28:10.350531"
     },
     {
       "test": "Current Edition",
-      "success": true,
-      "message": "Current edition for week: 2025-W27",
+      "success": false,
+      "message": "No auth token available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:14.075992"
+      "timestamp": "2025-07-29T14:28:10.850725"
     },
     {
       "test": "Edition Archive",
-      "success": true,
-      "message": "Retrieved 1 archived editions",
+      "success": false,
+      "message": "No auth token available",
       "details": null,
-      "timestamp": "2025-07-11T21:39:14.587055"
+      "timestamp": "2025-07-29T14:28:11.350865"
+    },
+    {
+      "test": "Debug User Info",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:11.851067"
+    },
+    {
+      "test": "Debug Simple",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:11.851093"
+    },
+    {
+      "test": "Create Contributor Story",
+      "success": false,
+      "message": "Could not login as friend user",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:12.136587"
+    },
+    {
+      "test": "Debug Edition Logic",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:12.136916"
+    },
+    {
+      "test": "Current Edition",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:12.136935"
+    },
+    {
+      "test": "Weekly Stories Endpoint",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:12.136946"
+    },
+    {
+      "test": "Admin Fix Contributors",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:12.136955"
+    },
+    {
+      "test": "Debug User Info",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:12.136966"
+    },
+    {
+      "test": "Debug Edition Logic",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:12.136978"
+    },
+    {
+      "test": "Current Edition",
+      "success": false,
+      "message": "No auth token available",
+      "details": null,
+      "timestamp": "2025-07-29T14:28:12.136985"
     }
-  ]
+  ],
+  "contributor_bug_investigation": {
+    "user_info": null,
+    "simple_debug": null,
+    "edition_logic": null,
+    "weekly_stories": null,
+    "admin_fix": null,
+    "post_fix_user_info": null,
+    "post_fix_edition_logic": null
+  }
 }
