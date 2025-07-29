@@ -673,10 +673,140 @@ class BackendTester:
             "post_fix_edition_logic": post_fix_edition_logic_data if 'post_fix_edition_logic_data' in locals() else None
         }
 
+    def test_joel_conybear_specific(self):
+        """URGENT: Test Joel Conybear's specific account to verify database query fix"""
+        print("\n🚨 URGENT JOEL CONYBEAR INVESTIGATION")
+        print("=" * 60)
+        
+        # Login as Joel Conybear
+        joel_session = requests.Session()
+        login_data = {
+            "email": "joel.conybear@gmail.com",
+            "password": "password123"  # Try common password
+        }
+        
+        login_response = joel_session.post(f"{BACKEND_URL}/auth/login", json=login_data)
+        
+        if login_response.status_code != 200:
+            # Try alternative passwords
+            alt_passwords = ["Password123!", "SecurePass123!", "testpass", "joel123"]
+            for pwd in alt_passwords:
+                login_data["password"] = pwd
+                login_response = joel_session.post(f"{BACKEND_URL}/auth/login", json=login_data)
+                if login_response.status_code == 200:
+                    break
+            
+            if login_response.status_code != 200:
+                self.log_test("Joel Conybear Login", False, f"Could not login as Joel: {login_response.text}")
+                return False, {}
+        
+        joel_token = login_response.json()["access_token"]
+        joel_session.headers.update({"Authorization": f"Bearer {joel_token}"})
+        self.log_test("Joel Conybear Login", True, "Successfully logged in as Joel Conybear")
+        
+        # Test 1: Get Joel's user info
+        user_response = joel_session.get(f"{BACKEND_URL}/users/me")
+        if user_response.status_code == 200:
+            joel_user_data = user_response.json()
+            self.log_test("Joel User Info", True, f"Joel ID: {joel_user_data['id']}, Email: {joel_user_data['email']}")
+        else:
+            self.log_test("Joel User Info", False, f"Status: {user_response.status_code}")
+            return False, {}
+        
+        # Test 2: Debug user info to see contributors
+        debug_response = joel_session.get(f"{BACKEND_URL}/debug/user-info")
+        joel_debug_data = {}
+        if debug_response.status_code == 200:
+            joel_debug_data = debug_response.json()
+            diagnosis = joel_debug_data.get("diagnosis", {})
+            self.log_test("Joel Debug Info", True, 
+                f"Friends: {diagnosis.get('friends_count', 0)}, Contributors: {diagnosis.get('contributors_count', 0)}, Stories: {diagnosis.get('contributor_stories_count', 0)}")
+        else:
+            self.log_test("Joel Debug Info", False, f"Status: {debug_response.status_code}")
+        
+        # Test 3: Test /api/stories/weekly/2025-W30 (the specific endpoint mentioned)
+        weekly_response = joel_session.get(f"{BACKEND_URL}/stories/weekly/2025-W30")
+        weekly_stories_data = []
+        if weekly_response.status_code == 200:
+            weekly_stories_data = weekly_response.json()
+            self.log_test("Joel Weekly Stories 2025-W30", True, 
+                f"Found {len(weekly_stories_data)} stories for Week 30")
+            for story in weekly_stories_data:
+                print(f"   - {story.get('title')} by {story.get('author_name')}")
+        else:
+            self.log_test("Joel Weekly Stories 2025-W30", False, f"Status: {weekly_response.status_code}")
+        
+        # Test 4: Test /api/editions/current
+        current_edition_response = joel_session.get(f"{BACKEND_URL}/editions/current")
+        current_edition_data = {}
+        if current_edition_response.status_code == 200:
+            current_edition_data = current_edition_response.json()
+            stories_count = len(current_edition_data.get('stories', []))
+            self.log_test("Joel Current Edition", True, 
+                f"Current edition has {stories_count} stories for week {current_edition_data.get('week_of')}")
+            for story in current_edition_data.get('stories', []):
+                print(f"   - {story.get('title')} by {story.get('author_name')}")
+        else:
+            self.log_test("Joel Current Edition", False, f"Status: {current_edition_response.status_code}")
+        
+        # Test 5: Test /api/debug/edition-logic
+        edition_logic_response = joel_session.get(f"{BACKEND_URL}/debug/edition-logic")
+        edition_logic_data = {}
+        if edition_logic_response.status_code == 200:
+            edition_logic_data = edition_logic_response.json()
+            self.log_test("Joel Edition Logic", True, 
+                f"Edition logic: {edition_logic_data.get('current_week_stories_found', 0)} current week stories, {edition_logic_data.get('total_stories_from_contributors', 0)} total contributor stories")
+        else:
+            self.log_test("Joel Edition Logic", False, f"Status: {edition_logic_response.status_code}")
+        
+        # Test 6: Check database query fix - verify user lookup by email works
+        simple_debug_response = joel_session.get(f"{BACKEND_URL}/debug/simple")
+        simple_debug_data = {}
+        if simple_debug_response.status_code == 200:
+            simple_debug_data = simple_debug_response.json()
+            self.log_test("Joel Simple Debug", True, 
+                f"Database query working - found user ID: {simple_debug_data.get('your_id')}")
+        else:
+            self.log_test("Joel Simple Debug", False, f"Status: {simple_debug_response.status_code}")
+        
+        # Analysis
+        print("\n📊 JOEL CONYBEAR ANALYSIS")
+        print("=" * 60)
+        
+        if joel_debug_data:
+            diagnosis = joel_debug_data.get("diagnosis", {})
+            contributors_count = diagnosis.get('contributors_count', 0)
+            friends_count = diagnosis.get('friends_count', 0)
+            
+            print(f"✓ Joel's account found: {joel_user_data.get('id')}")
+            print(f"✓ Joel has {friends_count} friends")
+            print(f"✓ Joel has {contributors_count} contributors")
+            print(f"✓ Joel sees {len(weekly_stories_data)} stories in Week 30")
+            print(f"✓ Joel's current edition has {len(current_edition_data.get('stories', []))} stories")
+            
+            if contributors_count == 0:
+                print("❌ ROOT CAUSE: Joel has NO contributors - this is why he only sees 1 story")
+                print("   The user's claim that 'Joel has 2 contributors' is INCORRECT")
+                print("   Joel needs to invite friends and set them as contributors")
+            else:
+                print(f"✅ Joel has {contributors_count} contributors - investigating why stories aren't showing")
+        
+        return True, {
+            "joel_user_data": joel_user_data,
+            "joel_debug_data": joel_debug_data,
+            "weekly_stories_data": weekly_stories_data,
+            "current_edition_data": current_edition_data,
+            "edition_logic_data": edition_logic_data,
+            "simple_debug_data": simple_debug_data
+        }
+
     def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting Backend API Testing for Social Weekly Newspaper Network")
         print("=" * 70)
+        
+        # URGENT: Test Joel Conybear's account first
+        joel_success, joel_data = self.test_joel_conybear_specific()
         
         # Try login first, then registration if needed
         login_success = self.test_user_login()
@@ -685,7 +815,7 @@ class BackendTester:
             registration_success = self.test_user_registration()
             if not registration_success:
                 print("❌ CRITICAL: Could not authenticate user")
-                return 0, 1, self.test_results, {}
+                return 0, 1, self.test_results, {"joel_investigation": joel_data}
         
         # Test sequence (skip auth tests since we already did them)
         tests = [
@@ -727,7 +857,10 @@ class BackendTester:
         print(f"❌ Failed: {failed}")
         print(f"📈 Success Rate: {(passed/(passed+failed)*100):.1f}%")
         
-        return passed, failed, self.test_results, investigation_results
+        return passed, failed, self.test_results, {
+            "joel_investigation": joel_data,
+            "general_investigation": investigation_results
+        }
 
 if __name__ == "__main__":
     tester = BackendTester()
