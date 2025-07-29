@@ -371,6 +371,269 @@ class BackendTester:
             self.log_test("Weekly Story Limit", False, f"Exception: {str(e)}")
             return False
 
+    def test_debug_user_info(self):
+        """Test debug endpoint for user info and relationships"""
+        try:
+            if not self.auth_token:
+                self.log_test("Debug User Info", False, "No auth token available")
+                return False
+                
+            response = self.session.get(f"{BACKEND_URL}/debug/user-info")
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "user" in data and "diagnosis" in data:
+                    diagnosis = data["diagnosis"]
+                    self.log_test("Debug User Info", True, 
+                        f"Friends: {diagnosis['friends_count']}, Contributors: {diagnosis['contributors_count']}, Stories: {diagnosis['contributor_stories_count']}")
+                    return True, data
+                else:
+                    self.log_test("Debug User Info", False, "Invalid debug data structure", data)
+                    return False, None
+            else:
+                self.log_test("Debug User Info", False, f"Status code: {response.status_code}", response.text)
+                return False, None
+        except Exception as e:
+            self.log_test("Debug User Info", False, f"Exception: {str(e)}")
+            return False, None
+
+    def test_debug_simple(self):
+        """Test simple debug endpoint"""
+        try:
+            if not self.auth_token:
+                self.log_test("Debug Simple", False, "No auth token available")
+                return False
+                
+            response = self.session.get(f"{BACKEND_URL}/debug/simple")
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "current_week" in data and "contributors" in data:
+                    self.log_test("Debug Simple", True, 
+                        f"Week: {data['current_week']}, Contributors: {len(data['contributors'])}, Total Stories: {data['total_stories_in_db']}")
+                    return True, data
+                else:
+                    self.log_test("Debug Simple", False, "Invalid debug data structure", data)
+                    return False, None
+            else:
+                self.log_test("Debug Simple", False, f"Status code: {response.status_code}", response.text)
+                return False, None
+        except Exception as e:
+            self.log_test("Debug Simple", False, f"Exception: {str(e)}")
+            return False, None
+
+    def test_debug_edition_logic(self):
+        """Test edition logic debug endpoint"""
+        try:
+            if not self.auth_token:
+                self.log_test("Debug Edition Logic", False, "No auth token available")
+                return False
+                
+            response = self.session.get(f"{BACKEND_URL}/debug/edition-logic")
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "current_week" in data and "all_contributors" in data:
+                    self.log_test("Debug Edition Logic", True, 
+                        f"Week: {data['current_week']}, Contributors: {len(data['contributors'])}, Current Week Stories: {data['current_week_stories_found']}")
+                    return True, data
+                else:
+                    self.log_test("Debug Edition Logic", False, "Invalid debug data structure", data)
+                    return False, None
+            else:
+                self.log_test("Debug Edition Logic", False, f"Status code: {response.status_code}", response.text)
+                return False, None
+        except Exception as e:
+            self.log_test("Debug Edition Logic", False, f"Exception: {str(e)}")
+            return False, None
+
+    def test_admin_fix_contributors(self):
+        """Test admin fix contributors endpoint"""
+        try:
+            if not self.auth_token:
+                self.log_test("Admin Fix Contributors", False, "No auth token available")
+                return False
+                
+            response = self.session.post(f"{BACKEND_URL}/admin/fix-contributors")
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "message" in data:
+                    self.log_test("Admin Fix Contributors", True, data["message"])
+                    return True, data
+                else:
+                    self.log_test("Admin Fix Contributors", False, "Invalid response structure", data)
+                    return False, None
+            else:
+                self.log_test("Admin Fix Contributors", False, f"Status code: {response.status_code}", response.text)
+                return False, None
+        except Exception as e:
+            self.log_test("Admin Fix Contributors", False, f"Exception: {str(e)}")
+            return False, None
+
+    def test_weekly_stories_endpoint(self):
+        """Test weekly stories endpoint with current week"""
+        try:
+            if not self.auth_token:
+                self.log_test("Weekly Stories Endpoint", False, "No auth token available")
+                return False
+            
+            # First get current week from debug
+            debug_response = self.session.get(f"{BACKEND_URL}/debug/simple")
+            if debug_response.status_code != 200:
+                self.log_test("Weekly Stories Endpoint", False, "Could not get current week")
+                return False
+            
+            current_week = debug_response.json().get("current_week")
+            if not current_week:
+                self.log_test("Weekly Stories Endpoint", False, "No current week in debug response")
+                return False
+                
+            response = self.session.get(f"{BACKEND_URL}/stories/weekly/{current_week}")
+            
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    self.log_test("Weekly Stories Endpoint", True, f"Retrieved {len(data)} stories for week {current_week}")
+                    return True, data
+                else:
+                    self.log_test("Weekly Stories Endpoint", False, "Response is not a list", data)
+                    return False, None
+            else:
+                self.log_test("Weekly Stories Endpoint", False, f"Status code: {response.status_code}", response.text)
+                return False, None
+        except Exception as e:
+            self.log_test("Weekly Stories Endpoint", False, f"Exception: {str(e)}")
+            return False, None
+
+    def create_contributor_story(self):
+        """Create a story as the friend user to test contributor functionality"""
+        try:
+            # Login as the friend user
+            login_data = {
+                "email": "mike.reporter@newspaper.com",
+                "password": "FriendPass456!"
+            }
+            
+            friend_session = requests.Session()
+            login_response = friend_session.post(f"{BACKEND_URL}/auth/login", json=login_data)
+            
+            if login_response.status_code != 200:
+                self.log_test("Create Contributor Story", False, "Could not login as friend user")
+                return False
+            
+            friend_token = login_response.json()["access_token"]
+            friend_session.headers.update({"Authorization": f"Bearer {friend_token}"})
+            
+            # Create a story as the friend
+            story_data = {
+                "title": "Breaking News from Mike Reporter",
+                "content": "This is an exclusive story from Mike Reporter, who should be a contributor to Sarah's weekly edition. This story should appear in Sarah's flipbook if the contributor system is working correctly.",
+                "is_headline": False
+            }
+            
+            story_response = friend_session.post(f"{BACKEND_URL}/stories", json=story_data)
+            
+            if story_response.status_code == 200:
+                story_data = story_response.json()
+                self.log_test("Create Contributor Story", True, f"Friend story created: {story_data['title']}")
+                return True
+            else:
+                self.log_test("Create Contributor Story", False, f"Status code: {story_response.status_code}", story_response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Create Contributor Story", False, f"Exception: {str(e)}")
+            return False
+
+    def investigate_contributor_bug(self):
+        """Comprehensive investigation of the contributor stories bug"""
+        print("\n🔍 INVESTIGATING CONTRIBUTOR STORIES BUG")
+        print("=" * 50)
+        
+        # Step 1: Check user info and relationships
+        print("Step 1: Checking user relationships...")
+        user_info_success, user_info_data = self.test_debug_user_info()
+        
+        # Step 2: Get simple debug overview
+        print("Step 2: Getting debug overview...")
+        simple_debug_success, simple_debug_data = self.test_debug_simple()
+        
+        # Step 3: Create contributor story
+        print("Step 3: Creating contributor story...")
+        contributor_story_success = self.create_contributor_story()
+        
+        # Step 4: Check edition logic
+        print("Step 4: Checking edition generation logic...")
+        edition_logic_success, edition_logic_data = self.test_debug_edition_logic()
+        
+        # Step 5: Test current edition
+        print("Step 5: Testing current edition...")
+        current_edition_success = self.test_current_edition()
+        
+        # Step 6: Test weekly stories endpoint
+        print("Step 6: Testing weekly stories endpoint...")
+        weekly_stories_success, weekly_stories_data = self.test_weekly_stories_endpoint()
+        
+        # Step 7: Try admin fix
+        print("Step 7: Running admin fix...")
+        admin_fix_success, admin_fix_data = self.test_admin_fix_contributors()
+        
+        # Step 8: Re-test after fix
+        print("Step 8: Re-testing after admin fix...")
+        post_fix_user_info_success, post_fix_user_info_data = self.test_debug_user_info()
+        post_fix_edition_logic_success, post_fix_edition_logic_data = self.test_debug_edition_logic()
+        post_fix_current_edition_success = self.test_current_edition()
+        
+        # Analysis
+        print("\n📊 BUG INVESTIGATION ANALYSIS")
+        print("=" * 50)
+        
+        if user_info_data:
+            diagnosis = user_info_data.get("diagnosis", {})
+            print(f"✓ User has {diagnosis.get('friends_count', 0)} friends")
+            print(f"✓ User has {diagnosis.get('contributors_count', 0)} contributors")
+            print(f"✓ Found {diagnosis.get('contributor_stories_count', 0)} stories from contributors")
+            
+            if diagnosis.get('problem'):
+                print(f"⚠️  Problem identified: {diagnosis['problem']}")
+        
+        if simple_debug_data:
+            print(f"✓ Current week: {simple_debug_data.get('current_week')}")
+            print(f"✓ Total stories in database: {simple_debug_data.get('total_stories_in_db', 0)}")
+            print(f"✓ Stories from contributors (current week): {simple_debug_data.get('stories_from_contributors_current_week', 0)}")
+        
+        if edition_logic_data:
+            print(f"✓ Edition logic found {edition_logic_data.get('current_week_stories_found', 0)} stories for current week")
+            print(f"✓ Total stories from all contributors: {edition_logic_data.get('total_stories_from_contributors', 0)}")
+        
+        # Root cause analysis
+        print("\n🎯 ROOT CAUSE ANALYSIS")
+        print("=" * 50)
+        
+        if user_info_data and user_info_data.get("diagnosis", {}).get("contributors_count", 0) == 0:
+            print("❌ ROOT CAUSE: User has no contributors registered")
+            print("   - Friends exist but are not set as contributors")
+            print("   - Admin fix should resolve this issue")
+        elif simple_debug_data and simple_debug_data.get("stories_from_contributors_current_week", 0) == 0:
+            print("❌ ROOT CAUSE: No stories from contributors for current week")
+            print("   - Contributors exist but haven't submitted stories this week")
+        elif edition_logic_data and edition_logic_data.get("current_week_stories_found", 0) == 0:
+            print("❌ ROOT CAUSE: Edition logic not finding contributor stories")
+            print("   - Issue in the edition generation algorithm")
+        else:
+            print("✅ No obvious root cause found - system appears to be working")
+        
+        return {
+            "user_info": user_info_data,
+            "simple_debug": simple_debug_data,
+            "edition_logic": edition_logic_data,
+            "weekly_stories": weekly_stories_data if 'weekly_stories_data' in locals() else None,
+            "admin_fix": admin_fix_data,
+            "post_fix_user_info": post_fix_user_info_data if 'post_fix_user_info_data' in locals() else None,
+            "post_fix_edition_logic": post_fix_edition_logic_data if 'post_fix_edition_logic_data' in locals() else None
+        }
+
     def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting Backend API Testing for Social Weekly Newspaper Network")
