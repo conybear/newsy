@@ -251,12 +251,12 @@ class BackendTester:
                 self.log_test("Friend Request", False, "Could not register friend user", friend_response.text)
                 return False
             
-            # Send friend request
+            # Send friend invitation (using correct endpoint)
             request_data = {
                 "email": "mike.reporter@newspaper.com"
             }
             
-            response = self.session.post(f"{BACKEND_URL}/friends/request", json=request_data)
+            response = self.session.post(f"{BACKEND_URL}/friends/invite", json=request_data)
             
             if response.status_code == 200:
                 data = response.json()
