@@ -619,13 +619,13 @@ async def fix_contributors_migration(current_user: User = Depends(get_current_us
     """One-time migration to fix friend/contributor relationships"""
     try:
         # Get current user's friends
-        user_data = await db.users.find_one({"id": current_user.id})
-        friends_list = user_data.get('friends', [])
+        user_data = await db.users.find_one({"email": current_user.email})
+        friends_list = user_data.get('friends', []) if user_data else []
         
         if friends_list:
             # Add all friends as contributors
             await db.users.update_one(
-                {"id": current_user.id},
+                {"email": current_user.email},
                 {"$addToSet": {"contributors": {"$each": friends_list}}}
             )
             
