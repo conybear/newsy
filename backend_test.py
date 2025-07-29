@@ -261,17 +261,20 @@ class BackendTester:
                 self.log_test("Friend Request", False, "No auth token available")
                 return False
                 
-            # First register another user to befriend
+            # First try to register another user to befriend
             friend_data = {
                 "email": "mike.reporter@newspaper.com",
                 "password": "FriendPass456!",
                 "full_name": "Mike Reporter"
             }
             
-            # Register friend user
+            # Try to register friend user (might already exist)
             friend_response = self.session.post(f"{BACKEND_URL}/auth/register", json=friend_data)
-            if friend_response.status_code != 200:
-                self.log_test("Friend Request", False, "Could not register friend user", friend_response.text)
+            if friend_response.status_code == 400:
+                # User already exists, that's fine
+                print("   Friend user already exists, proceeding with invitation...")
+            elif friend_response.status_code != 200:
+                self.log_test("Friend Request", False, f"Could not register friend user: {friend_response.text}")
                 return False
             
             # Send friend invitation (using correct endpoint)
