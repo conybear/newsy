@@ -1,0 +1,97 @@
+{
+  "Admin Login": {
+    "success": true,
+    "message": "Logged in as sarah.johnson for investigation",
+    "data": null,
+    "timestamp": "2025-07-29T16:00:21.135226"
+  },
+  "Joel Account State": {
+    "success": true,
+    "message": "Joel's account found",
+    "data": {
+      "email": "joel.conybear@gmail.com",
+      "name": "Joel Conybear",
+      "id": "05a644bd-32a4-4f41-b5b6-3c0e8bfc900b",
+      "friends_count": 0,
+      "contributors_count": 0,
+      "friends": [],
+      "contributors": []
+    },
+    "timestamp": "2025-07-29T16:00:21.189314"
+  },
+  "Database Stories": {
+    "success": true,
+    "message": "Database analysis complete",
+    "data": {
+      "total_stories": 7,
+      "current_week": "2025-W30",
+      "current_week_stories": 5,
+      "joel_stories": 2,
+      "all_stories": [
+        {
+          "title": "Local Community Garden Flourishes",
+          "author_name": "Sarah Johnson",
+          "author_id": "f6dc91a2-0a45-4e9b-b294-e7e38e967c4f",
+          "week_of": "2025-W27"
+        },
+        {
+          "title": "My Amazing Week in San Francisco",
+          "author_name": "Sarah Johnson",
+          "author_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
+          "week_of": "2025-W28"
+        },
+        {
+          "title": "Breaking News from Downtown",
+          "author_name": "Mike Reporter",
+          "author_id": "4bbdbc50-8071-476c-9505-f18d06e3241b",
+          "week_of": "2025-W30"
+        },
+        {
+          "title": "My Week of Adventures",
+          "author_name": "Sarah Johnson",
+          "author_id": "f6dc91a2-0a45-4e9b-b294-e7e38e967c4f",
+          "week_of": "2025-W30"
+        },
+        {
+          "title": "Local Community Garden Flourishes",
+          "author_name": "Sarah Johnson",
+          "author_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
+          "week_of": "2025-W30"
+        },
+        {
+          "title": "Story from Joel's Contributor 1",
+          "author_name": "Joel's Contributor 1",
+          "author_id": "7958f69e-75b9-424e-b857-85803f035fce",
+          "week_of": "2025-W30"
+        },
+        {
+          "title": "Story from Joel's Contributor 2",
+          "author_name": "Joel's Contributor 2",
+          "author_id": "8cf45053-1fa8-45a5-ac14-3b4ab47ff01c",
+          "week_of": "2025-W30"
+        }
+      ],
+      "joel_stories_details": [
+        {
+          "title": "Story from Joel's Contributor 1",
+          "author_name": "Joel's Contributor 1",
+          "author_id": "7958f69e-75b9-424e-b857-85803f035fce",
+          "week_of": "2025-W30"
+        },
+        {
+          "title": "Story from Joel's Contributor 2",
+          "author_name": "Joel's Contributor 2",
+          "author_id": "8cf45053-1fa8-45a5-ac14-3b4ab47ff01c",
+          "week_of": "2025-W30"
+        }
+      ]
+    },
+    "timestamp": "2025-07-29T16:00:21.205850"
+  },
+  "Joel Login": {
+    "success": false,
+    "message": "Failed to login as Joel with 23 different passwords",
+    "data": null,
+    "timestamp": "2025-07-29T16:00:26.938635"
+  }
+}
