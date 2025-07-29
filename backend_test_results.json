@@ -1,8 +1,8 @@
 {
   "summary": {
-    "passed": 10,
-    "failed": 1,
-    "success_rate": 90.9090909090909
+    "passed": 9,
+    "failed": 2,
+    "success_rate": 81.81818181818183
   },
   "detailed_results": [
     {
@@ -10,147 +10,147 @@
       "success": true,
       "message": "Login successful with sarah.johnson@example.com",
       "details": null,
-      "timestamp": "2025-07-29T14:28:59.806072"
+      "timestamp": "2025-07-29T14:29:41.682399"
     },
     {
       "test": "Health Check",
       "success": true,
       "message": "Status: healthy",
       "details": null,
-      "timestamp": "2025-07-29T14:28:59.819737"
+      "timestamp": "2025-07-29T14:29:41.694568"
     },
     {
       "test": "Get Current User",
       "success": true,
       "message": "User info retrieved: Sarah Johnson (sarah.johnson@example.com)",
       "details": null,
-      "timestamp": "2025-07-29T14:29:00.334437"
+      "timestamp": "2025-07-29T14:29:42.205146"
     },
     {
       "test": "Story Creation",
-      "success": true,
-      "message": "Story created: Local Community Garden Flourishes",
-      "details": null,
-      "timestamp": "2025-07-29T14:29:00.858964"
+      "success": false,
+      "message": "Status code: 400",
+      "details": "{\"detail\":\"You already submitted a story this week\"}",
+      "timestamp": "2025-07-29T14:29:42.717319"
     },
     {
       "test": "Story Image Upload",
-      "success": true,
-      "message": "Image uploaded successfully: 6968285e-df6c-44ea-9f04-7d2e86955a7b",
+      "success": false,
+      "message": "No story ID available",
       "details": null,
-      "timestamp": "2025-07-29T14:29:01.403030"
+      "timestamp": "2025-07-29T14:29:43.217465"
     },
     {
       "test": "Get My Stories",
       "success": true,
       "message": "Retrieved 2 stories",
       "details": null,
-      "timestamp": "2025-07-29T14:29:01.915617"
+      "timestamp": "2025-07-29T14:29:43.732541"
     },
     {
       "test": "Weekly Story Limit",
       "success": true,
       "message": "Weekly story limit properly enforced",
       "details": null,
-      "timestamp": "2025-07-29T14:29:02.428069"
+      "timestamp": "2025-07-29T14:29:44.244980"
     },
     {
       "test": "Friend Request",
-      "success": false,
-      "message": "Could not register friend user",
-      "details": "{\"detail\":\"Email already registered\"}",
-      "timestamp": "2025-07-29T14:29:02.937958"
+      "success": true,
+      "message": "Successfully added Mike Reporter as a friend!",
+      "details": null,
+      "timestamp": "2025-07-29T14:29:44.813420"
     },
     {
       "test": "Get Friends",
       "success": true,
-      "message": "Retrieved 0 friends",
+      "message": "Retrieved 1 friends",
       "details": null,
-      "timestamp": "2025-07-29T14:29:03.450780"
+      "timestamp": "2025-07-29T14:29:45.325708"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:29:03.974598"
+      "timestamp": "2025-07-29T14:29:45.839908"
     },
     {
       "test": "Edition Archive",
       "success": true,
       "message": "Retrieved 2 archived editions",
       "details": null,
-      "timestamp": "2025-07-29T14:29:04.486856"
+      "timestamp": "2025-07-29T14:29:46.352442"
     },
     {
       "test": "Debug User Info",
       "success": false,
       "message": "Status code: 500",
       "details": "Internal Server Error",
-      "timestamp": "2025-07-29T14:29:04.999003"
+      "timestamp": "2025-07-29T14:29:46.866604"
     },
     {
       "test": "Debug Simple",
       "success": true,
-      "message": "Week: 2025-W30, Contributors: 0, Total Stories: 5",
+      "message": "Week: 2025-W30, Contributors: 1, Total Stories: 5",
       "details": null,
-      "timestamp": "2025-07-29T14:29:05.025156"
+      "timestamp": "2025-07-29T14:29:46.879879"
     },
     {
       "test": "Create Contributor Story",
       "success": false,
-      "message": "Could not login as friend user",
+      "message": "Could not register friend user: {\"detail\":\"Email already registered\"}",
       "details": null,
-      "timestamp": "2025-07-29T14:29:05.301580"
+      "timestamp": "2025-07-29T14:29:47.216929"
     },
     {
       "test": "Debug Edition Logic",
       "success": true,
-      "message": "Week: 2025-W30, Contributors: 0, Current Week Stories: 1",
+      "message": "Week: 2025-W30, Contributors: 1, Current Week Stories: 2",
       "details": null,
-      "timestamp": "2025-07-29T14:29:05.315028"
+      "timestamp": "2025-07-29T14:29:47.231736"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:29:05.327519"
+      "timestamp": "2025-07-29T14:29:47.246132"
     },
     {
       "test": "Weekly Stories Endpoint",
       "success": true,
-      "message": "Retrieved 1 stories for week 2025-W30",
+      "message": "Retrieved 2 stories for week 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:29:05.352685"
+      "timestamp": "2025-07-29T14:29:47.269894"
     },
     {
       "test": "Admin Fix Contributors",
       "success": true,
-      "message": "No friends found to add as contributors",
+      "message": "Successfully fixed contributors! Added 1 friends as contributors.",
       "details": null,
-      "timestamp": "2025-07-29T14:29:05.404518"
+      "timestamp": "2025-07-29T14:29:47.281367"
     },
     {
       "test": "Debug User Info",
       "success": false,
       "message": "Status code: 500",
       "details": "Internal Server Error",
-      "timestamp": "2025-07-29T14:29:05.419069"
+      "timestamp": "2025-07-29T14:29:47.293970"
     },
     {
       "test": "Debug Edition Logic",
       "success": true,
-      "message": "Week: 2025-W30, Contributors: 0, Current Week Stories: 1",
+      "message": "Week: 2025-W30, Contributors: 1, Current Week Stories: 2",
       "details": null,
-      "timestamp": "2025-07-29T14:29:05.432139"
+      "timestamp": "2025-07-29T14:29:47.307121"
     },
     {
       "test": "Current Edition",
       "success": true,
       "message": "Current edition for week: 2025-W30",
       "details": null,
-      "timestamp": "2025-07-29T14:29:05.446009"
+      "timestamp": "2025-07-29T14:29:47.320075"
     }
   ],
   "contributor_bug_investigation": {
@@ -158,13 +158,16 @@
     "simple_debug": {
       "current_week": "2025-W30",
       "your_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
-      "contributors": [],
+      "contributors": [
+        "4bbdbc50-8071-476c-9505-f18d06e3241b"
+      ],
       "search_ids": [
+        "4bbdbc50-8071-476c-9505-f18d06e3241b",
         "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf"
       ],
       "total_stories_in_db": 5,
-      "stories_from_contributors_any_week": 2,
-      "stories_from_contributors_current_week": 1,
+      "stories_from_contributors_any_week": 3,
+      "stories_from_contributors_current_week": 2,
       "all_stories_details": [
         {
           "title": "Local Community Garden Flourishes",
@@ -201,14 +204,23 @@
     "edition_logic": {
       "current_week": "2025-W30",
       "user_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
-      "contributors": [],
+      "contributors": [
+        "4bbdbc50-8071-476c-9505-f18d06e3241b"
+      ],
       "all_contributors": [
+        "4bbdbc50-8071-476c-9505-f18d06e3241b",
         "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf"
       ],
       "existing_edition_exists": true,
-      "existing_edition_story_count": 1,
-      "current_week_stories_found": 1,
+      "existing_edition_story_count": 2,
+      "current_week_stories_found": 2,
       "current_week_stories": [
+        {
+          "title": "Breaking News from Downtown",
+          "author_name": "Mike Reporter",
+          "author_id": "4bbdbc50-8071-476c-9505-f18d06e3241b",
+          "week_of": "2025-W30"
+        },
         {
           "title": "Local Community Garden Flourishes",
           "author_name": "Sarah Johnson",
@@ -216,13 +228,19 @@
           "week_of": "2025-W30"
         }
       ],
-      "total_stories_from_contributors": 2,
+      "total_stories_from_contributors": 3,
       "all_stories": [
         {
           "title": "My Amazing Week in San Francisco",
           "author_name": "Sarah Johnson",
           "author_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
           "week_of": "2025-W28"
+        },
+        {
+          "title": "Breaking News from Downtown",
+          "author_name": "Mike Reporter",
+          "author_id": "4bbdbc50-8071-476c-9505-f18d06e3241b",
+          "week_of": "2025-W30"
         },
         {
           "title": "Local Community Garden Flourishes",
@@ -233,6 +251,17 @@
       ]
     },
     "weekly_stories": [
+      {
+        "id": "91b8d22a-673b-4109-875c-4df98c7012d9",
+        "title": "Breaking News from Downtown",
+        "content": "This week I covered an amazing story about the new art installation downtown. The community came together to celebrate local artists and their incredible work. It was inspiring to see how art can bring people together!",
+        "author_id": "4bbdbc50-8071-476c-9505-f18d06e3241b",
+        "author_name": "Mike Reporter",
+        "created_at": "2025-07-29T12:16:41.802000",
+        "images": [],
+        "is_headline": true,
+        "week_of": "2025-W30"
+      },
       {
         "id": "14d63547-688f-436b-9fc7-8d44624d5c54",
         "title": "Local Community Garden Flourishes",
@@ -253,20 +282,30 @@
       }
     ],
     "admin_fix": {
-      "message": "No friends found to add as contributors"
+      "message": "Successfully fixed contributors! Added 1 friends as contributors.",
+      "friends_added": 1
     },
     "post_fix_user_info": null,
     "post_fix_edition_logic": {
       "current_week": "2025-W30",
       "user_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
-      "contributors": [],
+      "contributors": [
+        "4bbdbc50-8071-476c-9505-f18d06e3241b"
+      ],
       "all_contributors": [
+        "4bbdbc50-8071-476c-9505-f18d06e3241b",
         "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf"
       ],
       "existing_edition_exists": true,
-      "existing_edition_story_count": 1,
-      "current_week_stories_found": 1,
+      "existing_edition_story_count": 2,
+      "current_week_stories_found": 2,
       "current_week_stories": [
+        {
+          "title": "Breaking News from Downtown",
+          "author_name": "Mike Reporter",
+          "author_id": "4bbdbc50-8071-476c-9505-f18d06e3241b",
+          "week_of": "2025-W30"
+        },
         {
           "title": "Local Community Garden Flourishes",
           "author_name": "Sarah Johnson",
@@ -274,13 +313,19 @@
           "week_of": "2025-W30"
         }
       ],
-      "total_stories_from_contributors": 2,
+      "total_stories_from_contributors": 3,
       "all_stories": [
         {
           "title": "My Amazing Week in San Francisco",
           "author_name": "Sarah Johnson",
           "author_id": "278b3d91-7aff-41ac-b4d5-4fdcaab84aaf",
           "week_of": "2025-W28"
+        },
+        {
+          "title": "Breaking News from Downtown",
+          "author_name": "Mike Reporter",
+          "author_id": "4bbdbc50-8071-476c-9505-f18d06e3241b",
+          "week_of": "2025-W30"
         },
         {
           "title": "Local Community Garden Flourishes",
