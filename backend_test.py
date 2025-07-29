@@ -684,7 +684,7 @@ class BackendTester:
 
 if __name__ == "__main__":
     tester = BackendTester()
-    passed, failed, results = tester.run_all_tests()
+    passed, failed, results, investigation = tester.run_all_tests()
     
     # Save detailed results
     with open('/app/backend_test_results.json', 'w') as f:
@@ -694,7 +694,8 @@ if __name__ == "__main__":
                 "failed": failed,
                 "success_rate": passed/(passed+failed)*100 if (passed+failed) > 0 else 0
             },
-            "detailed_results": results
+            "detailed_results": results,
+            "contributor_bug_investigation": investigation
         }, f, indent=2)
     
     print(f"\n📄 Detailed results saved to: /app/backend_test_results.json")
