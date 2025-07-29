@@ -449,8 +449,8 @@ async def get_current_edition(current_user: User = Depends(get_current_user)):
     current_week = get_current_week()
     
     # Generate new edition (always fresh to include new stories)
-    user_data = await db.users.find_one({"id": current_user.id})
-    contributors = user_data.get('contributors', [])
+    user_data = await db.users.find_one({"email": current_user.email})
+    contributors = user_data.get('contributors', []) if user_data else []
     all_contributors = contributors + [current_user.id]
     
     # Get stories for this week
