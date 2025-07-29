@@ -448,7 +448,7 @@ async def get_current_edition(current_user: User = Depends(get_current_user)):
     """Get current week's edition"""
     current_week = get_current_week()
     
-    # Check if edition already exists
+    # Check if edition already exists for current week
     existing_edition = await db.weekly_editions.find_one({
         "user_id": current_user.id,
         "week_of": current_week
@@ -467,6 +467,28 @@ async def get_current_edition(current_user: User = Depends(get_current_user)):
         "author_id": {"$in": all_contributors},
         "week_of": current_week
     }).to_list(100)
+    
+    # If no stories for current week, get the most recent week with stories
+    if not stories:
+        # Find the most recent week that has stories from contributors
+        recent_stories = await db.stories.find({
+            "author_id": {"$in": all_contributors}
+        }).sort("created_at", -1).limit(100).to_list(100)
+        
+        if recent_stories:
+            # Group by week and get the most recent week with content
+            weeks_with_stories = {}
+            for story in recent_stories:
+                week = story.get("week_of")
+                if week not in weeks_with_stories:
+                    weeks_with_stories[week] = []
+                weeks_with_stories[week].append(story)
+            
+            # Get the most recent week
+            if weeks_with_stories:
+                most_recent_week = max(weeks_with_stories.keys())
+                stories = recent_stories
+                current_week = most_recent_week  # Use the week that actually has content
     
     # Create edition
     edition = WeeklyEdition(
