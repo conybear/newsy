@@ -9,7 +9,7 @@ import base64
 import io
 from PIL import Image
 
-BACKEND_URL = "https://cd4ca7cd-5926-4965-9441-a55d5c9a9587.preview.emergentagent.com/api"
+BACKEND_URL = "https://10eeeb36-2949-49e5-b0bf-259584eeb998.preview.emergentagent.com/api"
 
 def test_authentication_edge_cases():
     """Test authentication edge cases"""
