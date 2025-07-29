@@ -268,11 +268,11 @@ async def send_friend_invitation(request: InvitationCreate, current_user: User =
         # If user exists, add as friend immediately
         await db.users.update_one(
             {"id": current_user.id},
-            {"$addToSet": {"friends": existing_user_obj.id}}
+            {"$addToSet": {"friends": existing_user_obj.id, "contributors": existing_user_obj.id}}
         )
         await db.users.update_one(
             {"id": existing_user_obj.id},
-            {"$addToSet": {"friends": current_user.id}}
+            {"$addToSet": {"friends": current_user.id, "contributors": current_user.id}}
         )
         
         return {"message": f"Successfully added {existing_user_obj.full_name} as a friend!"}
