@@ -670,13 +670,17 @@ class BackendTester:
             # Small delay between tests
             time.sleep(0.5)
         
+        # Run the contributor bug investigation
+        print("\n" + "=" * 70)
+        investigation_results = self.investigate_contributor_bug()
+        
         print("=" * 70)
         print(f"📊 TEST SUMMARY")
         print(f"✅ Passed: {passed}")
         print(f"❌ Failed: {failed}")
         print(f"📈 Success Rate: {(passed/(passed+failed)*100):.1f}%")
         
-        return passed, failed, self.test_results
+        return passed, failed, self.test_results, investigation_results
 
 if __name__ == "__main__":
     tester = BackendTester()
