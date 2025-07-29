@@ -491,7 +491,9 @@ async def get_current_edition(current_user: User = Depends(get_current_user)):
                 if weeks_with_stories:
                     most_recent_week = max(weeks_with_stories.keys())
                     stories = weeks_with_stories[most_recent_week]
-                    current_week = most_recent_week  # Use the week that actually has content
+                    # Don't change week for Week 32 - keep it as Week 32 even if empty
+                    if current_week != "2025-W32":
+                        current_week = most_recent_week  # Use the week that actually has content
     
     # Create edition
     edition = WeeklyEdition(
