@@ -545,11 +545,24 @@ class BackendTester:
             login_response = friend_session.post(f"{BACKEND_URL}/auth/login", json=login_data)
             
             if login_response.status_code != 200:
-                self.log_test("Create Contributor Story", False, "Could not login as friend user")
-                return False
-            
-            friend_token = login_response.json()["access_token"]
-            friend_session.headers.update({"Authorization": f"Bearer {friend_token}"})
+                # Try to register the friend first
+                friend_data = {
+                    "email": "mike.reporter@newspaper.com",
+                    "password": "FriendPass456!",
+                    "full_name": "Mike Reporter"
+                }
+                
+                register_response = friend_session.post(f"{BACKEND_URL}/auth/register", json=friend_data)
+                if register_response.status_code == 200:
+                    friend_token = register_response.json()["access_token"]
+                    friend_session.headers.update({"Authorization": f"Bearer {friend_token}"})
+                    self.log_test("Create Contributor Story", True, "Registered and logged in as friend user")
+                else:
+                    self.log_test("Create Contributor Story", False, f"Could not register friend user: {register_response.text}")
+                    return False
+            else:
+                friend_token = login_response.json()["access_token"]
+                friend_session.headers.update({"Authorization": f"Bearer {friend_token}"})
             
             # Create a story as the friend
             story_data = {
