@@ -566,8 +566,8 @@ async def debug_edition_logic(current_user: User = Depends(get_current_user)):
     current_week = get_current_week()
     
     # Get user data
-    user_data = await db.users.find_one({"id": current_user.id})
-    contributors = user_data.get('contributors', [])
+    user_data = await db.users.find_one({"email": current_user.email})
+    contributors = user_data.get('contributors', []) if user_data else []
     all_contributors = contributors + [current_user.id]
     
     # Check for existing edition
