@@ -753,3 +753,28 @@ async def health_check():
         "submissions_open": is_submission_open(),
         "published": is_published()
     }
+
+# Serve React static files (for Docker deployment)
+if ENVIRONMENT == "production" and os.path.exists("../frontend/build"):
+    # Mount static files for React app
+    app.mount("/static", StaticFiles(directory="../frontend/build/static"), name="static")
+    
+    @app.get("/")
+    async def serve_react_app():
+        """Serve React app for root route"""
+        return FileResponse("../frontend/build/index.html")
+    
+    @app.get("/{path:path}")
+    async def serve_react_app_catch_all(path: str):
+        """Catch-all route to serve React app for client-side routing"""
+        # Don't serve React app for API routes
+        if path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API endpoint not found")
+        
+        # Check if file exists in build directory
+        file_path = f"../frontend/build/{path}"
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            return FileResponse(file_path)
+        
+        # Default to index.html for client-side routing
+        return FileResponse("../frontend/build/index.html")
