@@ -1,0 +1,149 @@
+{
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "success_rate": 100.0
+  },
+  "detailed_results": [
+    {
+      "test": "Login Existing User",
+      "success": true,
+      "message": "Logged in as Test User (test@actadiurna.com)",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:00.711720"
+    },
+    {
+      "test": "Create Contributors",
+      "success": true,
+      "message": "New contributor user registered successfully",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:00.999324"
+    },
+    {
+      "test": "Send Invitation",
+      "success": true,
+      "message": "Invitation sent to contributor",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.017722"
+    },
+    {
+      "test": "Add Contributor",
+      "success": true,
+      "message": "No pending invitations (contributor may already be added)",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.288992"
+    },
+    {
+      "test": "Submit User Story",
+      "success": true,
+      "message": "User already submitted story this week (expected)",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.318190"
+    },
+    {
+      "test": "Submit Contributor Story",
+      "success": true,
+      "message": "Contributor story submitted successfully",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.335059"
+    },
+    {
+      "test": "Current Newspaper",
+      "success": true,
+      "message": "Current newspaper generated for 2025-W31 with 1 stories (1 headlines)",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.350143"
+    },
+    {
+      "test": "Story Aggregation",
+      "success": true,
+      "message": "Stories from 1 authors: Test User",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.350191"
+    },
+    {
+      "test": "Only Submitted Stories",
+      "success": true,
+      "message": "All stories in newspaper are submitted",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.350217"
+    },
+    {
+      "test": "Headline Prioritization",
+      "success": true,
+      "message": "Headlines appear before non-headlines",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.350225"
+    },
+    {
+      "test": "Contributor Attribution",
+      "success": true,
+      "message": "Stories from single author: Test User",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.350234"
+    },
+    {
+      "test": "Week Calculation",
+      "success": true,
+      "message": "Week format correct: 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.350241"
+    },
+    {
+      "test": "Newspaper Archive",
+      "success": true,
+      "message": "Retrieved 1 archived newspapers",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.403099"
+    },
+    {
+      "test": "Archive Structure",
+      "success": true,
+      "message": "Archive entries contain all required fields",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.403147"
+    },
+    {
+      "test": "Newspaper Regenerate",
+      "success": true,
+      "message": "Newspaper regenerated successfully with 1 stories",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.418286"
+    },
+    {
+      "test": "Complete Workflow",
+      "success": true,
+      "message": "All workflow steps completed successfully",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.418346"
+    },
+    {
+      "test": "Newspaper by Week",
+      "success": true,
+      "message": "Retrieved newspaper for 2025-W31 with 1 stories",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.483511"
+    },
+    {
+      "test": "Newspaper Archive",
+      "success": true,
+      "message": "Retrieved 1 archived newspapers",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.997169"
+    },
+    {
+      "test": "Archive Structure",
+      "success": true,
+      "message": "Archive entries contain all required fields",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:01.997218"
+    },
+    {
+      "test": "Newspaper Regenerate",
+      "success": true,
+      "message": "Newspaper regenerated successfully with 1 stories",
+      "details": null,
+      "timestamp": "2025-07-30T18:41:02.512154"
+    }
+  ]
+}
