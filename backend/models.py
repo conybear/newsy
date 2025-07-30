@@ -18,6 +18,7 @@ class User(BaseModel):
     full_name: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     is_active: bool = True
+    contributors: List[str] = Field(default_factory=list)  # List of contributor user IDs
 
 class Invitation(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
