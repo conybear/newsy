@@ -583,15 +583,33 @@ async def generate_newspaper(user_id: str, week: str) -> dict:
     """Generate newspaper for a user and week"""
     db = get_database()
     
-    # Get user's contributors from contributors collection
+    # Get user information
     user = await db.users.find_one({"id": user_id})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    # Query contributors collection to get contributor IDs
-    contributor_docs = await db.contributors.find({"user_id": user_id}).to_list(100)
-    contributor_ids = [doc["contributor_id"] for doc in contributor_docs]
-    all_contributors = contributor_ids + [user_id]  # Include user's own stories
+    # Get contributors using the proper bidirectional relationship
+    # Contributors are people who have added THIS user as their contributor
+    # OR people that THIS user has added as contributors
+    contributor_docs = await db.contributors.find({
+        "$or": [
+            {"user_id": user_id},  # People user has added as contributors
+            {"contributor_id": user_id}  # People who have added user as contributor (reverse lookup)
+        ]
+    }).to_list(100)
+    
+    # Extract unique contributor IDs
+    contributor_ids = set()
+    for doc in contributor_docs:
+        if doc["user_id"] == user_id:
+            # User added this person as contributor
+            contributor_ids.add(doc["contributor_id"])
+        else:
+            # This person added user as contributor, so include their stories
+            contributor_ids.add(doc["user_id"])
+    
+    # Always include the user's own stories
+    all_contributors = list(contributor_ids) + [user_id]
     
     # Get all stories from contributors for this week
     stories = await db.stories.find({
