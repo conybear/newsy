@@ -2,6 +2,8 @@ import os
 from fastapi import FastAPI, HTTPException, Depends, status, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from starlette.responses import FileResponse
 from contextlib import asynccontextmanager
 import base64
 from typing import List
@@ -31,11 +33,8 @@ app = FastAPI(
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 
 if ENVIRONMENT == "production":
-    # Production CORS - restrict to specific origins
-    allowed_origins = [
-        "https://acta-diurna-frontend.onrender.com",
-        "https://acta-diurna.onrender.com"
-    ]
+    # Production CORS - allow same origin
+    allowed_origins = ["*"]  # Allow all for Docker single-container deployment
 else:
     # Development CORS - allow all origins
     allowed_origins = ["*"]
