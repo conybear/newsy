@@ -6,7 +6,7 @@ Verification test using exact credentials from review request
 import requests
 import json
 
-BACKEND_URL = "https://10eeeb36-2949-49e5-b0bf-259584eeb998.preview.emergentagent.com/api"
+BACKEND_URL = "https://464d35f9-1da6-4f46-92d7-fc7b50272fb2.preview.emergentagent.com/api"
 
 def test_with_exact_credentials():
     """Test with exact credentials from review request"""

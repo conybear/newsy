@@ -5,7 +5,7 @@ Welcome to **Weekly Chronicles**, your social newspaper network! This guide will
 ## 🚀 Getting Started
 
 ### 1. Create Your Account
-- Visit: https://10eeeb36-2949-49e5-b0bf-259584eeb998.preview.emergentagent.com
+- Visit: https://464d35f9-1da6-4f46-92d7-fc7b50272fb2.preview.emergentagent.com
 - Click "Don't have an account? Sign up"
 - Enter your **email**, **password**, and **full name**
 - Click "Sign up" - you'll be automatically logged in!
