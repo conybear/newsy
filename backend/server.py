@@ -181,15 +181,15 @@ async def add_contributor(data: dict, current_user: User = Depends(get_current_u
     if not invitation_id:
         raise HTTPException(status_code=400, detail="Invitation ID is required")
     
-    # Find accepted invitation
+    # Find pending invitation that user can accept
     invitation = await db.invitations.find_one({
         "id": invitation_id,
         "to_email": current_user.email,
-        "status": "accepted"
+        "status": "pending"
     })
     
     if not invitation:
-        raise HTTPException(status_code=404, detail="Invitation not found")
+        raise HTTPException(status_code=404, detail="Invitation not found or already processed")
     
     # Get the person who invited us
     inviter = await db.users.find_one({"id": invitation["from_user_id"]})
