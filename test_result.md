@@ -441,12 +441,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Story Status API"
-    - "Draft Management System"
-    - "Story Submission API"
-    - "My Stories API"
-    - "Image Upload System"
-    - "Business Rules Validation"
+    - "Phase 3 Newspaper Generation System"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
