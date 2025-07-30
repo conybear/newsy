@@ -1,0 +1,143 @@
+{
+  "critical_fixes_working": false,
+  "detailed_results": [
+    {
+      "test": "Setup User A",
+      "success": true,
+      "message": "Logged in as test@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:41.906264"
+    },
+    {
+      "test": "Setup User B",
+      "success": true,
+      "message": "Logged in as contributor@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.174195"
+    },
+    {
+      "test": "Get User Info",
+      "success": true,
+      "message": "User A ID: 90911490-f6ac-4dcc-bacf-1317a5ed1cdc, User B ID: 3927b54e-e5a5-4ce2-ae44-1db9194fdd04",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.209824"
+    },
+    {
+      "test": "Get Current Week",
+      "success": true,
+      "message": "Current week: 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.260352"
+    },
+    {
+      "test": "Send Invitation A->B",
+      "success": true,
+      "message": "Invitation already exists (expected)",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.277871"
+    },
+    {
+      "test": "Send Invitation B->A",
+      "success": true,
+      "message": "User B sent invitation to test@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.295357"
+    },
+    {
+      "test": "Check Received Invitations A",
+      "success": true,
+      "message": "User A found 0 invitations",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.321692"
+    },
+    {
+      "test": "Check Received Invitations B",
+      "success": true,
+      "message": "User B found 0 invitations",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.321740"
+    },
+    {
+      "test": "User A Contributors Check",
+      "success": false,
+      "message": "User A does NOT show User B as contributor. Contributors: []",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.335114"
+    },
+    {
+      "test": "User B Contributors Check",
+      "success": false,
+      "message": "User B does NOT show User A as contributor. Contributors: []",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.388339"
+    },
+    {
+      "test": "Bidirectional Relationship Verification",
+      "success": false,
+      "message": "BIDIRECTIONAL RELATIONSHIP NOT IMPLEMENTED - relationships are not bidirectional",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.388381"
+    },
+    {
+      "test": "Weekly Stories Endpoint A",
+      "success": true,
+      "message": "User A sees 4 stories for 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.407320"
+    },
+    {
+      "test": "Weekly Stories Endpoint B",
+      "success": true,
+      "message": "User B sees 1 stories for 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.421170"
+    },
+    {
+      "test": "User A Story Submission",
+      "success": true,
+      "message": "User A already submitted story this week (expected)",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.437120"
+    },
+    {
+      "test": "User B Story Submission",
+      "success": true,
+      "message": "User B already submitted story this week (expected)",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.449606"
+    },
+    {
+      "test": "User A Newspaper Generation",
+      "success": true,
+      "message": "User A's newspaper contains 1 stories",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.462404"
+    },
+    {
+      "test": "User A Includes User B Stories",
+      "success": false,
+      "message": "User A's newspaper does NOT include User B's story",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.462445"
+    },
+    {
+      "test": "User B Newspaper Generation",
+      "success": true,
+      "message": "User B's newspaper contains 1 stories",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.474477"
+    },
+    {
+      "test": "User B Includes User A Stories",
+      "success": false,
+      "message": "User B's newspaper does NOT include User A's story",
+      "details": null,
+      "timestamp": "2025-07-30T19:47:42.474524"
+    }
+  ],
+  "summary": {
+    "total_tests": 19,
+    "passed_tests": 14,
+    "success_rate": 73.68421052631578
+  }
+}
