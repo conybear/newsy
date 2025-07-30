@@ -583,13 +583,15 @@ async def generate_newspaper(user_id: str, week: str) -> dict:
     """Generate newspaper for a user and week"""
     db = get_database()
     
-    # Get user's contributors
+    # Get user's contributors from contributors collection
     user = await db.users.find_one({"id": user_id})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    contributors = user.get("contributors", [])
-    all_contributors = contributors + [user_id]  # Include user's own stories
+    # Query contributors collection to get contributor IDs
+    contributor_docs = await db.contributors.find({"user_id": user_id}).to_list(100)
+    contributor_ids = [doc["contributor_id"] for doc in contributor_docs]
+    all_contributors = contributor_ids + [user_id]  # Include user's own stories
     
     # Get all stories from contributors for this week
     stories = await db.stories.find({
