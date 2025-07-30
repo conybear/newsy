@@ -1,9 +1,9 @@
 {
   "success": false,
-  "total_tests": 40,
-  "passed_tests": 36,
+  "total_tests": 36,
+  "passed_tests": 32,
   "failed_tests": 4,
-  "success_rate": 90.0,
+  "success_rate": 88.88888888888889,
   "criteria_results": [
     [
       "Multiple users registration & authentication",
@@ -33,7 +33,7 @@
   "newspaper_results": {
     "main_user": {
       "current_newspaper": {
-        "id": "716d6f18-a6fa-4fff-b4c7-2c0bd050ce48",
+        "id": "6aa89546-836c-4f34-bc29-b1b954a1eb67",
         "user_id": "45ad9880-8c41-4669-8a90-63a477088fb1",
         "week_of": "2025-W31",
         "title": "Acta Diurna - Week 2025-W31",
@@ -52,10 +52,10 @@
             "submitted_at": "2025-07-30T18:52:04.026000"
           }
         ],
-        "published_at": "2025-07-30T18:52:05.062667"
+        "published_at": "2025-07-30T18:52:05.195000"
       },
       "week_newspaper": {
-        "id": "716d6f18-a6fa-4fff-b4c7-2c0bd050ce48",
+        "id": "6aa89546-836c-4f34-bc29-b1b954a1eb67",
         "user_id": "45ad9880-8c41-4669-8a90-63a477088fb1",
         "week_of": "2025-W31",
         "title": "Acta Diurna - Week 2025-W31",
@@ -74,7 +74,7 @@
             "submitted_at": "2025-07-30T18:52:04.026000"
           }
         ],
-        "published_at": "2025-07-30T18:52:05.062000"
+        "published_at": "2025-07-30T18:52:05.195000"
       },
       "total_stories": 1,
       "user_stories": 1,
@@ -82,7 +82,7 @@
     },
     "contributor1": {
       "current_newspaper": {
-        "id": "361eff0b-063d-494b-8566-04d81ca9a901",
+        "id": "7b27c8e4-67df-441a-a13d-a4897e0c4094",
         "user_id": "aa9562dd-0a14-4381-a5eb-3166a803db07",
         "week_of": "2025-W31",
         "title": "Acta Diurna - Week 2025-W31",
@@ -101,10 +101,10 @@
             "submitted_at": "2025-07-30T18:52:04.912000"
           }
         ],
-        "published_at": "2025-07-30T18:52:05.090228"
+        "published_at": "2025-07-30T18:52:05.222000"
       },
       "week_newspaper": {
-        "id": "361eff0b-063d-494b-8566-04d81ca9a901",
+        "id": "7b27c8e4-67df-441a-a13d-a4897e0c4094",
         "user_id": "aa9562dd-0a14-4381-a5eb-3166a803db07",
         "week_of": "2025-W31",
         "title": "Acta Diurna - Week 2025-W31",
@@ -123,7 +123,7 @@
             "submitted_at": "2025-07-30T18:52:04.912000"
           }
         ],
-        "published_at": "2025-07-30T18:52:05.090000"
+        "published_at": "2025-07-30T18:52:05.222000"
       },
       "total_stories": 1,
       "user_stories": 1,
@@ -131,7 +131,7 @@
     },
     "contributor2": {
       "current_newspaper": {
-        "id": "9720dc69-32d3-4eab-b1ac-302c780c06a4",
+        "id": "cea740d7-1a36-49d9-839e-07e833953b71",
         "user_id": "32c4a5c5-d20a-4598-8962-be0abffba7a8",
         "week_of": "2025-W31",
         "title": "Acta Diurna - Week 2025-W31",
@@ -150,10 +150,10 @@
             "submitted_at": "2025-07-30T18:52:04.993000"
           }
         ],
-        "published_at": "2025-07-30T18:52:05.159068"
+        "published_at": "2025-07-30T18:52:05.288000"
       },
       "week_newspaper": {
-        "id": "9720dc69-32d3-4eab-b1ac-302c780c06a4",
+        "id": "cea740d7-1a36-49d9-839e-07e833953b71",
         "user_id": "32c4a5c5-d20a-4598-8962-be0abffba7a8",
         "week_of": "2025-W31",
         "title": "Acta Diurna - Week 2025-W31",
@@ -172,7 +172,7 @@
             "submitted_at": "2025-07-30T18:52:04.993000"
           }
         ],
-        "published_at": "2025-07-30T18:52:05.159000"
+        "published_at": "2025-07-30T18:52:05.288000"
       },
       "total_stories": 1,
       "user_stories": 1,
@@ -185,280 +185,252 @@
       "success": true,
       "message": "Status: healthy, Week: 2025-W31",
       "details": null,
-      "timestamp": "2025-07-30T18:52:02.919628"
+      "timestamp": "2025-07-30T19:45:17.291052"
     },
     {
-      "test": "User Registration - main_user",
+      "test": "User Login - main_user",
       "success": true,
-      "message": "Registered alice.editor@actadiurna.com",
+      "message": "Logged in as alice.editor@actadiurna.com",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.225770"
+      "timestamp": "2025-07-30T19:45:17.554095"
     },
     {
-      "test": "User Registration - contributor1",
+      "test": "User Login - contributor1",
       "success": true,
-      "message": "Registered bob.writer@actadiurna.com",
+      "message": "Logged in as bob.writer@actadiurna.com",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.508378"
+      "timestamp": "2025-07-30T19:45:17.808041"
     },
     {
-      "test": "User Registration - contributor2",
+      "test": "User Login - contributor2",
       "success": true,
-      "message": "Registered carol.reporter@actadiurna.com",
+      "message": "Logged in as carol.reporter@actadiurna.com",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.776918"
+      "timestamp": "2025-07-30T19:45:18.065029"
     },
     {
       "test": "Send Invitation - main_user to contributor1",
       "success": true,
-      "message": "Invitation sent to bob.writer@actadiurna.com",
+      "message": "Already invited (expected)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.789147"
-    },
-    {
-      "test": "Received Invitations - contributor1",
-      "success": true,
-      "message": "Found 0 invitations",
-      "details": null,
-      "timestamp": "2025-07-30T18:52:03.803922"
+      "timestamp": "2025-07-30T19:45:18.120631"
     },
     {
       "test": "Send Invitation - main_user to contributor2",
       "success": true,
-      "message": "Invitation sent to carol.reporter@actadiurna.com",
+      "message": "Already invited (expected)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.820608"
-    },
-    {
-      "test": "Received Invitations - contributor2",
-      "success": true,
-      "message": "Found 0 invitations",
-      "details": null,
-      "timestamp": "2025-07-30T18:52:03.831504"
+      "timestamp": "2025-07-30T19:45:18.133603"
     },
     {
       "test": "Send Invitation - contributor1 to main_user",
       "success": true,
-      "message": "Invitation sent to alice.editor@actadiurna.com",
+      "message": "Already invited (expected)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.885357"
-    },
-    {
-      "test": "Received Invitations - main_user",
-      "success": true,
-      "message": "Found 0 invitations",
-      "details": null,
-      "timestamp": "2025-07-30T18:52:03.896931"
+      "timestamp": "2025-07-30T19:45:18.147107"
     },
     {
       "test": "Send Invitation - contributor2 to main_user",
       "success": true,
-      "message": "Invitation sent to alice.editor@actadiurna.com",
+      "message": "Already invited (expected)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.909247"
-    },
-    {
-      "test": "Received Invitations - main_user",
-      "success": true,
-      "message": "Found 0 invitations",
-      "details": null,
-      "timestamp": "2025-07-30T18:52:03.919558"
+      "timestamp": "2025-07-30T19:45:18.163142"
     },
     {
       "test": "Find Invitation - main_user from contributor1",
       "success": false,
       "message": "No matching invitation found",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.971573"
+      "timestamp": "2025-07-30T19:45:18.216918"
     },
     {
       "test": "Find Invitation - main_user from contributor2",
       "success": false,
       "message": "No matching invitation found",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.982684"
+      "timestamp": "2025-07-30T19:45:18.228430"
     },
     {
       "test": "Find Invitation - contributor1 from main_user",
       "success": false,
       "message": "No matching invitation found",
       "details": null,
-      "timestamp": "2025-07-30T18:52:03.993266"
+      "timestamp": "2025-07-30T19:45:18.240820"
     },
     {
       "test": "Find Invitation - contributor2 from main_user",
       "success": false,
       "message": "No matching invitation found",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.006075"
+      "timestamp": "2025-07-30T19:45:18.249373"
     },
     {
       "test": "Create Draft - main_user",
       "success": true,
       "message": "Draft saved: Community Garden Success",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.017717"
+      "timestamp": "2025-07-30T19:45:18.262025"
     },
     {
       "test": "Submit Story - main_user",
       "success": true,
-      "message": "Story submitted: Community Garden Success",
+      "message": "Already submitted this week (expected)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.030967"
+      "timestamp": "2025-07-30T19:45:18.315685"
     },
     {
       "test": "Image Upload - main_user",
       "success": true,
-      "message": "Cannot modify submitted story (expected)",
+      "message": "Image uploaded: 60523f98-2fd5-4503-9857-e3a5f6be4575",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.069368"
+      "timestamp": "2025-07-30T19:45:18.365852"
     },
     {
       "test": "Create Draft - contributor1",
       "success": true,
       "message": "Draft saved: Tech Innovation in Education",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.904137"
+      "timestamp": "2025-07-30T19:45:18.379626"
     },
     {
       "test": "Submit Story - contributor1",
       "success": true,
-      "message": "Story submitted: Tech Innovation in Education",
+      "message": "Already submitted this week (expected)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.957696"
+      "timestamp": "2025-07-30T19:45:18.392563"
     },
     {
       "test": "Image Upload - contributor1",
       "success": true,
-      "message": "Cannot modify submitted story (expected)",
+      "message": "Image uploaded: 0186fc4a-c899-45fc-84ea-1fbdac76029a",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.970538"
+      "timestamp": "2025-07-30T19:45:18.447605"
     },
     {
       "test": "Create Draft - contributor2",
       "success": true,
       "message": "Draft saved: Environmental Conservation Efforts",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.981420"
+      "timestamp": "2025-07-30T19:45:18.458473"
     },
     {
       "test": "Submit Story - contributor2",
       "success": true,
-      "message": "Story submitted: Environmental Conservation Efforts",
+      "message": "Already submitted this week (expected)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:04.996813"
+      "timestamp": "2025-07-30T19:45:18.469023"
     },
     {
       "test": "Image Upload - contributor2",
       "success": true,
-      "message": "Cannot modify submitted story (expected)",
+      "message": "Image uploaded: ef8662da-8801-4c7a-8aec-49c662b0b214",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.053252"
+      "timestamp": "2025-07-30T19:45:18.522744"
     },
     {
       "test": "Current Newspaper - main_user",
       "success": true,
       "message": "Generated newspaper with 1 total stories (1 own, 0 from contributors)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.067184"
+      "timestamp": "2025-07-30T19:45:18.535298"
     },
     {
       "test": "Week Newspaper - main_user",
       "success": true,
       "message": "Retrieved newspaper for week 2025-W31",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.081589"
+      "timestamp": "2025-07-30T19:45:18.587517"
     },
     {
       "test": "Current Newspaper - contributor1",
       "success": true,
       "message": "Generated newspaper with 1 total stories (1 own, 0 from contributors)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.094725"
+      "timestamp": "2025-07-30T19:45:18.599969"
     },
     {
       "test": "Week Newspaper - contributor1",
       "success": true,
       "message": "Retrieved newspaper for week 2025-W31",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.148796"
+      "timestamp": "2025-07-30T19:45:18.611341"
     },
     {
       "test": "Current Newspaper - contributor2",
       "success": true,
       "message": "Generated newspaper with 1 total stories (1 own, 0 from contributors)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.162904"
+      "timestamp": "2025-07-30T19:45:18.622091"
     },
     {
       "test": "Week Newspaper - contributor2",
       "success": true,
       "message": "Retrieved newspaper for week 2025-W31",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.172418"
+      "timestamp": "2025-07-30T19:45:18.634116"
     },
     {
       "test": "Archive System - main_user",
       "success": true,
       "message": "Retrieved 1 archived newspapers",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.183697"
+      "timestamp": "2025-07-30T19:45:18.686535"
     },
     {
       "test": "Newspaper Regeneration - main_user",
       "success": true,
       "message": "Successfully regenerated current newspaper",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.199783"
+      "timestamp": "2025-07-30T19:45:18.703332"
     },
     {
       "test": "Archive System - contributor1",
       "success": true,
       "message": "Retrieved 1 archived newspapers",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.210520"
+      "timestamp": "2025-07-30T19:45:18.715511"
     },
     {
       "test": "Newspaper Regeneration - contributor1",
       "success": true,
       "message": "Successfully regenerated current newspaper",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.268167"
+      "timestamp": "2025-07-30T19:45:18.731062"
     },
     {
       "test": "Archive System - contributor2",
       "success": true,
       "message": "Retrieved 1 archived newspapers",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.278734"
+      "timestamp": "2025-07-30T19:45:18.740642"
     },
     {
       "test": "Newspaper Regeneration - contributor2",
       "success": true,
       "message": "Successfully regenerated current newspaper",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.292113"
+      "timestamp": "2025-07-30T19:45:18.753467"
     },
     {
       "test": "Flipbook Data Structure",
       "success": true,
       "message": "Valid structure: 1 stories (1 headlines, 0 regular)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.303319"
+      "timestamp": "2025-07-30T19:45:18.809112"
     },
     {
       "test": "Flipbook Data Structure",
       "success": true,
       "message": "Valid structure: 1 stories (1 headlines, 0 regular)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.317633"
+      "timestamp": "2025-07-30T19:45:18.821397"
     },
     {
       "test": "Flipbook Data Structure",
       "success": true,
       "message": "Valid structure: 1 stories (1 headlines, 0 regular)",
       "details": null,
-      "timestamp": "2025-07-30T18:52:05.327200"
+      "timestamp": "2025-07-30T19:45:18.871589"
     }
   ]
 }
