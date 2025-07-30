@@ -1,0 +1,115 @@
+{
+  "summary": {
+    "passed": 10,
+    "failed": 1,
+    "success_rate": 90.9090909090909
+  },
+  "detailed_results": [
+    {
+      "test": "Health Check",
+      "success": true,
+      "message": "Status: healthy, Week: 2025-W31, Submissions Open: True",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:18.560242"
+    },
+    {
+      "test": "User Authentication",
+      "success": true,
+      "message": "Login successful with test credentials",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:19.337201"
+    },
+    {
+      "test": "Story Status",
+      "success": true,
+      "message": "Week: 2025-W31, Submitted: False, Draft: False, Open: True",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:19.854419"
+    },
+    {
+      "test": "Save Draft",
+      "success": true,
+      "message": "Draft saved successfully: Draft saved",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:20.368522"
+    },
+    {
+      "test": "Get Draft",
+      "success": true,
+      "message": "Draft retrieved - Has content: True, Title: 'My Amazing Week in San Francis...'",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:20.881365"
+    },
+    {
+      "test": "Draft Auto-Save",
+      "success": true,
+      "message": "Draft successfully updated (auto-save working)",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:22.418222"
+    },
+    {
+      "test": "Draft Auto-Save Verification",
+      "success": true,
+      "message": "Updated draft content verified",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:22.433225"
+    },
+    {
+      "test": "Story Submission",
+      "success": true,
+      "message": "Story submitted successfully: Story submitted successfully",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:22.951486"
+    },
+    {
+      "test": "My Stories",
+      "success": true,
+      "message": "Retrieved 1 stories",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:23.464635"
+    },
+    {
+      "test": "My Stories Structure",
+      "success": true,
+      "message": "Story structure is valid",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:23.464677"
+    },
+    {
+      "test": "Required Fields Validation",
+      "success": true,
+      "message": "Empty fields properly rejected",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:23.976308"
+    },
+    {
+      "test": "One Story Per Week Limit",
+      "success": true,
+      "message": "Duplicate submission properly rejected",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:23.987649"
+    },
+    {
+      "test": "Image Upload - Valid",
+      "success": false,
+      "message": "Status code: 400",
+      "details": "{\"detail\":\"Cannot modify submitted story\"}",
+      "timestamp": "2025-07-30T18:28:24.533641"
+    },
+    {
+      "test": "Deadline Enforcement",
+      "success": true,
+      "message": "Submissions Open: True, Deadline: Monday 11:59 PM EST",
+      "details": null,
+      "timestamp": "2025-07-30T18:28:25.046086"
+    }
+  ],
+  "test_focus": "Acta Diurna Phase 2 Story Editor Functionality",
+  "endpoints_tested": [
+    "/api/stories/status",
+    "/api/stories/draft (GET & POST)",
+    "/api/stories/submit",
+    "/api/stories/my",
+    "/api/stories/{story_id}/images"
+  ]
+}
