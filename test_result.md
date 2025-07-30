@@ -423,14 +423,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "User Authentication System"
-    - "Story Management APIs"
-    - "Friend Management System"
-    - "Weekly Edition Generation"
-    - "Authentication System"
-    - "Flipbook Newspaper Interface"
+    - "Story Status API"
+    - "Draft Management System"
+    - "Story Submission API"
+    - "My Stories API"
+    - "Image Upload System"
+    - "Business Rules Validation"
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
