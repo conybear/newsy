@@ -1,0 +1,43 @@
+# Docker ignore file for Acta Diurna
+
+# Node modules (will be installed in Docker)
+frontend/node_modules
+frontend/.env.local
+frontend/.env.development
+
+# Python cache and virtual environments  
+backend/__pycache__
+backend/.env
+backend/venv
+backend/.venv
+
+# Git and development files
+.git
+.gitignore
+*.md
+!README.md
+!DOCKER_DEPLOYMENT.md
+
+# Test files and logs
+*.log
+*.test.py
+test_*.py
+*_test.py
+tests/
+*.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+build/
+dist/
