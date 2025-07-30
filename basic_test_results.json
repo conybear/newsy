@@ -1,0 +1,58 @@
+{
+  "summary": {
+    "passed": 6,
+    "failed": 1,
+    "success_rate": 85.71428571428571
+  },
+  "detailed_results": [
+    {
+      "test": "Health Check",
+      "success": true,
+      "message": "Status: healthy, Current Week: 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T17:36:31.574592"
+    },
+    {
+      "test": "User Registration",
+      "success": true,
+      "message": "User registered successfully: Test User (test@actadiurna.com)",
+      "details": null,
+      "timestamp": "2025-07-30T17:36:32.372279"
+    },
+    {
+      "test": "User Login",
+      "success": true,
+      "message": "Login successful: Test User (test@actadiurna.com)",
+      "details": null,
+      "timestamp": "2025-07-30T17:36:33.116294"
+    },
+    {
+      "test": "Get Current User Info",
+      "success": true,
+      "message": "User info retrieved: Test User (test@actadiurna.com) - ID: 90911490-f6ac-4dcc-bacf-1317a5ed1cdc",
+      "details": null,
+      "timestamp": "2025-07-30T17:36:33.629351"
+    },
+    {
+      "test": "Send Invitation",
+      "success": true,
+      "message": "Invitation sent to friend@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T17:36:34.156681"
+    },
+    {
+      "test": "Get Sent Invitations",
+      "success": false,
+      "message": "Status code: 500",
+      "details": "Internal Server Error",
+      "timestamp": "2025-07-30T17:36:34.669198"
+    },
+    {
+      "test": "Get Received Invitations",
+      "success": true,
+      "message": "Retrieved 0 received invitations",
+      "details": null,
+      "timestamp": "2025-07-30T17:36:35.181027"
+    }
+  ]
+}
