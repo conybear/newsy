@@ -1,0 +1,144 @@
+{
+  "fix_status": "FAILED",
+  "passed": 3,
+  "failed": 4,
+  "critical_failures": [
+    "Bidirectional Relationships",
+    "Newspaper Generation with Contributors"
+  ],
+  "test_results": [
+    {
+      "test": "User A Login",
+      "success": true,
+      "message": "Logged in as test@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:51.193834"
+    },
+    {
+      "test": "User B Registration",
+      "success": true,
+      "message": "Registered contributor@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:51.515648"
+    },
+    {
+      "test": "User Info Retrieval",
+      "success": true,
+      "message": "User A: Test User, User B: Test User B",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:51.541095"
+    },
+    {
+      "test": "Send Invitation",
+      "success": true,
+      "message": "User A invited User B (contributor@actadiurna.com)",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:52.560915"
+    },
+    {
+      "test": "Received Invitations",
+      "success": false,
+      "message": "User B did not find invitation from User A",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:52.572967"
+    },
+    {
+      "test": "User A Contributors",
+      "success": false,
+      "message": "User A does NOT show User B as contributor. Contributors: []",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:53.591889"
+    },
+    {
+      "test": "User B Contributors",
+      "success": false,
+      "message": "User B does NOT show User A as contributor. Contributors: []",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:53.644863"
+    },
+    {
+      "test": "Bidirectional Relationship Fix",
+      "success": false,
+      "message": "\u274c BIDIRECTIONAL FIX FAILED: Relationship is not bidirectional",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:53.644903"
+    },
+    {
+      "test": "User A Story Submission",
+      "success": true,
+      "message": "User A already submitted story this week",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:54.713590"
+    },
+    {
+      "test": "User B Story Submission",
+      "success": true,
+      "message": "User B submitted story successfully",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:54.731209"
+    },
+    {
+      "test": "User A Newspaper Generation",
+      "success": true,
+      "message": "Generated newspaper with 1 stories",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:55.752018"
+    },
+    {
+      "test": "User A Contributor Stories",
+      "success": false,
+      "message": "\u274c User A's newspaper only includes User A's story, missing User B's story",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:55.752061"
+    },
+    {
+      "test": "User B Newspaper Generation",
+      "success": true,
+      "message": "Generated newspaper with 1 stories",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:55.774979"
+    },
+    {
+      "test": "User B Contributor Stories",
+      "success": false,
+      "message": "\u274c User B's newspaper only includes User B's story, missing User A's story",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:55.775027"
+    },
+    {
+      "test": "Bidirectional Newspaper Fix",
+      "success": false,
+      "message": "\u274c BIDIRECTIONAL NEWSPAPER FIX FAILED: Stories not appearing bidirectionally",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:55.775037"
+    },
+    {
+      "test": "User A Weekly Stories",
+      "success": false,
+      "message": "Status: 404",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:56.792296"
+    },
+    {
+      "test": "User B Weekly Stories",
+      "success": false,
+      "message": "Status: 404",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:56.802275"
+    },
+    {
+      "test": "User A Archive",
+      "success": true,
+      "message": "Retrieved 1 archived newspapers",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:57.814541"
+    },
+    {
+      "test": "User B Archive",
+      "success": true,
+      "message": "Retrieved 1 archived newspapers",
+      "details": null,
+      "timestamp": "2025-07-30T19:02:57.825651"
+    }
+  ]
+}
