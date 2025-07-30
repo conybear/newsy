@@ -546,7 +546,14 @@ async def get_weekly_stories(week: str, current_user: User = Depends(get_current
         "is_submitted": True
     }).to_list(100)
     
-    return stories
+    # Clean up ObjectIds for JSON serialization
+    clean_stories = []
+    for story in stories:
+        if "_id" in story:
+            del story["_id"]
+        clean_stories.append(story)
+    
+    return clean_stories
 
 # ===== NEWSPAPER GENERATION ENDPOINTS =====
 
