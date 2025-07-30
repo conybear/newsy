@@ -282,7 +282,7 @@ backend:
     file: "server.py"
     stuck_count: 1
     priority: "critical"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -290,6 +290,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "🗞️ COMPREHENSIVE TESTING COMPLETED: All newspaper generation endpoints are functional (/api/newspapers/current, /api/newspapers/week/{week}, /api/newspapers/archive, /api/newspapers/regenerate). Fixed critical bug in generate_newspaper() function - changed from user.get('contributors', []) to querying contributors collection. ARCHITECTURAL ISSUE IDENTIFIED: Contributor relationship direction is backwards. When users accept invitations, they add the inviter as their contributor, but newspaper generation looks for the user's contributors. This prevents contributor stories from appearing in newspapers. All core endpoints work, but contributor story aggregation fails due to relationship direction. SOLUTION NEEDED: Reverse invitation acceptance logic OR modify newspaper generation to find users who have current user as contributor."
+      - working: "NA"
+        agent: "main"
+        comment: "BIDIRECTIONAL CONTRIBUTOR RELATIONSHIP FIX IMPLEMENTED: Modified server.py to ensure User objects correctly reflect bidirectional friend/contributor relationships. When User A adds User B as friend/contributor, both User A's record shows User B AND User B's record shows User A. This should resolve contributor story aggregation issues in newspaper generation. Backend restarted successfully. Ready for comprehensive testing to verify the fix works."
 
 frontend:
   - task: "Authentication System"
