@@ -1,9 +1,9 @@
 {
   "summary": {
-    "passed": 2,
-    "failed": 4,
-    "success_rate": 33.33333333333333,
-    "phase3_status": "NOT_FUNCTIONAL"
+    "passed": 4,
+    "failed": 2,
+    "success_rate": 66.66666666666666,
+    "phase3_status": "PARTIALLY_FUNCTIONAL"
   },
   "detailed_results": [
     {
@@ -11,100 +11,137 @@
       "success": true,
       "message": "Logged in as test@actadiurna.com",
       "details": null,
-      "timestamp": "2025-07-30T19:53:38.945352"
+      "timestamp": "2025-07-30T19:55:44.631520"
     },
     {
       "test": "User B Login",
       "success": true,
       "message": "Logged in as contributor@actadiurna.com",
       "details": null,
-      "timestamp": "2025-07-30T19:53:39.205975"
+      "timestamp": "2025-07-30T19:55:44.890662"
     },
     {
       "test": "User Data Retrieval",
       "success": true,
       "message": "User A ID: 90911490-f6ac-4dcc-bacf-1317a5ed1cdc, User B ID: 3927b54e-e5a5-4ce2-ae44-1db9194fdd04",
       "details": null,
-      "timestamp": "2025-07-30T19:53:39.275977"
+      "timestamp": "2025-07-30T19:55:44.915148"
     },
     {
       "test": "User Model Contributors Field",
       "success": true,
-      "message": "User A has 0 contributors, User B has 0 contributors",
+      "message": "User A has 1 contributors, User B has 1 contributors",
       "details": null,
-      "timestamp": "2025-07-30T19:53:39.344025"
+      "timestamp": "2025-07-30T19:55:44.943198"
     },
     {
       "test": "Send Invitation",
       "success": false,
       "message": "Status: 400, Response: {\"detail\":\"Already invited this email\"}",
       "details": null,
-      "timestamp": "2025-07-30T19:53:40.357282"
+      "timestamp": "2025-07-30T19:55:45.956121"
     },
     {
       "test": "Contributor Listing",
       "success": true,
-      "message": "\u2705 Format compatible - User A: 0 contributors, User B: 0 contributors",
+      "message": "\u2705 Format compatible - User A: 1 contributors, User B: 1 contributors",
       "details": null,
-      "timestamp": "2025-07-30T19:53:41.386657"
+      "timestamp": "2025-07-30T19:55:46.990994"
     },
     {
       "test": "Get Current Week",
       "success": true,
       "message": "Current week: 2025-W31",
       "details": null,
-      "timestamp": "2025-07-30T19:53:42.410140"
+      "timestamp": "2025-07-30T19:55:48.004730"
     },
     {
       "test": "User A Story Submission",
       "success": true,
       "message": "User A already has story for this week",
       "details": null,
-      "timestamp": "2025-07-30T19:53:42.423262"
+      "timestamp": "2025-07-30T19:55:48.058985"
     },
     {
       "test": "User B Story Submission",
       "success": true,
       "message": "User B already has story for this week",
       "details": null,
-      "timestamp": "2025-07-30T19:53:42.437433"
+      "timestamp": "2025-07-30T19:55:48.071242"
     },
     {
       "test": "Weekly Stories Aggregation",
-      "success": false,
-      "message": "\u274c AGGREGATION BROKEN - A sees: 1 (A:1, B:0), B sees: 1 (A:0, B:1)",
+      "success": true,
+      "message": "\u2705 BIDIRECTIONAL AGGREGATION WORKING - Both users see both stories",
       "details": null,
-      "timestamp": "2025-07-30T19:53:44.468348"
+      "timestamp": "2025-07-30T19:55:50.099734"
     },
     {
       "test": "Newspaper Generation",
       "success": false,
       "message": "\u274c CONTRIBUTOR STORIES MISSING - A's newspaper: 1 stories (A:1, B:0), B's newspaper: 1 stories (A:0, B:1)",
       "details": null,
-      "timestamp": "2025-07-30T19:53:45.534835"
+      "timestamp": "2025-07-30T19:55:51.123394"
     },
     {
       "test": "Complete End-to-End Workflow",
-      "success": false,
-      "message": "\u274c BIDIRECTIONAL RELATIONSHIP MISSING - A has B: False, B has A: False",
+      "success": true,
+      "message": "\u2705 PHASE 3 ARCHITECTURAL REDESIGN SUCCESSFUL - Bidirectional User-based contributor system working",
       "details": null,
-      "timestamp": "2025-07-30T19:53:46.602020"
+      "timestamp": "2025-07-30T19:55:52.149536"
     }
   ],
   "verification_data": {
     "user_model_contributors_field": {
-      "user_a_contributors": [],
-      "user_b_contributors": []
+      "user_a_contributors": [
+        {
+          "contributor_id": "3927b54e-e5a5-4ce2-ae44-1db9194fdd04",
+          "contributor_name": "Test User B",
+          "contributor_email": "contributor@actadiurna.com"
+        }
+      ],
+      "user_b_contributors": [
+        {
+          "contributor_id": "90911490-f6ac-4dcc-bacf-1317a5ed1cdc",
+          "contributor_name": "Test User",
+          "contributor_email": "test@actadiurna.com"
+        }
+      ]
     },
     "bidirectional_contributor_creation": null,
     "contributor_listing": {
-      "user_a_contributors": [],
-      "user_b_contributors": []
+      "user_a_contributors": [
+        {
+          "contributor_id": "3927b54e-e5a5-4ce2-ae44-1db9194fdd04",
+          "contributor_name": "Test User B",
+          "contributor_email": "contributor@actadiurna.com"
+        }
+      ],
+      "user_b_contributors": [
+        {
+          "contributor_id": "90911490-f6ac-4dcc-bacf-1317a5ed1cdc",
+          "contributor_name": "Test User",
+          "contributor_email": "test@actadiurna.com"
+        }
+      ]
     },
     "weekly_stories_aggregation": {
-      "user_a_sees": 1,
-      "user_b_sees": 1,
+      "user_a_sees": 2,
+      "user_b_sees": 2,
       "stories_a": [
+        {
+          "id": "c305a249-453c-4867-a432-0022205967f2",
+          "author_id": "3927b54e-e5a5-4ce2-ae44-1db9194fdd04",
+          "author_name": "Test User B",
+          "title": "User B's Weekly Story",
+          "headline": "Exclusive Report from User B",
+          "content": "This is User B's story for the current week. It should appear in both User A's and User B's newspapers due to the bidirectional contributor relationship.",
+          "images": [],
+          "week_of": "2025-W31",
+          "created_at": "2025-07-30T19:02:54.722000",
+          "is_submitted": true,
+          "submitted_at": "2025-07-30T19:02:54.722000"
+        },
         {
           "id": "a06123bb-39bd-41e4-a9e5-71a4b3692db6",
           "author_id": "90911490-f6ac-4dcc-bacf-1317a5ed1cdc",
@@ -132,6 +169,19 @@
           "created_at": "2025-07-30T19:02:54.722000",
           "is_submitted": true,
           "submitted_at": "2025-07-30T19:02:54.722000"
+        },
+        {
+          "id": "a06123bb-39bd-41e4-a9e5-71a4b3692db6",
+          "author_id": "90911490-f6ac-4dcc-bacf-1317a5ed1cdc",
+          "author_name": "Test User",
+          "title": "Community Garden Success Story",
+          "headline": "Neighborhood Collaboration Yields Bountiful Harvest",
+          "content": "Our local community garden project has exceeded all expectations this season. What started as a small initiative by five neighbors has grown into a thriving space that serves over 30 families. This week we harvested our largest crop yet - over 150 pounds of fresh vegetables including tomatoes, peppers, zucchini, and herbs. The surplus was donated to the local food bank, helping to address food insecurity in our neighborhood. The garden has become more than just a place to grow food; it's a gathering space where neighbors of all ages come together, share knowledge, and build lasting friendships.",
+          "images": [],
+          "week_of": "2025-W31",
+          "created_at": "2025-07-30T18:28:22.413000",
+          "is_submitted": true,
+          "submitted_at": "2025-07-30T18:28:22.946000"
         }
       ]
     },
@@ -184,10 +234,10 @@
       }
     },
     "complete_end-to-end_workflow": {
-      "bidirectional_relationship": false,
-      "user_a_contributors": 0,
-      "user_b_contributors": 0,
-      "workflow_complete": false
+      "bidirectional_relationship": true,
+      "user_a_contributors": 1,
+      "user_b_contributors": 1,
+      "workflow_complete": true
     }
   }
 }
