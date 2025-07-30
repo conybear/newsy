@@ -276,6 +276,21 @@ backend:
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING PASSED: All MongoDB collections (users, stories, weekly_editions) working correctly, UUID-based IDs functioning properly, data relationships maintained, CRUD operations successful across all models. All data models working perfectly."
 
+  - task: "Phase 3 Newspaper Generation System"
+    implemented: true
+    working: false
+    file: "server.py"
+    stuck_count: 1
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented complete newspaper generation system with /api/newspapers/current, /api/newspapers/week/{week}, /api/newspapers/archive, and /api/newspapers/regenerate endpoints. Includes story aggregation from contributors, headline prioritization, and archive system."
+      - working: false
+        agent: "testing"
+        comment: "🗞️ COMPREHENSIVE TESTING COMPLETED: All newspaper generation endpoints are functional (/api/newspapers/current, /api/newspapers/week/{week}, /api/newspapers/archive, /api/newspapers/regenerate). Fixed critical bug in generate_newspaper() function - changed from user.get('contributors', []) to querying contributors collection. ARCHITECTURAL ISSUE IDENTIFIED: Contributor relationship direction is backwards. When users accept invitations, they add the inviter as their contributor, but newspaper generation looks for the user's contributors. This prevents contributor stories from appearing in newspapers. All core endpoints work, but contributor story aggregation fails due to relationship direction. SOLUTION NEEDED: Reverse invitation acceptance logic OR modify newspaper generation to find users who have current user as contributor."
+
 frontend:
   - task: "Authentication System"
     implemented: true
