@@ -223,6 +223,12 @@ async def add_contributor(data: dict, current_user: User = Depends(get_current_u
     if result1.modified_count == 0 and result2.modified_count == 0:
         raise HTTPException(status_code=400, detail="No changes made - relationship may already exist")
     
+    # Mark invitation as accepted
+    await db.invitations.update_one(
+        {"id": invitation_id},
+        {"$set": {"status": "accepted"}}
+    )
+    
     return {
         "message": f"Created bidirectional contributor relationship with {inviter['full_name']}",
         "relationship": "bidirectional",
