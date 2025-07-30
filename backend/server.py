@@ -158,6 +158,11 @@ async def get_sent_invitations(current_user: User = Depends(get_current_user)):
         "from_user_id": current_user.id
     }).to_list(100)
     
+    # Convert MongoDB documents to JSON-serializable format
+    for invitation in invitations:
+        if "_id" in invitation:
+            del invitation["_id"]
+    
     return invitations
 
 # ===== CONTRIBUTOR ENDPOINTS =====
