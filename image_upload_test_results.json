@@ -1,0 +1,66 @@
+{
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "success_rate": 100.0
+  },
+  "detailed_results": [
+    {
+      "test": "Authentication",
+      "success": true,
+      "message": "Registration successful",
+      "details": null,
+      "timestamp": "2025-07-30T18:29:09.374396"
+    },
+    {
+      "test": "Create Draft Story",
+      "success": true,
+      "message": "Draft story created with ID: d259bfc8-2f2e-44b1-8280-2ad63f13fe8a",
+      "details": null,
+      "timestamp": "2025-07-30T18:29:09.386571"
+    },
+    {
+      "test": "Image Upload - First",
+      "success": true,
+      "message": "First image uploaded: 84d7590f-937d-4d76-8921-26c558329c3b",
+      "details": null,
+      "timestamp": "2025-07-30T18:29:09.451659"
+    },
+    {
+      "test": "Image Upload - Second",
+      "success": true,
+      "message": "Second image uploaded successfully",
+      "details": null,
+      "timestamp": "2025-07-30T18:29:09.466512"
+    },
+    {
+      "test": "Image Upload - Third",
+      "success": true,
+      "message": "Third image uploaded successfully",
+      "details": null,
+      "timestamp": "2025-07-30T18:29:09.479265"
+    },
+    {
+      "test": "Image Upload - Limit Test",
+      "success": true,
+      "message": "Fourth image properly rejected (3 image limit enforced)",
+      "details": null,
+      "timestamp": "2025-07-30T18:29:09.531669"
+    },
+    {
+      "test": "Image Upload - File Type Validation",
+      "success": true,
+      "message": "Non-image file properly rejected",
+      "details": null,
+      "timestamp": "2025-07-30T18:29:09.542804"
+    },
+    {
+      "test": "Image Upload - Size Validation",
+      "success": true,
+      "message": "Large image properly rejected (size limit enforced)",
+      "details": null,
+      "timestamp": "2025-07-30T18:29:09.613542"
+    }
+  ],
+  "test_focus": "Image Upload for Draft Stories"
+}
