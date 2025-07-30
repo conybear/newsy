@@ -1,0 +1,464 @@
+{
+  "success": false,
+  "total_tests": 40,
+  "passed_tests": 36,
+  "failed_tests": 4,
+  "success_rate": 90.0,
+  "criteria_results": [
+    [
+      "Multiple users registration & authentication",
+      true
+    ],
+    [
+      "Invitation system functionality",
+      false
+    ],
+    [
+      "Story creation & submission",
+      true
+    ],
+    [
+      "Newspaper generation with contributor stories",
+      true
+    ],
+    [
+      "Archive system functionality",
+      true
+    ],
+    [
+      "Flipbook data structure correctness",
+      true
+    ]
+  ],
+  "newspaper_results": {
+    "main_user": {
+      "current_newspaper": {
+        "id": "716d6f18-a6fa-4fff-b4c7-2c0bd050ce48",
+        "user_id": "45ad9880-8c41-4669-8a90-63a477088fb1",
+        "week_of": "2025-W31",
+        "title": "Acta Diurna - Week 2025-W31",
+        "stories": [
+          {
+            "id": "0f745954-7432-4d3b-8d4b-8a7d45650195",
+            "author_id": "45ad9880-8c41-4669-8a90-63a477088fb1",
+            "author_name": "Alice Editor",
+            "title": "Community Garden Success",
+            "headline": "Our local community garden has flourished this season with over 50 families participating. The harve...",
+            "content": "Our local community garden has flourished this season with over 50 families participating. The harvest festival brought together neighbors from all walks of life, sharing fresh produce and building lasting friendships. This initiative has transformed an empty lot into a vibrant community hub.",
+            "images": [],
+            "week_of": "2025-W31",
+            "created_at": "2025-07-30T18:52:04.013000",
+            "is_submitted": true,
+            "submitted_at": "2025-07-30T18:52:04.026000"
+          }
+        ],
+        "published_at": "2025-07-30T18:52:05.062667"
+      },
+      "week_newspaper": {
+        "id": "716d6f18-a6fa-4fff-b4c7-2c0bd050ce48",
+        "user_id": "45ad9880-8c41-4669-8a90-63a477088fb1",
+        "week_of": "2025-W31",
+        "title": "Acta Diurna - Week 2025-W31",
+        "stories": [
+          {
+            "id": "0f745954-7432-4d3b-8d4b-8a7d45650195",
+            "author_id": "45ad9880-8c41-4669-8a90-63a477088fb1",
+            "author_name": "Alice Editor",
+            "title": "Community Garden Success",
+            "headline": "Our local community garden has flourished this season with over 50 families participating. The harve...",
+            "content": "Our local community garden has flourished this season with over 50 families participating. The harvest festival brought together neighbors from all walks of life, sharing fresh produce and building lasting friendships. This initiative has transformed an empty lot into a vibrant community hub.",
+            "images": [],
+            "week_of": "2025-W31",
+            "created_at": "2025-07-30T18:52:04.013000",
+            "is_submitted": true,
+            "submitted_at": "2025-07-30T18:52:04.026000"
+          }
+        ],
+        "published_at": "2025-07-30T18:52:05.062000"
+      },
+      "total_stories": 1,
+      "user_stories": 1,
+      "contributor_stories": 0
+    },
+    "contributor1": {
+      "current_newspaper": {
+        "id": "361eff0b-063d-494b-8566-04d81ca9a901",
+        "user_id": "aa9562dd-0a14-4381-a5eb-3166a803db07",
+        "week_of": "2025-W31",
+        "title": "Acta Diurna - Week 2025-W31",
+        "stories": [
+          {
+            "id": "435fc427-ee00-49a6-96c4-e9f9f6b06882",
+            "author_id": "aa9562dd-0a14-4381-a5eb-3166a803db07",
+            "author_name": "Bob Writer",
+            "title": "Tech Innovation in Education",
+            "headline": "Local schools are embracing new technology to enhance learning experiences. Interactive whiteboards,...",
+            "content": "Local schools are embracing new technology to enhance learning experiences. Interactive whiteboards, tablets, and coding classes are preparing students for the digital future. Teachers report increased engagement and improved problem-solving skills among students.",
+            "images": [],
+            "week_of": "2025-W31",
+            "created_at": "2025-07-30T18:52:04.899000",
+            "is_submitted": true,
+            "submitted_at": "2025-07-30T18:52:04.912000"
+          }
+        ],
+        "published_at": "2025-07-30T18:52:05.090228"
+      },
+      "week_newspaper": {
+        "id": "361eff0b-063d-494b-8566-04d81ca9a901",
+        "user_id": "aa9562dd-0a14-4381-a5eb-3166a803db07",
+        "week_of": "2025-W31",
+        "title": "Acta Diurna - Week 2025-W31",
+        "stories": [
+          {
+            "id": "435fc427-ee00-49a6-96c4-e9f9f6b06882",
+            "author_id": "aa9562dd-0a14-4381-a5eb-3166a803db07",
+            "author_name": "Bob Writer",
+            "title": "Tech Innovation in Education",
+            "headline": "Local schools are embracing new technology to enhance learning experiences. Interactive whiteboards,...",
+            "content": "Local schools are embracing new technology to enhance learning experiences. Interactive whiteboards, tablets, and coding classes are preparing students for the digital future. Teachers report increased engagement and improved problem-solving skills among students.",
+            "images": [],
+            "week_of": "2025-W31",
+            "created_at": "2025-07-30T18:52:04.899000",
+            "is_submitted": true,
+            "submitted_at": "2025-07-30T18:52:04.912000"
+          }
+        ],
+        "published_at": "2025-07-30T18:52:05.090000"
+      },
+      "total_stories": 1,
+      "user_stories": 1,
+      "contributor_stories": 0
+    },
+    "contributor2": {
+      "current_newspaper": {
+        "id": "9720dc69-32d3-4eab-b1ac-302c780c06a4",
+        "user_id": "32c4a5c5-d20a-4598-8962-be0abffba7a8",
+        "week_of": "2025-W31",
+        "title": "Acta Diurna - Week 2025-W31",
+        "stories": [
+          {
+            "id": "30325a65-f76a-4688-91a9-e6211d051c6b",
+            "author_id": "32c4a5c5-d20a-4598-8962-be0abffba7a8",
+            "author_name": "Carol Reporter",
+            "title": "Environmental Conservation Efforts",
+            "headline": "The city's new recycling program has exceeded expectations, with a 40% increase in recycling rates. ...",
+            "content": "The city's new recycling program has exceeded expectations, with a 40% increase in recycling rates. Citizens are embracing sustainable practices, and local businesses are joining the green initiative. This collective effort is making a significant impact on our environmental footprint.",
+            "images": [],
+            "week_of": "2025-W31",
+            "created_at": "2025-07-30T18:52:04.977000",
+            "is_submitted": true,
+            "submitted_at": "2025-07-30T18:52:04.993000"
+          }
+        ],
+        "published_at": "2025-07-30T18:52:05.159068"
+      },
+      "week_newspaper": {
+        "id": "9720dc69-32d3-4eab-b1ac-302c780c06a4",
+        "user_id": "32c4a5c5-d20a-4598-8962-be0abffba7a8",
+        "week_of": "2025-W31",
+        "title": "Acta Diurna - Week 2025-W31",
+        "stories": [
+          {
+            "id": "30325a65-f76a-4688-91a9-e6211d051c6b",
+            "author_id": "32c4a5c5-d20a-4598-8962-be0abffba7a8",
+            "author_name": "Carol Reporter",
+            "title": "Environmental Conservation Efforts",
+            "headline": "The city's new recycling program has exceeded expectations, with a 40% increase in recycling rates. ...",
+            "content": "The city's new recycling program has exceeded expectations, with a 40% increase in recycling rates. Citizens are embracing sustainable practices, and local businesses are joining the green initiative. This collective effort is making a significant impact on our environmental footprint.",
+            "images": [],
+            "week_of": "2025-W31",
+            "created_at": "2025-07-30T18:52:04.977000",
+            "is_submitted": true,
+            "submitted_at": "2025-07-30T18:52:04.993000"
+          }
+        ],
+        "published_at": "2025-07-30T18:52:05.159000"
+      },
+      "total_stories": 1,
+      "user_stories": 1,
+      "contributor_stories": 0
+    }
+  },
+  "detailed_results": [
+    {
+      "test": "System Health Check",
+      "success": true,
+      "message": "Status: healthy, Week: 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:02.919628"
+    },
+    {
+      "test": "User Registration - main_user",
+      "success": true,
+      "message": "Registered alice.editor@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.225770"
+    },
+    {
+      "test": "User Registration - contributor1",
+      "success": true,
+      "message": "Registered bob.writer@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.508378"
+    },
+    {
+      "test": "User Registration - contributor2",
+      "success": true,
+      "message": "Registered carol.reporter@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.776918"
+    },
+    {
+      "test": "Send Invitation - main_user to contributor1",
+      "success": true,
+      "message": "Invitation sent to bob.writer@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.789147"
+    },
+    {
+      "test": "Received Invitations - contributor1",
+      "success": true,
+      "message": "Found 0 invitations",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.803922"
+    },
+    {
+      "test": "Send Invitation - main_user to contributor2",
+      "success": true,
+      "message": "Invitation sent to carol.reporter@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.820608"
+    },
+    {
+      "test": "Received Invitations - contributor2",
+      "success": true,
+      "message": "Found 0 invitations",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.831504"
+    },
+    {
+      "test": "Send Invitation - contributor1 to main_user",
+      "success": true,
+      "message": "Invitation sent to alice.editor@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.885357"
+    },
+    {
+      "test": "Received Invitations - main_user",
+      "success": true,
+      "message": "Found 0 invitations",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.896931"
+    },
+    {
+      "test": "Send Invitation - contributor2 to main_user",
+      "success": true,
+      "message": "Invitation sent to alice.editor@actadiurna.com",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.909247"
+    },
+    {
+      "test": "Received Invitations - main_user",
+      "success": true,
+      "message": "Found 0 invitations",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.919558"
+    },
+    {
+      "test": "Find Invitation - main_user from contributor1",
+      "success": false,
+      "message": "No matching invitation found",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.971573"
+    },
+    {
+      "test": "Find Invitation - main_user from contributor2",
+      "success": false,
+      "message": "No matching invitation found",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.982684"
+    },
+    {
+      "test": "Find Invitation - contributor1 from main_user",
+      "success": false,
+      "message": "No matching invitation found",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:03.993266"
+    },
+    {
+      "test": "Find Invitation - contributor2 from main_user",
+      "success": false,
+      "message": "No matching invitation found",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.006075"
+    },
+    {
+      "test": "Create Draft - main_user",
+      "success": true,
+      "message": "Draft saved: Community Garden Success",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.017717"
+    },
+    {
+      "test": "Submit Story - main_user",
+      "success": true,
+      "message": "Story submitted: Community Garden Success",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.030967"
+    },
+    {
+      "test": "Image Upload - main_user",
+      "success": true,
+      "message": "Cannot modify submitted story (expected)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.069368"
+    },
+    {
+      "test": "Create Draft - contributor1",
+      "success": true,
+      "message": "Draft saved: Tech Innovation in Education",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.904137"
+    },
+    {
+      "test": "Submit Story - contributor1",
+      "success": true,
+      "message": "Story submitted: Tech Innovation in Education",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.957696"
+    },
+    {
+      "test": "Image Upload - contributor1",
+      "success": true,
+      "message": "Cannot modify submitted story (expected)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.970538"
+    },
+    {
+      "test": "Create Draft - contributor2",
+      "success": true,
+      "message": "Draft saved: Environmental Conservation Efforts",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.981420"
+    },
+    {
+      "test": "Submit Story - contributor2",
+      "success": true,
+      "message": "Story submitted: Environmental Conservation Efforts",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:04.996813"
+    },
+    {
+      "test": "Image Upload - contributor2",
+      "success": true,
+      "message": "Cannot modify submitted story (expected)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.053252"
+    },
+    {
+      "test": "Current Newspaper - main_user",
+      "success": true,
+      "message": "Generated newspaper with 1 total stories (1 own, 0 from contributors)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.067184"
+    },
+    {
+      "test": "Week Newspaper - main_user",
+      "success": true,
+      "message": "Retrieved newspaper for week 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.081589"
+    },
+    {
+      "test": "Current Newspaper - contributor1",
+      "success": true,
+      "message": "Generated newspaper with 1 total stories (1 own, 0 from contributors)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.094725"
+    },
+    {
+      "test": "Week Newspaper - contributor1",
+      "success": true,
+      "message": "Retrieved newspaper for week 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.148796"
+    },
+    {
+      "test": "Current Newspaper - contributor2",
+      "success": true,
+      "message": "Generated newspaper with 1 total stories (1 own, 0 from contributors)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.162904"
+    },
+    {
+      "test": "Week Newspaper - contributor2",
+      "success": true,
+      "message": "Retrieved newspaper for week 2025-W31",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.172418"
+    },
+    {
+      "test": "Archive System - main_user",
+      "success": true,
+      "message": "Retrieved 1 archived newspapers",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.183697"
+    },
+    {
+      "test": "Newspaper Regeneration - main_user",
+      "success": true,
+      "message": "Successfully regenerated current newspaper",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.199783"
+    },
+    {
+      "test": "Archive System - contributor1",
+      "success": true,
+      "message": "Retrieved 1 archived newspapers",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.210520"
+    },
+    {
+      "test": "Newspaper Regeneration - contributor1",
+      "success": true,
+      "message": "Successfully regenerated current newspaper",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.268167"
+    },
+    {
+      "test": "Archive System - contributor2",
+      "success": true,
+      "message": "Retrieved 1 archived newspapers",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.278734"
+    },
+    {
+      "test": "Newspaper Regeneration - contributor2",
+      "success": true,
+      "message": "Successfully regenerated current newspaper",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.292113"
+    },
+    {
+      "test": "Flipbook Data Structure",
+      "success": true,
+      "message": "Valid structure: 1 stories (1 headlines, 0 regular)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.303319"
+    },
+    {
+      "test": "Flipbook Data Structure",
+      "success": true,
+      "message": "Valid structure: 1 stories (1 headlines, 0 regular)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.317633"
+    },
+    {
+      "test": "Flipbook Data Structure",
+      "success": true,
+      "message": "Valid structure: 1 stories (1 headlines, 0 regular)",
+      "details": null,
+      "timestamp": "2025-07-30T18:52:05.327200"
+    }
+  ]
+}
