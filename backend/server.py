@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException, Depends, status, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -26,12 +27,24 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS middleware
+# Production-ready CORS configuration
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+
+if ENVIRONMENT == "production":
+    # Production CORS - restrict to specific origins
+    allowed_origins = [
+        "https://acta-diurna-frontend.onrender.com",
+        "https://acta-diurna.onrender.com"
+    ]
+else:
+    # Development CORS - allow all origins
+    allowed_origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
