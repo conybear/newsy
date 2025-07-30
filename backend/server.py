@@ -497,6 +497,153 @@ async def delete_story_image(
     
     return {"message": "Image deleted successfully"}
 
+# ===== NEWSPAPER GENERATION ENDPOINTS =====
+
+@app.get("/api/newspapers/current")
+async def get_current_newspaper(current_user: User = Depends(get_current_user)):
+    """Get current week's newspaper with stories from all contributors"""
+    db = get_database()
+    current_week = get_current_week()
+    
+    # Check if newspaper already exists for this week
+    existing_newspaper = await db.newspapers.find_one({
+        "user_id": current_user.id,
+        "week_of": current_week
+    })
+    
+    if existing_newspaper:
+        # Clean up ObjectId
+        if "_id" in existing_newspaper:
+            del existing_newspaper["_id"]
+        return existing_newspaper
+    
+    # Generate new newspaper
+    newspaper = await generate_newspaper(current_user.id, current_week)
+    return newspaper
+
+@app.get("/api/newspapers/week/{week}")
+async def get_newspaper_by_week(week: str, current_user: User = Depends(get_current_user)):
+    """Get newspaper for a specific week"""
+    db = get_database()
+    
+    newspaper = await db.newspapers.find_one({
+        "user_id": current_user.id,
+        "week_of": week
+    })
+    
+    if not newspaper:
+        # Generate newspaper for that week
+        newspaper = await generate_newspaper(current_user.id, week)
+    else:
+        # Clean up ObjectId
+        if "_id" in newspaper:
+            del newspaper["_id"]
+    
+    return newspaper
+
+@app.get("/api/newspapers/archive")
+async def get_newspaper_archive(current_user: User = Depends(get_current_user)):
+    """Get list of all published newspapers"""
+    db = get_database()
+    
+    newspapers = await db.newspapers.find({
+        "user_id": current_user.id
+    }).sort("week_of", -1).to_list(100)
+    
+    # Clean up ObjectIds and return summary
+    archive = []
+    for newspaper in newspapers:
+        archive.append({
+            "week_of": newspaper["week_of"],
+            "title": newspaper["title"],
+            "published_at": newspaper["published_at"],
+            "story_count": len(newspaper.get("stories", [])),
+            "contributor_count": len(set(story.get("author_id") for story in newspaper.get("stories", [])))
+        })
+    
+    return archive
+
+@app.post("/api/newspapers/regenerate")
+async def regenerate_current_newspaper(current_user: User = Depends(get_current_user)):
+    """Force regenerate current week's newspaper"""
+    db = get_database()
+    current_week = get_current_week()
+    
+    # Delete existing newspaper
+    await db.newspapers.delete_many({
+        "user_id": current_user.id,
+        "week_of": current_week
+    })
+    
+    # Generate new newspaper
+    newspaper = await generate_newspaper(current_user.id, current_week)
+    return {"message": "Newspaper regenerated", "newspaper": newspaper}
+
+async def generate_newspaper(user_id: str, week: str) -> dict:
+    """Generate newspaper for a user and week"""
+    db = get_database()
+    
+    # Get user's contributors
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    contributors = user.get("contributors", [])
+    all_contributors = contributors + [user_id]  # Include user's own stories
+    
+    # Get all stories from contributors for this week
+    stories = await db.stories.find({
+        "author_id": {"$in": all_contributors},
+        "week_of": week,
+        "is_submitted": True
+    }).to_list(100)
+    
+    # If no stories for this week, try to find the most recent week with stories
+    if not stories:
+        recent_stories = await db.stories.find({
+            "author_id": {"$in": all_contributors},
+            "is_submitted": True
+        }).sort("created_at", -1).to_list(100)
+        
+        if recent_stories:
+            # Group by week and get the most recent week with content
+            weeks_with_stories = {}
+            for story in recent_stories:
+                story_week = story.get("week_of")
+                if story_week not in weeks_with_stories:
+                    weeks_with_stories[story_week] = []
+                weeks_with_stories[story_week].append(story)
+            
+            # Use stories from the most recent week that has content
+            if weeks_with_stories:
+                most_recent_week = max(weeks_with_stories.keys())
+                stories = weeks_with_stories[most_recent_week]
+                week = most_recent_week  # Update week to match content
+    
+    # Clean up ObjectIds from stories
+    clean_stories = []
+    for story in stories:
+        if "_id" in story:
+            del story["_id"]
+        clean_stories.append(Story(**story))
+    
+    # Sort stories: headlines first, then by creation date
+    clean_stories.sort(key=lambda s: (not bool(s.headline), s.created_at))
+    
+    # Create newspaper
+    newspaper = Newspaper(
+        user_id=user_id,
+        week_of=week,
+        title=f"Acta Diurna - Week {week}",
+        stories=clean_stories,
+        published_at=datetime.utcnow()
+    )
+    
+    # Save to database
+    await db.newspapers.insert_one(newspaper.dict())
+    
+    return newspaper.dict()
+
 # ===== HEALTH CHECK =====
 
 @app.get("/api/health")
