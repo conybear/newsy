@@ -144,7 +144,7 @@ async def get_received_invitations(current_user: User = Depends(get_current_user
     
     invitations = await db.invitations.find({
         "to_email": current_user.email,
-        "status": "accepted"
+        "status": {"$in": ["pending", "accepted"]}
     }).to_list(100)
     
     # Convert MongoDB documents to JSON-serializable format
