@@ -174,7 +174,7 @@ async def get_sent_invitations(current_user: User = Depends(get_current_user)):
 
 @app.post("/api/contributors/add")
 async def add_contributor(data: dict, current_user: User = Depends(get_current_user)):
-    """Add someone as a contributor (from accepted invitations)"""
+    """Add someone as a contributor (from accepted invitations) - BIDIRECTIONAL"""
     db = get_database()
     invitation_id = data.get("invitation_id")
     
@@ -196,26 +196,42 @@ async def add_contributor(data: dict, current_user: User = Depends(get_current_u
     if not inviter:
         raise HTTPException(status_code=404, detail="Inviter not found")
     
-    # Check if already a contributor
-    existing = await db.contributors.find_one({
+    # Check if already a contributor (either direction)
+    existing_forward = await db.contributors.find_one({
         "user_id": current_user.id,
         "contributor_id": invitation["from_user_id"]
     })
     
-    if existing:
-        raise HTTPException(status_code=400, detail="Already added as contributor")
+    existing_reverse = await db.contributors.find_one({
+        "user_id": invitation["from_user_id"],
+        "contributor_id": current_user.id
+    })
     
-    # Add as contributor
-    contributor = Contributor(
-        user_id=current_user.id,
-        contributor_id=invitation["from_user_id"],
-        contributor_name=inviter["full_name"],
-        contributor_email=inviter["email"]
-    )
+    if existing_forward and existing_reverse:
+        raise HTTPException(status_code=400, detail="Bidirectional contributor relationship already exists")
     
-    await db.contributors.insert_one(contributor.dict())
+    # Create BIDIRECTIONAL contributor relationships
+    # Relationship 1: Current user adds inviter as contributor
+    if not existing_forward:
+        contributor_forward = Contributor(
+            user_id=current_user.id,
+            contributor_id=invitation["from_user_id"],
+            contributor_name=inviter["full_name"],
+            contributor_email=inviter["email"]
+        )
+        await db.contributors.insert_one(contributor_forward.dict())
     
-    return {"message": f"Added {inviter['full_name']} as contributor"}
+    # Relationship 2: Inviter has current user as contributor (reverse relationship)
+    if not existing_reverse:
+        contributor_reverse = Contributor(
+            user_id=invitation["from_user_id"],
+            contributor_id=current_user.id,
+            contributor_name=current_user.full_name,
+            contributor_email=current_user.email
+        )
+        await db.contributors.insert_one(contributor_reverse.dict())
+    
+    return {"message": f"Added bidirectional contributor relationship with {inviter['full_name']}"}
 
 @app.get("/api/contributors/my")
 async def get_my_contributors(current_user: User = Depends(get_current_user)):
