@@ -147,6 +147,11 @@ async def get_received_invitations(current_user: User = Depends(get_current_user
         "status": "accepted"
     }).to_list(100)
     
+    # Convert MongoDB documents to JSON-serializable format
+    for invitation in invitations:
+        if "_id" in invitation:
+            del invitation["_id"]
+    
     return invitations
 
 @app.get("/api/invitations/sent")
