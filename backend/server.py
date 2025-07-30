@@ -243,6 +243,260 @@ async def remove_contributor(contributor_id: str, current_user: User = Depends(g
     
     return {"message": "Contributor removed"}
 
+# ===== STORY ENDPOINTS =====
+
+@app.post("/api/stories/draft")
+async def save_story_draft(draft_data: StoryDraft, current_user: User = Depends(get_current_user)):
+    """Save or update story draft"""
+    db = get_database()
+    current_week = get_current_week()
+    
+    # Check if draft already exists for this week
+    existing_draft = await db.stories.find_one({
+        "author_id": current_user.id,
+        "week_of": current_week,
+        "is_submitted": False
+    })
+    
+    if existing_draft:
+        # Update existing draft
+        await db.stories.update_one(
+            {"id": existing_draft["id"]},
+            {"$set": {
+                "title": draft_data.title,
+                "headline": draft_data.headline,
+                "content": draft_data.content,
+                "created_at": datetime.utcnow()
+            }}
+        )
+        return {"message": "Draft updated", "id": existing_draft["id"]}
+    else:
+        # Create new draft
+        story = Story(
+            author_id=current_user.id,
+            author_name=current_user.full_name,
+            title=draft_data.title,
+            headline=draft_data.headline,
+            content=draft_data.content,
+            week_of=current_week,
+            is_submitted=False
+        )
+        
+        await db.stories.insert_one(story.dict())
+        return {"message": "Draft saved", "id": story.id}
+
+@app.get("/api/stories/draft")
+async def get_story_draft(current_user: User = Depends(get_current_user)):
+    """Get current week's story draft"""
+    db = get_database()
+    current_week = get_current_week()
+    
+    draft = await db.stories.find_one({
+        "author_id": current_user.id,
+        "week_of": current_week,
+        "is_submitted": False
+    })
+    
+    if draft:
+        # Remove MongoDB ObjectId for JSON serialization
+        if "_id" in draft:
+            del draft["_id"]
+        return draft
+    else:
+        return {
+            "title": "",
+            "headline": "",
+            "content": "",
+            "images": []
+        }
+
+@app.get("/api/stories/my")
+async def get_my_stories(current_user: User = Depends(get_current_user)):
+    """Get all my submitted stories"""
+    db = get_database()
+    
+    stories = await db.stories.find({
+        "author_id": current_user.id,
+        "is_submitted": True
+    }).sort("created_at", -1).to_list(100)
+    
+    # Clean up ObjectIds
+    for story in stories:
+        if "_id" in story:
+            del story["_id"]
+    
+    return stories
+
+@app.get("/api/stories/status")
+async def get_story_status(current_user: User = Depends(get_current_user)):
+    """Get story submission status for current week"""
+    db = get_database()
+    current_week = get_current_week()
+    
+    # Check if user has submitted story this week
+    submitted_story = await db.stories.find_one({
+        "author_id": current_user.id,
+        "week_of": current_week,
+        "is_submitted": True
+    })
+    
+    # Check if user has draft this week
+    draft_story = await db.stories.find_one({
+        "author_id": current_user.id,
+        "week_of": current_week,
+        "is_submitted": False
+    })
+    
+    return {
+        "current_week": current_week,
+        "has_submitted": submitted_story is not None,
+        "has_draft": draft_story is not None,
+        "submissions_open": is_submission_open(),
+        "deadline": "Monday 11:59 PM EST",
+        "story_id": submitted_story["id"] if submitted_story else (draft_story["id"] if draft_story else None)
+    }
+
+@app.post("/api/stories/submit")
+async def submit_story(story_data: StoryCreate, current_user: User = Depends(get_current_user)):
+    """Submit story for publication"""
+    db = get_database()
+    current_week = get_current_week()
+    
+    # Check if submissions are open
+    if not is_submission_open():
+        raise HTTPException(status_code=400, detail="Submissions are closed for this week")
+    
+    # Check if user already submitted this week
+    existing_story = await db.stories.find_one({
+        "author_id": current_user.id,
+        "week_of": current_week,
+        "is_submitted": True
+    })
+    
+    if existing_story:
+        raise HTTPException(status_code=400, detail="You have already submitted a story this week")
+    
+    # Validate required fields
+    if not story_data.title.strip() or not story_data.headline.strip() or not story_data.content.strip():
+        raise HTTPException(status_code=400, detail="Title, headline, and content are required")
+    
+    # Check if there's a draft to update
+    draft = await db.stories.find_one({
+        "author_id": current_user.id,
+        "week_of": current_week,
+        "is_submitted": False
+    })
+    
+    if draft:
+        # Update existing draft and mark as submitted
+        await db.stories.update_one(
+            {"id": draft["id"]},
+            {"$set": {
+                "title": story_data.title,
+                "headline": story_data.headline,
+                "content": story_data.content,
+                "is_submitted": True,
+                "submitted_at": datetime.utcnow()
+            }}
+        )
+        story_id = draft["id"]
+    else:
+        # Create new story
+        story = Story(
+            author_id=current_user.id,
+            author_name=current_user.full_name,
+            title=story_data.title,
+            headline=story_data.headline,
+            content=story_data.content,
+            week_of=current_week,
+            is_submitted=True,
+            submitted_at=datetime.utcnow()
+        )
+        
+        await db.stories.insert_one(story.dict())
+        story_id = story.id
+    
+    return {"message": "Story submitted successfully", "id": story_id}
+
+@app.post("/api/stories/{story_id}/images")
+async def upload_story_image(
+    story_id: str,
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    """Upload image for a story"""
+    db = get_database()
+    
+    # Verify story belongs to user
+    story = await db.stories.find_one({
+        "id": story_id,
+        "author_id": current_user.id
+    })
+    
+    if not story:
+        raise HTTPException(status_code=404, detail="Story not found")
+    
+    if story["is_submitted"]:
+        raise HTTPException(status_code=400, detail="Cannot modify submitted story")
+    
+    # Check if story already has 3 images
+    current_images = story.get("images", [])
+    if len(current_images) >= 3:
+        raise HTTPException(status_code=400, detail="Maximum 3 images per story")
+    
+    # Validate file type
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    
+    # Read and encode image
+    content = await file.read()
+    if len(content) > 5 * 1024 * 1024:  # 5MB limit
+        raise HTTPException(status_code=400, detail="Image too large (max 5MB)")
+    
+    # Create image object
+    image = StoryImage(
+        filename=file.filename,
+        content_type=file.content_type,
+        data=base64.b64encode(content).decode('utf-8')
+    )
+    
+    # Add image to story
+    await db.stories.update_one(
+        {"id": story_id},
+        {"$push": {"images": image.dict()}}
+    )
+    
+    return {"message": "Image uploaded successfully", "image_id": image.id}
+
+@app.delete("/api/stories/{story_id}/images/{image_id}")
+async def delete_story_image(
+    story_id: str,
+    image_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete image from story"""
+    db = get_database()
+    
+    # Verify story belongs to user
+    story = await db.stories.find_one({
+        "id": story_id,
+        "author_id": current_user.id
+    })
+    
+    if not story:
+        raise HTTPException(status_code=404, detail="Story not found")
+    
+    if story["is_submitted"]:
+        raise HTTPException(status_code=400, detail="Cannot modify submitted story")
+    
+    # Remove image from story
+    await db.stories.update_one(
+        {"id": story_id},
+        {"$pull": {"images": {"id": image_id}}}
+    )
+    
+    return {"message": "Image deleted successfully"}
+
 # ===== HEALTH CHECK =====
 
 @app.get("/api/health")
