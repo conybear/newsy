@@ -1,8 +1,8 @@
 {
   "summary": {
-    "passed": 6,
-    "failed": 1,
-    "success_rate": 85.71428571428571
+    "passed": 7,
+    "failed": 0,
+    "success_rate": 100.0
   },
   "detailed_results": [
     {
@@ -10,49 +10,49 @@
       "success": true,
       "message": "Status: healthy, Current Week: 2025-W31",
       "details": null,
-      "timestamp": "2025-07-30T17:36:31.574592"
+      "timestamp": "2025-07-30T17:37:22.188221"
     },
     {
       "test": "User Registration",
       "success": true,
-      "message": "User registered successfully: Test User (test@actadiurna.com)",
+      "message": "User already exists, proceeding to login test",
       "details": null,
-      "timestamp": "2025-07-30T17:36:32.372279"
+      "timestamp": "2025-07-30T17:37:22.706161"
     },
     {
       "test": "User Login",
       "success": true,
       "message": "Login successful: Test User (test@actadiurna.com)",
       "details": null,
-      "timestamp": "2025-07-30T17:36:33.116294"
+      "timestamp": "2025-07-30T17:37:23.474837"
     },
     {
       "test": "Get Current User Info",
       "success": true,
       "message": "User info retrieved: Test User (test@actadiurna.com) - ID: 90911490-f6ac-4dcc-bacf-1317a5ed1cdc",
       "details": null,
-      "timestamp": "2025-07-30T17:36:33.629351"
+      "timestamp": "2025-07-30T17:37:23.986647"
     },
     {
       "test": "Send Invitation",
       "success": true,
-      "message": "Invitation sent to friend@actadiurna.com",
+      "message": "Invitation already sent (expected behavior)",
       "details": null,
-      "timestamp": "2025-07-30T17:36:34.156681"
+      "timestamp": "2025-07-30T17:37:24.498292"
     },
     {
       "test": "Get Sent Invitations",
-      "success": false,
-      "message": "Status code: 500",
-      "details": "Internal Server Error",
-      "timestamp": "2025-07-30T17:36:34.669198"
+      "success": true,
+      "message": "Retrieved 1 sent invitations",
+      "details": null,
+      "timestamp": "2025-07-30T17:37:25.011477"
     },
     {
       "test": "Get Received Invitations",
       "success": true,
       "message": "Retrieved 0 received invitations",
       "details": null,
-      "timestamp": "2025-07-30T17:36:35.181027"
+      "timestamp": "2025-07-30T17:37:25.529978"
     }
   ]
 }
