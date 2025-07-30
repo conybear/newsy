@@ -513,6 +513,41 @@ async def delete_story_image(
     
     return {"message": "Image deleted successfully"}
 
+@app.get("/api/stories/weekly/{week}")
+async def get_weekly_stories(week: str, current_user: User = Depends(get_current_user)):
+    """Get all stories for a specific week from user and their contributors"""
+    db = get_database()
+    
+    # Get contributors using the bidirectional relationship
+    contributor_docs = await db.contributors.find({
+        "$or": [
+            {"user_id": current_user.id},  # People user has added as contributors
+            {"contributor_id": current_user.id}  # People who have added user as contributor (reverse lookup)
+        ]
+    }).to_list(100)
+    
+    # Extract unique contributor IDs
+    contributor_ids = set()
+    for doc in contributor_docs:
+        if doc["user_id"] == current_user.id:
+            # User added this person as contributor
+            contributor_ids.add(doc["contributor_id"])
+        else:
+            # This person added user as contributor, so include their stories
+            contributor_ids.add(doc["user_id"])
+    
+    # Always include the user's own stories
+    all_contributors = list(contributor_ids) + [current_user.id]
+    
+    # Get all submitted stories from contributors for this week
+    stories = await db.stories.find({
+        "author_id": {"$in": all_contributors},
+        "week_of": week,
+        "is_submitted": True
+    }).to_list(100)
+    
+    return stories
+
 # ===== NEWSPAPER GENERATION ENDPOINTS =====
 
 @app.get("/api/newspapers/current")
