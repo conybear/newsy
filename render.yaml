@@ -1,0 +1,42 @@
+services:
+  # FastAPI Backend Service
+  - name: acta-diurna-backend
+    type: web
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: |
+      pip install -r backend/requirements.txt
+    startCommand: |
+      cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MONGO_URL
+        sync: false  # Set this in Render dashboard
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: PORT
+        value: "8001"
+
+  # React Frontend Service  
+  - name: acta-diurna-frontend
+    type: web
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: |
+      cd frontend && yarn install && yarn build
+    startCommand: |
+      cd frontend && npx serve -s build -l $PORT
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        value: https://acta-diurna-backend.onrender.com/api
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+
+databases:
+  # MongoDB Atlas connection (external)
+  # Configure MONGO_URL environment variable to point to your MongoDB Atlas cluster
