@@ -174,7 +174,7 @@ async def get_sent_invitations(current_user: User = Depends(get_current_user)):
 
 @app.post("/api/contributors/add")
 async def add_contributor(data: dict, current_user: User = Depends(get_current_user)):
-    """Add someone as a contributor (from accepted invitations) - BIDIRECTIONAL"""
+    """Add bidirectional contributor relationship using atomic updates"""
     db = get_database()
     invitation_id = data.get("invitation_id")
     
@@ -196,68 +196,95 @@ async def add_contributor(data: dict, current_user: User = Depends(get_current_u
     if not inviter:
         raise HTTPException(status_code=404, detail="Inviter not found")
     
-    # Check if already a contributor (either direction)
-    existing_forward = await db.contributors.find_one({
-        "user_id": current_user.id,
-        "contributor_id": invitation["from_user_id"]
-    })
+    inviter_id = invitation["from_user_id"]
+    current_user_id = current_user.id
     
-    existing_reverse = await db.contributors.find_one({
-        "user_id": invitation["from_user_id"],
-        "contributor_id": current_user.id
-    })
+    # Check if relationship already exists (either direction)
+    current_user_doc = await db.users.find_one({"id": current_user_id})
+    inviter_doc = await db.users.find_one({"id": inviter_id})
     
-    if existing_forward and existing_reverse:
+    if (current_user_doc and inviter_id in current_user_doc.get("contributors", [])) or \
+       (inviter_doc and current_user_id in inviter_doc.get("contributors", [])):
         raise HTTPException(status_code=400, detail="Bidirectional contributor relationship already exists")
     
-    # Create BIDIRECTIONAL contributor relationships
-    # Relationship 1: Current user adds inviter as contributor
-    if not existing_forward:
-        contributor_forward = Contributor(
-            user_id=current_user.id,
-            contributor_id=invitation["from_user_id"],
-            contributor_name=inviter["full_name"],
-            contributor_email=inviter["email"]
-        )
-        await db.contributors.insert_one(contributor_forward.dict())
+    # Create bidirectional relationship using atomic updates
+    # Update 1: Add inviter as contributor to current user
+    result1 = await db.users.update_one(
+        {"id": current_user_id},
+        {"$addToSet": {"contributors": inviter_id}}
+    )
     
-    # Relationship 2: Inviter has current user as contributor (reverse relationship)
-    if not existing_reverse:
-        contributor_reverse = Contributor(
-            user_id=invitation["from_user_id"],
-            contributor_id=current_user.id,
-            contributor_name=current_user.full_name,
-            contributor_email=current_user.email
-        )
-        await db.contributors.insert_one(contributor_reverse.dict())
+    # Update 2: Add current user as contributor to inviter
+    result2 = await db.users.update_one(
+        {"id": inviter_id},
+        {"$addToSet": {"contributors": current_user_id}}
+    )
     
-    return {"message": f"Added bidirectional contributor relationship with {inviter['full_name']}"}
+    if result1.modified_count == 0 and result2.modified_count == 0:
+        raise HTTPException(status_code=400, detail="No changes made - relationship may already exist")
+    
+    return {
+        "message": f"Created bidirectional contributor relationship with {inviter['full_name']}",
+        "relationship": "bidirectional",
+        "current_user_updated": result1.modified_count > 0,
+        "inviter_updated": result2.modified_count > 0
+    }
 
 @app.get("/api/contributors/my")
 async def get_my_contributors(current_user: User = Depends(get_current_user)):
-    """Get my contributors"""
+    """Get my contributors from User document"""
     db = get_database()
     
-    contributors = await db.contributors.find({
-        "user_id": current_user.id
-    }).to_list(100)
+    # Get current user document with contributors
+    user_doc = await db.users.find_one({"id": current_user.id})
     
-    return contributors
+    if not user_doc or "contributors" not in user_doc:
+        return []
+    
+    contributor_ids = user_doc["contributors"]
+    
+    if not contributor_ids:
+        return []
+    
+    # Get contributor user details
+    contributors = await db.users.find(
+        {"id": {"$in": contributor_ids}},
+        {"id": 1, "full_name": 1, "email": 1, "_id": 0}
+    ).to_list(100)
+    
+    # Format for compatibility with existing frontend
+    formatted_contributors = []
+    for contrib in contributors:
+        formatted_contributors.append({
+            "contributor_id": contrib["id"],
+            "contributor_name": contrib["full_name"],
+            "contributor_email": contrib["email"]
+        })
+    
+    return formatted_contributors
 
 @app.delete("/api/contributors/{contributor_id}")
 async def remove_contributor(contributor_id: str, current_user: User = Depends(get_current_user)):
-    """Remove a contributor"""
+    """Remove bidirectional contributor relationship"""
     db = get_database()
     
-    result = await db.contributors.delete_one({
-        "user_id": current_user.id,
-        "contributor_id": contributor_id
-    })
+    # Remove bidirectionally using atomic updates
+    # Remove contributor from current user
+    result1 = await db.users.update_one(
+        {"id": current_user.id},
+        {"$pull": {"contributors": contributor_id}}
+    )
     
-    if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Contributor not found")
+    # Remove current user from contributor
+    result2 = await db.users.update_one(
+        {"id": contributor_id},
+        {"$pull": {"contributors": current_user.id}}
+    )
     
-    return {"message": "Contributor removed"}
+    if result1.modified_count == 0 and result2.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Contributor relationship not found")
+    
+    return {"message": "Bidirectional contributor relationship removed"}
 
 # ===== STORY ENDPOINTS =====
 
