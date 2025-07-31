@@ -1,14 +1,28 @@
 services:
-  - name: acta-diurna
+  # FastAPI Backend Service
+  - name: acta-diurna-backend
     type: web
-    env: docker
-    plan: free
+    env: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: MONGO_URL
         sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: ENVIRONMENT
+        value: production
+
+  # React Frontend Service  
+  - name: acta-diurna-frontend
+    type: web
+    env: node
+    buildCommand: cd frontend && yarn install && yarn build
+    startCommand: cd frontend && npx serve -s build -l $PORT
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        value: https://acta-diurna-backend.onrender.com/api
+      - key: NODE_ENV
         value: production
 
 databases:
