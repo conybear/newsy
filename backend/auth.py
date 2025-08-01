@@ -52,6 +52,20 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         raise credentials_exception
     
     db = get_database()
+    
+    # Handle database connection issues in JWT validation
+    if db is None:
+        from database import connect_to_mongo
+        await connect_to_mongo()
+        db = get_database()
+        
+    if db is None:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database connection failed during authentication",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
     user_data = await db.users.find_one({"email": email})
     if user_data is None:
         raise credentials_exception
