@@ -1,0 +1,11 @@
+{
+  "name": "acta-diurna-root",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd frontend && yarn install && yarn build",
+    "start": "cd frontend && npx serve -s build -p $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
