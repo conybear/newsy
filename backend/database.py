@@ -58,4 +58,40 @@ async def close_mongo_connection():
         database.client.close()
 
 def get_database():
+    # Retry logic for database connection
+    import time
+    max_retries = 5
+    retry_delay = 0.5
+    
+    for attempt in range(max_retries):
+        if database.db is not None:
+            return database.db
+        
+        # If db is None, wait briefly and try again
+        print(f"Database not ready, attempt {attempt + 1}/{max_retries}")
+        time.sleep(retry_delay)
+        
+        # Try to reconnect if it's still None
+        if database.db is None and attempt < max_retries - 1:
+            try:
+                import asyncio
+                # Create a new event loop if needed
+                try:
+                    loop = asyncio.get_event_loop()
+                except RuntimeError:
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                
+                if loop.is_running():
+                    # If loop is running, create a task
+                    future = asyncio.create_task(connect_to_mongo())
+                else:
+                    # If loop is not running, run until complete
+                    loop.run_until_complete(connect_to_mongo())
+            except Exception as e:
+                print(f"Reconnection attempt failed: {e}")
+    
+    if database.db is None:
+        print("CRITICAL: Database connection failed after all retries")
+    
     return database.db
