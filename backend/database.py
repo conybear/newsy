@@ -18,12 +18,39 @@ async def connect_to_mongo():
     database.client = AsyncIOMotorClient(MONGO_URL)
     database.db = database.client[DB_NAME]
     
-    # Create indexes for better performance
-    await database.db.users.create_index("email", unique=True)
-    await database.db.invitations.create_index([("to_email", 1), ("status", 1)])
-    await database.db.contributors.create_index([("user_id", 1), ("contributor_id", 1)], unique=True)
-    await database.db.stories.create_index([("author_id", 1), ("week_of", 1)])
-    await database.db.newspapers.create_index([("user_id", 1), ("week_of", 1)], unique=True)
+    # Test the connection
+    try:
+        await database.db.command("ismaster")
+        print(f"Connected to MongoDB at {MONGO_URL}")
+    except Exception as e:
+        print(f"Failed to connect to MongoDB: {e}")
+        return
+    
+    # Create indexes for better performance (with error handling)
+    try:
+        await database.db.users.create_index("email", unique=True)
+    except Exception as e:
+        print(f"Could not create users.email index: {e}")
+    
+    try:
+        await database.db.invitations.create_index([("to_email", 1), ("status", 1)])
+    except Exception as e:
+        print(f"Could not create invitations index: {e}")
+    
+    try:
+        await database.db.contributors.create_index([("user_id", 1), ("contributor_id", 1)], unique=True)
+    except Exception as e:
+        print(f"Could not create contributors index: {e}")
+    
+    try:
+        await database.db.stories.create_index([("author_id", 1), ("week_of", 1)])
+    except Exception as e:
+        print(f"Could not create stories index: {e}")
+    
+    try:
+        await database.db.newspapers.create_index([("user_id", 1), ("week_of", 1)], unique=True)
+    except Exception as e:
+        print(f"Could not create newspapers index: {e}")
 
 async def close_mongo_connection():
     """Close database connection"""
