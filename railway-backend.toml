@@ -1,0 +1,8 @@
+# Railway Backend Configuration
+[build]
+builder = "NIXPACKS"
+
+[build.nixpacks]
+install = "pip install -r backend/requirements.txt"
+build = "echo 'Backend build complete'"
+start = "cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT"
