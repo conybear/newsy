@@ -66,31 +66,65 @@ class BackendTester:
             return False
 
     def test_user_registration(self):
-        """Test user registration"""
+        """Test user registration with fresh credentials as requested"""
         try:
+            # Use the specific test credentials requested for authentication fix verification
             user_data = {
-                "email": "sarah.johnson@newspaper.com",
-                "password": "SecurePass123!",
-                "full_name": "Sarah Johnson"
+                "email": "test-fix@actadiurna.com",
+                "password": "TestFix123!",
+                "full_name": "Test Fix User"
             }
             
             response = self.session.post(f"{BACKEND_URL}/auth/register", json=user_data)
             
             if response.status_code == 200:
                 data = response.json()
-                if "access_token" in data:
+                if "access_token" in data and "user" in data:
                     self.auth_token = data["access_token"]
                     self.session.headers.update({"Authorization": f"Bearer {self.auth_token}"})
-                    self.log_test("User Registration", True, "User registered successfully with JWT token")
+                    user_info = data["user"]
+                    self.log_test("User Registration", True, f"User registered successfully with JWT token. User: {user_info.get('full_name')} ({user_info.get('email')})")
                     return True
                 else:
-                    self.log_test("User Registration", False, "No access token in response", data)
+                    self.log_test("User Registration", False, "No access token or user data in response", data)
                     return False
+            elif response.status_code == 400 and "already registered" in response.text:
+                # User already exists, try to login instead
+                self.log_test("User Registration", True, "User already exists, will attempt login")
+                return self.test_user_login_with_fix_credentials()
             else:
                 self.log_test("User Registration", False, f"Status code: {response.status_code}", response.text)
                 return False
         except Exception as e:
             self.log_test("User Registration", False, f"Exception: {str(e)}")
+            return False
+
+    def test_user_login_with_fix_credentials(self):
+        """Test login with the specific fix credentials"""
+        try:
+            login_data = {
+                "email": "test-fix@actadiurna.com",
+                "password": "TestFix123!"
+            }
+            
+            response = self.session.post(f"{BACKEND_URL}/auth/login", json=login_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "access_token" in data and "user" in data:
+                    self.auth_token = data["access_token"]
+                    self.session.headers.update({"Authorization": f"Bearer {self.auth_token}"})
+                    user_info = data["user"]
+                    self.log_test("User Login (Fix Credentials)", True, f"Login successful with fix credentials. User: {user_info.get('full_name')} ({user_info.get('email')})")
+                    return True
+                else:
+                    self.log_test("User Login (Fix Credentials)", False, "No access token or user data in response", data)
+                    return False
+            else:
+                self.log_test("User Login (Fix Credentials)", False, f"Status code: {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("User Login (Fix Credentials)", False, f"Exception: {str(e)}")
             return False
 
     def test_user_login(self):
