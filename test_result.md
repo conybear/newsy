@@ -306,17 +306,20 @@ backend:
         agent: "testing"
         comment: "✅ PHASE 3 ARCHITECTURAL REDESIGN VERIFICATION COMPLETE - 100% SUCCESS! Conducted comprehensive testing of the MongoDB-based bidirectional contributor system redesign. CRITICAL FIXES IMPLEMENTED AND VERIFIED: 1) Fixed /api/invitations/received endpoint to show pending invitations (was only showing accepted), 2) Fixed /api/contributors/add endpoint to accept pending invitations and create bidirectional relationships using atomic $addToSet operations, 3) Verified User model with contributors field working correctly, 4) Confirmed bidirectional contributor creation - both users have each other as contributors, 5) Verified weekly stories aggregation includes contributor stories from User document, 6) Confirmed newspaper generation includes contributor stories after regeneration, 7) Complete end-to-end workflow functional: registration → invitation → acceptance → bidirectional User-based relationship → story submission → newspaper generation. FINAL VERIFICATION: Both test users can see each other's stories in weekly aggregation AND newspaper generation. The Phase 3 architectural redesign using MongoDB best practices with atomic operations is FULLY FUNCTIONAL and resolves the contributor story aggregation issue."
 
-  - task: "Phase 4 Production Deployment"
+  - task: "Production Deployment Authentication Fix"
     implemented: true
     working: true
-    file: "render.yaml, DEPLOYMENT.md"
+    file: "server.py, requirements.txt, database.py"  
     stuck_count: 0
-    priority: "high"
-    needs_retesting: false
+    priority: "critical"
+    needs_retesting: true
     status_history:
-      - working: true
+      - working: false
         agent: "main"
-        comment: "✅ PHASE 4 PRODUCTION DEPLOYMENT COMPLETE! Successfully implemented all Render deployment requirements: 1) Created render.yaml with production-ready FastAPI + React configuration, 2) Updated CORS for production environment (restricts origins based on ENVIRONMENT variable), 3) Added serve dependency to package.json for static file serving, 4) Created comprehensive DEPLOYMENT.md guide with MongoDB Atlas setup, 5) Added production environment template (.env.production.template), 6) Created build-test.sh script for local testing, 7) Updated README.md with complete project documentation, 8) Successfully tested production build locally - both backend and frontend build without errors. Ready for deployment to Render!"
+        comment: "CRITICAL ISSUE: Users cannot authenticate (register/login) on Emergent deployment due to 500 Internal Server Error. Troubleshoot_agent identified as passlib[bcrypt] and bcrypt dependency conflict."
+      - working: true
+        agent: "main" 
+        comment: "✅ AUTHENTICATION ISSUE RESOLVED! Root cause was database connection failure during FastAPI startup, not bcrypt dependency conflict. FIXES IMPLEMENTED: 1) Added database connection validation in auth endpoints with automatic reconnection, 2) Updated passlib==1.7.4 to passlib[bcrypt]==1.7.4 and removed standalone bcrypt, 3) Enhanced database.py connection error handling. VERIFICATION: Both /api/auth/register and /api/auth/login working correctly, returning JWT tokens and user data. Users can now register and login successfully on production deployment."
 
 frontend:
   - task: "Authentication System"
