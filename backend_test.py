@@ -173,7 +173,120 @@ class BackendTester:
             self.log_test("User Login", False, f"Exception: {str(e)}")
             return False
 
-    def test_get_current_user(self):
+    def test_authentication_error_cases(self):
+        """Test authentication error cases"""
+        try:
+            # Test invalid credentials
+            invalid_login = {
+                "email": "nonexistent@example.com",
+                "password": "wrongpassword"
+            }
+            
+            response = self.session.post(f"{BACKEND_URL}/auth/login", json=invalid_login)
+            
+            if response.status_code == 401:
+                self.log_test("Authentication Error Cases - Invalid Login", True, "Invalid credentials properly rejected with 401")
+            else:
+                self.log_test("Authentication Error Cases - Invalid Login", False, f"Expected 401, got {response.status_code}")
+                return False
+            
+            # Test duplicate registration
+            duplicate_user = {
+                "email": "test-fix@actadiurna.com",
+                "password": "TestFix123!",
+                "full_name": "Duplicate User"
+            }
+            
+            response = self.session.post(f"{BACKEND_URL}/auth/register", json=duplicate_user)
+            
+            if response.status_code == 400:
+                self.log_test("Authentication Error Cases - Duplicate Registration", True, "Duplicate registration properly rejected with 400")
+            else:
+                self.log_test("Authentication Error Cases - Duplicate Registration", False, f"Expected 400, got {response.status_code}")
+                return False
+            
+            return True
+            
+        except Exception as e:
+            self.log_test("Authentication Error Cases", False, f"Exception: {str(e)}")
+            return False
+
+    def test_jwt_token_validation(self):
+        """Test JWT token validation and protected routes"""
+        try:
+            # Test accessing protected route without token
+            temp_session = requests.Session()
+            response = temp_session.get(f"{BACKEND_URL}/users/me")
+            
+            if response.status_code == 403 or response.status_code == 401:
+                self.log_test("JWT Token Validation - No Token", True, f"Unauthorized access properly blocked with {response.status_code}")
+            else:
+                self.log_test("JWT Token Validation - No Token", False, f"Expected 401/403, got {response.status_code}")
+                return False
+            
+            # Test accessing protected route with invalid token
+            temp_session.headers.update({"Authorization": "Bearer invalid_token_here"})
+            response = temp_session.get(f"{BACKEND_URL}/users/me")
+            
+            if response.status_code == 403 or response.status_code == 401:
+                self.log_test("JWT Token Validation - Invalid Token", True, f"Invalid token properly rejected with {response.status_code}")
+            else:
+                self.log_test("JWT Token Validation - Invalid Token", False, f"Expected 401/403, got {response.status_code}")
+                return False
+            
+            # Test accessing protected route with valid token
+            if not self.auth_token:
+                self.log_test("JWT Token Validation - Valid Token", False, "No valid auth token available")
+                return False
+                
+            response = self.session.get(f"{BACKEND_URL}/users/me")
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "id" in data and "email" in data:
+                    self.log_test("JWT Token Validation - Valid Token", True, f"Valid token accepted, user data retrieved: {data.get('email')}")
+                    return True
+                else:
+                    self.log_test("JWT Token Validation - Valid Token", False, "Invalid user data structure", data)
+                    return False
+            else:
+                self.log_test("JWT Token Validation - Valid Token", False, f"Status code: {response.status_code}", response.text)
+                return False
+            
+        except Exception as e:
+            self.log_test("JWT Token Validation", False, f"Exception: {str(e)}")
+            return False
+
+    def test_database_connection_resilience(self):
+        """Test database connection resilience as mentioned in the fix"""
+        try:
+            # Test multiple rapid authentication requests to verify connection stability
+            success_count = 0
+            total_requests = 5
+            
+            for i in range(total_requests):
+                login_data = {
+                    "email": "test-fix@actadiurna.com",
+                    "password": "TestFix123!"
+                }
+                
+                response = self.session.post(f"{BACKEND_URL}/auth/login", json=login_data)
+                
+                if response.status_code == 200:
+                    success_count += 1
+                    
+                time.sleep(0.2)  # Small delay between requests
+            
+            if success_count == total_requests:
+                self.log_test("Database Connection Resilience", True, f"All {total_requests} authentication requests succeeded - database connection stable")
+                return True
+            else:
+                self.log_test("Database Connection Resilience", False, f"Only {success_count}/{total_requests} requests succeeded")
+                return False
+                
+        except Exception as e:
+            self.log_test("Database Connection Resilience", False, f"Exception: {str(e)}")
+            return False
         """Test getting current user info"""
         try:
             if not self.auth_token:
