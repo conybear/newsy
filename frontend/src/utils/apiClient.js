@@ -1,7 +1,20 @@
 import axios from 'axios';
 
-// Create axios instance with better defaults
+// Get backend URL - works in both development and production
+const getBackendURL = () => {
+  // In production builds, environment variables are injected at build time
+  if (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL) {
+    return process.env.REACT_APP_BACKEND_URL;
+  }
+  
+  // Fallback for production when process is not available
+  // Since we're deployed on same domain, use relative paths
+  return window.location.origin + '/api';
+};
+
+// Create axios instance with backend URL
 const apiClient = axios.create({
+  baseURL: getBackendURL(),
   timeout: 10000, // 10 second timeout
 });
 
