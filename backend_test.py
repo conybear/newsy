@@ -130,12 +130,28 @@ class BackendTester:
     def test_user_login(self):
         """Test user login with existing credentials"""
         try:
-            # Try multiple possible credentials
+            # First try the fix credentials
+            login_data = {
+                "email": "test-fix@actadiurna.com",
+                "password": "TestFix123!"
+            }
+            
+            response = self.session.post(f"{BACKEND_URL}/auth/login", json=login_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "access_token" in data and "user" in data:
+                    self.auth_token = data["access_token"]
+                    self.session.headers.update({"Authorization": f"Bearer {self.auth_token}"})
+                    user_info = data["user"]
+                    self.log_test("User Login", True, f"Login successful with fix credentials. User: {user_info.get('full_name')} ({user_info.get('email')})")
+                    return True
+            
+            # Try other possible credentials if fix credentials don't work
             credentials_to_try = [
                 {"email": "sarah.johnson@newspaper.com", "password": "SecurePass123!"},
                 {"email": "sarah.johnson@example.com", "password": "SecurePass123!"},
-                {"email": "sarah.johnson@newspaper.com", "password": "password123"},
-                {"email": "sarah.johnson@example.com", "password": "password123"},
+                {"email": "test.user@newspaper.com", "password": "TestPass123!"},
             ]
             
             for login_data in credentials_to_try:
@@ -143,32 +159,12 @@ class BackendTester:
                 
                 if response.status_code == 200:
                     data = response.json()
-                    if "access_token" in data:
+                    if "access_token" in data and "user" in data:
                         self.auth_token = data["access_token"]
                         self.session.headers.update({"Authorization": f"Bearer {self.auth_token}"})
-                        self.log_test("User Login", True, f"Login successful with {login_data['email']}")
+                        user_info = data["user"]
+                        self.log_test("User Login", True, f"Login successful with {login_data['email']}. User: {user_info.get('full_name')}")
                         return True
-                    else:
-                        continue
-                else:
-                    continue
-            
-            # If all failed, try to register a new user
-            new_user_data = {
-                "email": "test.user@newspaper.com",
-                "password": "TestPass123!",
-                "full_name": "Test User"
-            }
-            
-            response = self.session.post(f"{BACKEND_URL}/auth/register", json=new_user_data)
-            
-            if response.status_code == 200:
-                data = response.json()
-                if "access_token" in data:
-                    self.auth_token = data["access_token"]
-                    self.session.headers.update({"Authorization": f"Bearer {self.auth_token}"})
-                    self.log_test("User Login", True, "Registered new user and logged in")
-                    return True
             
             self.log_test("User Login", False, "All login attempts failed")
             return False
