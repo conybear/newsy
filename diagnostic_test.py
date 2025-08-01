@@ -6,7 +6,7 @@ Quick diagnostic test to verify the current state of the bidirectional contribut
 import requests
 import json
 
-BACKEND_URL = "https://464d35f9-1da6-4f46-92d7-fc7b50272fb2.preview.emergentagent.com/api"
+BACKEND_URL = "https://e4f87101-35d9-4339-9777-88089f139507.preview.emergentagent.com/api"
 
 def test_current_state():
     """Test the current state with existing test credentials"""
