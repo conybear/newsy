@@ -287,6 +287,8 @@ class BackendTester:
         except Exception as e:
             self.log_test("Database Connection Resilience", False, f"Exception: {str(e)}")
             return False
+
+    def test_get_current_user(self):
         """Test getting current user info"""
         try:
             if not self.auth_token:
