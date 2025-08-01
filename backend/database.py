@@ -58,4 +58,11 @@ async def close_mongo_connection():
         database.client.close()
 
 def get_database():
+    if database.db is None:
+        # If db is None, try to reconnect
+        import asyncio
+        try:
+            asyncio.create_task(connect_to_mongo())
+        except:
+            pass
     return database.db
