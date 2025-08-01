@@ -1,0 +1,8 @@
+# Railway Frontend Configuration  
+[build]
+builder = "NIXPACKS"
+
+[build.nixpacks]
+install = "cd frontend && yarn install"
+build = "cd frontend && yarn build"
+start = "cd frontend && npx serve -s build -l $PORT"
