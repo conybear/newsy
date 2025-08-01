@@ -54,6 +54,14 @@ async def register(user_data: UserCreate):
     """Register a new user"""
     db = get_database()
     
+    # Ensure database connection
+    if db is None:
+        await connect_to_mongo()
+        db = get_database()
+        
+    if db is None:
+        raise HTTPException(status_code=500, detail="Database connection failed")
+    
     # Check if user already exists
     existing_user = await db.users.find_one({"email": user_data.email})
     if existing_user:
