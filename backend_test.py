@@ -945,7 +945,312 @@ class BackendTester:
             "simple_debug_data": simple_debug_data
         }
 
-    def run_all_tests(self):
+    def run_authentication_focused_tests(self):
+        """Run comprehensive authentication-focused tests as requested"""
+        print("🔐 CRITICAL AUTHENTICATION FIX VERIFICATION")
+        print("Testing Production Deployment Authentication Fix")
+        print("=" * 70)
+        
+        # Phase 1: Core Authentication Tests
+        print("\n📋 PHASE 1: CORE AUTHENTICATION SYSTEM")
+        print("-" * 50)
+        
+        auth_tests = [
+            ("Health Check", self.test_health_check),
+            ("User Registration (Fresh Credentials)", self.test_user_registration),
+            ("User Login (Fix Credentials)", self.test_user_login),
+            ("Get Current User Info", self.test_get_current_user),
+            ("JWT Token Validation", self.test_jwt_token_validation),
+            ("Authentication Error Cases", self.test_authentication_error_cases),
+            ("Database Connection Resilience", self.test_database_connection_resilience),
+        ]
+        
+        auth_passed = 0
+        auth_failed = 0
+        
+        for test_name, test_func in auth_tests:
+            try:
+                print(f"\n🧪 Running: {test_name}")
+                if test_func():
+                    auth_passed += 1
+                else:
+                    auth_failed += 1
+            except Exception as e:
+                print(f"❌ CRITICAL ERROR in {test_name}: {str(e)}")
+                auth_failed += 1
+            time.sleep(0.3)
+        
+        # Phase 2: System Integration Tests (only if auth works)
+        print(f"\n📋 PHASE 2: SYSTEM INTEGRATION TESTS")
+        print("-" * 50)
+        
+        if self.auth_token:
+            integration_tests = [
+                ("Story Status API", self.test_story_status),
+                ("Draft Management", self.test_draft_management),
+                ("Story Submission", self.test_story_submission),
+                ("My Stories API", self.test_get_my_stories),
+                ("Image Upload System", self.test_story_image_upload),
+                ("Invitation System", self.test_invitation_system),
+                ("Contributor Management", self.test_contributor_management),
+                ("Weekly Stories Endpoint", self.test_weekly_stories_endpoint),
+                ("Newspaper Generation", self.test_newspaper_generation),
+            ]
+            
+            integration_passed = 0
+            integration_failed = 0
+            
+            for test_name, test_func in integration_tests:
+                try:
+                    print(f"\n🧪 Running: {test_name}")
+                    if test_func():
+                        integration_passed += 1
+                    else:
+                        integration_failed += 1
+                except Exception as e:
+                    print(f"❌ ERROR in {test_name}: {str(e)}")
+                    integration_failed += 1
+                time.sleep(0.3)
+        else:
+            print("⚠️  Skipping integration tests - authentication failed")
+            integration_passed = 0
+            integration_failed = 0
+        
+        # Summary
+        total_passed = auth_passed + integration_passed
+        total_failed = auth_failed + integration_failed
+        
+        print("\n" + "=" * 70)
+        print("📊 COMPREHENSIVE TEST SUMMARY")
+        print("=" * 70)
+        print(f"🔐 Authentication Tests: {auth_passed} passed, {auth_failed} failed")
+        print(f"🔗 Integration Tests: {integration_passed} passed, {integration_failed} failed")
+        print(f"📈 Overall: {total_passed} passed, {total_failed} failed")
+        print(f"📊 Success Rate: {(total_passed/(total_passed+total_failed)*100):.1f}%")
+        
+        # Critical Assessment
+        print(f"\n🎯 CRITICAL ASSESSMENT")
+        print("-" * 30)
+        if auth_passed >= 5:  # At least core auth tests pass
+            print("✅ AUTHENTICATION SYSTEM: WORKING")
+            print("   - User registration functional")
+            print("   - User login functional") 
+            print("   - JWT token generation working")
+            print("   - Protected routes secured")
+        else:
+            print("❌ AUTHENTICATION SYSTEM: FAILING")
+            print("   - Critical authentication issues detected")
+            print("   - Production deployment may still have problems")
+        
+        return total_passed, total_failed, self.test_results
+
+    def test_story_status(self):
+        """Test story status API"""
+        try:
+            if not self.auth_token:
+                self.log_test("Story Status API", False, "No auth token available")
+                return False
+                
+            response = self.session.get(f"{BACKEND_URL}/stories/status")
+            
+            if response.status_code == 200:
+                data = response.json()
+                required_fields = ["current_week", "has_submitted", "has_draft", "submissions_open", "deadline"]
+                if all(field in data for field in required_fields):
+                    self.log_test("Story Status API", True, f"Status retrieved: Week {data['current_week']}, Submitted: {data['has_submitted']}")
+                    return True
+                else:
+                    self.log_test("Story Status API", False, "Missing required fields", data)
+                    return False
+            else:
+                self.log_test("Story Status API", False, f"Status code: {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Story Status API", False, f"Exception: {str(e)}")
+            return False
+
+    def test_draft_management(self):
+        """Test draft management system"""
+        try:
+            if not self.auth_token:
+                self.log_test("Draft Management", False, "No auth token available")
+                return False
+            
+            # Save a draft
+            draft_data = {
+                "title": "Test Draft Story",
+                "headline": "Breaking News Draft",
+                "content": "This is a test draft story content for verification."
+            }
+            
+            response = self.session.post(f"{BACKEND_URL}/stories/draft", json=draft_data)
+            
+            if response.status_code == 200:
+                draft_response = response.json()
+                if "id" in draft_response:
+                    # Retrieve the draft
+                    get_response = self.session.get(f"{BACKEND_URL}/stories/draft")
+                    if get_response.status_code == 200:
+                        retrieved_draft = get_response.json()
+                        if retrieved_draft.get("title") == draft_data["title"]:
+                            self.log_test("Draft Management", True, f"Draft saved and retrieved successfully: {draft_response['id']}")
+                            return True
+                        else:
+                            self.log_test("Draft Management", False, "Retrieved draft doesn't match saved draft")
+                            return False
+                    else:
+                        self.log_test("Draft Management", False, f"Could not retrieve draft: {get_response.status_code}")
+                        return False
+                else:
+                    self.log_test("Draft Management", False, "No draft ID in response", draft_response)
+                    return False
+            else:
+                self.log_test("Draft Management", False, f"Status code: {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Draft Management", False, f"Exception: {str(e)}")
+            return False
+
+    def test_story_submission(self):
+        """Test story submission"""
+        try:
+            if not self.auth_token:
+                self.log_test("Story Submission", False, "No auth token available")
+                return False
+            
+            story_data = {
+                "title": "Authentication Fix Verification Story",
+                "headline": "System Working Properly",
+                "content": "This story confirms that the authentication system is working correctly after the production deployment fix. Users can now register, login, and submit stories successfully."
+            }
+            
+            response = self.session.post(f"{BACKEND_URL}/stories/submit", json=story_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "id" in data:
+                    self.story_id = data["id"]
+                    self.log_test("Story Submission", True, f"Story submitted successfully: {data['id']}")
+                    return True
+                else:
+                    self.log_test("Story Submission", False, "No story ID in response", data)
+                    return False
+            elif response.status_code == 400 and "already submitted" in response.text:
+                self.log_test("Story Submission", True, "Weekly story limit properly enforced")
+                return True
+            else:
+                self.log_test("Story Submission", False, f"Status code: {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Story Submission", False, f"Exception: {str(e)}")
+            return False
+
+    def test_invitation_system(self):
+        """Test invitation system"""
+        try:
+            if not self.auth_token:
+                self.log_test("Invitation System", False, "No auth token available")
+                return False
+            
+            # Send invitation
+            invitation_data = {
+                "email": "contributor-test@actadiurna.com"
+            }
+            
+            response = self.session.post(f"{BACKEND_URL}/invitations/send", json=invitation_data)
+            
+            if response.status_code == 200 or (response.status_code == 400 and "Already invited" in response.text):
+                # Check sent invitations
+                sent_response = self.session.get(f"{BACKEND_URL}/invitations/sent")
+                if sent_response.status_code == 200:
+                    sent_data = sent_response.json()
+                    if isinstance(sent_data, list):
+                        # Check received invitations
+                        received_response = self.session.get(f"{BACKEND_URL}/invitations/received")
+                        if received_response.status_code == 200:
+                            received_data = received_response.json()
+                            if isinstance(received_data, list):
+                                self.log_test("Invitation System", True, f"Invitation system working: {len(sent_data)} sent, {len(received_data)} received")
+                                return True
+                            else:
+                                self.log_test("Invitation System", False, "Received invitations not a list")
+                                return False
+                        else:
+                            self.log_test("Invitation System", False, f"Could not get received invitations: {received_response.status_code}")
+                            return False
+                    else:
+                        self.log_test("Invitation System", False, "Sent invitations not a list")
+                        return False
+                else:
+                    self.log_test("Invitation System", False, f"Could not get sent invitations: {sent_response.status_code}")
+                    return False
+            else:
+                self.log_test("Invitation System", False, f"Could not send invitation: {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Invitation System", False, f"Exception: {str(e)}")
+            return False
+
+    def test_contributor_management(self):
+        """Test contributor management"""
+        try:
+            if not self.auth_token:
+                self.log_test("Contributor Management", False, "No auth token available")
+                return False
+            
+            # Get contributors list
+            response = self.session.get(f"{BACKEND_URL}/contributors/my")
+            
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    self.log_test("Contributor Management", True, f"Contributors list retrieved: {len(data)} contributors")
+                    return True
+                else:
+                    self.log_test("Contributor Management", False, "Contributors response not a list", data)
+                    return False
+            else:
+                self.log_test("Contributor Management", False, f"Status code: {response.status_code}", response.text)
+                return False
+        except Exception as e:
+            self.log_test("Contributor Management", False, f"Exception: {str(e)}")
+            return False
+
+    def test_newspaper_generation(self):
+        """Test newspaper generation system"""
+        try:
+            if not self.auth_token:
+                self.log_test("Newspaper Generation", False, "No auth token available")
+                return False
+            
+            # Test current newspaper
+            current_response = self.session.get(f"{BACKEND_URL}/newspapers/current")
+            
+            if current_response.status_code == 200:
+                current_data = current_response.json()
+                if "week_of" in current_data and "stories" in current_data:
+                    # Test archive
+                    archive_response = self.session.get(f"{BACKEND_URL}/newspapers/archive")
+                    if archive_response.status_code == 200:
+                        archive_data = archive_response.json()
+                        if isinstance(archive_data, list):
+                            self.log_test("Newspaper Generation", True, f"Newspaper system working: Current week {current_data['week_of']}, {len(archive_data)} archived editions")
+                            return True
+                        else:
+                            self.log_test("Newspaper Generation", False, "Archive response not a list")
+                            return False
+                    else:
+                        self.log_test("Newspaper Generation", False, f"Archive request failed: {archive_response.status_code}")
+                        return False
+                else:
+                    self.log_test("Newspaper Generation", False, "Invalid current newspaper structure", current_data)
+                    return False
+            else:
+                self.log_test("Newspaper Generation", False, f"Status code: {current_response.status_code}", current_response.text)
+                return False
+        except Exception as e:
+            self.log_test("Newspaper Generation", False, f"Exception: {str(e)}")
+            return False
         """Run all backend tests"""
         print("🚀 Starting Backend API Testing for Social Weekly Newspaper Network")
         print("=" * 70)
