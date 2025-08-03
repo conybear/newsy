@@ -10,8 +10,8 @@ export const useAuth = () => {
   return context;
 };
 
-// Simple API base URL - no complex logic
-const API_BASE = window.location.origin;
+// Simple API base URL - point to backend
+const API_BASE = 'http://localhost:8001';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
