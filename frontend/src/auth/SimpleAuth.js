@@ -10,8 +10,10 @@ export const useAuth = () => {
   return context;
 };
 
-// Simple API base URL - point to backend
-const API_BASE = 'http://localhost:8001';
+// Simple API base URL - works for both development and production
+const API_BASE = window.location.hostname === 'localhost' 
+  ? 'http://localhost:8001' 
+  : 'https://news-flipper.emergent.host';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
