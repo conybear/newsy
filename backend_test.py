@@ -218,6 +218,77 @@ class ActaDiurnaAPITester:
         """Test manually triggering chronicle sending"""
         return self.run_test("Send Chronicle Manually", "POST", "newsletter/send", 200)
 
+    # NEW DRAFT MANAGEMENT TESTS
+    def test_create_draft(self):
+        """Test creating a new draft with rich text content"""
+        test_draft = {
+            "title": f"Draft Story {datetime.now().strftime('%H:%M:%S')}",
+            "content": "<p>This is a <strong>bold</strong> test draft with <em>italic</em> and <u>underlined</u> text.</p>",
+            "author": "Test Author"
+        }
+        
+        success, response = self.run_test("Create Draft", "POST", "drafts", 201, data=test_draft)
+        if success and 'id' in response:
+            self.created_draft_id = response['id']
+            print(f"   Created draft with ID: {self.created_draft_id}")
+            # Verify rich text content is preserved
+            if "<strong>" in response.get('content', '') and "<em>" in response.get('content', ''):
+                print("✅ Rich text HTML formatting preserved in draft")
+            else:
+                print("⚠️  Rich text formatting may not be preserved")
+        return success, response
+
+    def test_get_drafts(self):
+        """Test getting all saved drafts"""
+        return self.run_test("Get All Drafts", "GET", "drafts", 200)
+
+    def test_update_draft(self):
+        """Test updating an existing draft"""
+        if not self.created_draft_id:
+            print("⚠️  No draft ID available for update test")
+            return False, {}
+            
+        updated_draft = {
+            "title": f"Updated Draft {datetime.now().strftime('%H:%M:%S')}",
+            "content": "<p>Updated content with <strong>new formatting</strong> and <em>different styles</em>.</p>",
+            "author": "Updated Author"
+        }
+        
+        success, response = self.run_test("Update Draft", "PUT", f"drafts/{self.created_draft_id}", 200, data=updated_draft)
+        if success:
+            # Verify updated_at timestamp changed
+            if 'updated_at' in response:
+                print("✅ Draft updated_at timestamp present")
+            else:
+                print("⚠️  Draft updated_at timestamp missing")
+        return success, response
+
+    def test_delete_draft(self):
+        """Test deleting a draft"""
+        if not self.created_draft_id:
+            print("⚠️  No draft ID available for delete test")
+            return False, {}
+            
+        success, response = self.run_test("Delete Draft", "DELETE", f"drafts/{self.created_draft_id}", 200)
+        return success, response
+
+    def test_draft_not_found(self):
+        """Test accessing non-existent draft"""
+        fake_id = str(uuid.uuid4())
+        success, response = self.run_test("Get Non-existent Draft", "GET", f"drafts/{fake_id}", 404)
+        return success, response
+
+    def test_create_draft_validation(self):
+        """Test draft creation with missing fields"""
+        # Test empty draft (should still work as drafts can be minimal)
+        minimal_draft = {
+            "title": "",
+            "content": "",
+            "author": ""
+        }
+        success, _ = self.run_test("Create Minimal Draft", "POST", "drafts", 201, data=minimal_draft)
+        return success
+
     def run_all_tests(self):
         """Run all API tests for Acta Diurna"""
         print("🚀 Starting Acta Diurna API Tests")
