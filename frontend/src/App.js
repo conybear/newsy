@@ -147,15 +147,107 @@ const SubmitStory = () => {
     content: '',
     author: ''
   });
+  const [drafts, setDrafts] = useState([]);
+  const [selectedDraft, setSelectedDraft] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [draftLoading, setDraftLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [draftSuccess, setDraftSuccess] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchDrafts();
+  }, []);
+
+  const fetchDrafts = async () => {
+    try {
+      const response = await axios.get(`${API}/drafts`);
+      setDrafts(response.data);
+    } catch (error) {
+      console.error('Error fetching drafts:', error);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleContentChange = (content) => {
+    setFormData({
+      ...formData,
+      content: content
+    });
+  };
+
+  const formatText = (command) => {
+    document.execCommand(command, false, null);
+    const content = document.getElementById('contentEditor').innerHTML;
+    handleContentChange(content);
+  };
+
+  const handleEditorInput = () => {
+    const content = document.getElementById('contentEditor').innerHTML;
+    handleContentChange(content);
+  };
+
+  const loadDraft = async (draftId) => {
+    const draft = drafts.find(d => d.id === draftId);
+    if (draft) {
+      setFormData({
+        title: draft.title,
+        content: draft.content,
+        author: draft.author
+      });
+      setSelectedDraft(draftId);
+      // Update the editor content
+      document.getElementById('contentEditor').innerHTML = draft.content;
+    }
+  };
+
+  const saveDraft = async () => {
+    if (!formData.title && !formData.content) {
+      setError('Please add some content before saving a draft');
+      return;
+    }
+
+    try {
+      setDraftLoading(true);
+      setError(null);
+      
+      if (selectedDraft) {
+        // Update existing draft
+        await axios.put(`${API}/drafts/${selectedDraft}`, formData);
+      } else {
+        // Create new draft
+        await axios.post(`${API}/drafts`, formData);
+      }
+      
+      setDraftSuccess(true);
+      setTimeout(() => setDraftSuccess(false), 3000);
+      await fetchDrafts(); // Refresh drafts list
+    } catch (error) {
+      console.error('Error saving draft:', error);
+      setError('Failed to save draft. Please try again.');
+    } finally {
+      setDraftLoading(false);
+    }
+  };
+
+  const deleteDraft = async (draftId) => {
+    try {
+      await axios.delete(`${API}/drafts/${draftId}`);
+      await fetchDrafts(); // Refresh drafts list
+      if (selectedDraft === draftId) {
+        setSelectedDraft(null);
+        setFormData({ title: '', content: '', author: '' });
+        document.getElementById('contentEditor').innerHTML = '';
+      }
+    } catch (error) {
+      console.error('Error deleting draft:', error);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -171,6 +263,12 @@ const SubmitStory = () => {
       await axios.post(`${API}/stories`, formData);
       setSuccess(true);
       setFormData({ title: '', content: '', author: '' });
+      document.getElementById('contentEditor').innerHTML = '';
+      
+      // Delete draft if it was loaded
+      if (selectedDraft) {
+        await deleteDraft(selectedDraft);
+      }
     } catch (error) {
       console.error('Error submitting story:', error);
       setError('Failed to submit story. Please try again.');
