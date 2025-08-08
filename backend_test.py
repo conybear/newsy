@@ -30,6 +30,8 @@ class ActaDiurnaAPITester:
                 response = requests.post(url, json=data, headers=headers, timeout=10)
             elif method == 'DELETE':
                 response = requests.delete(url, headers=headers, timeout=10)
+            elif method == 'PUT':
+                response = requests.put(url, json=data, headers=headers, timeout=10)
 
             print(f"   Status Code: {response.status_code}")
             
