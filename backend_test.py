@@ -305,6 +305,16 @@ class ActaDiurnaAPITester:
         self.test_create_story_anonymous()
         self.test_create_story_validation()
         
+        # NEW: Draft Management Tests (PRIORITY for rich text editor)
+        print("\n📝 PRIORITY: Testing Draft Management System")
+        print("-" * 50)
+        self.test_create_draft()
+        self.test_get_drafts()
+        self.test_update_draft()
+        self.test_delete_draft()
+        self.test_draft_not_found()
+        self.test_create_draft_validation()
+        
         # NEW: Invite friends functionality tests (PRIORITY)
         print("\n🎯 PRIORITY: Testing Invite Friends Functionality")
         print("-" * 50)
