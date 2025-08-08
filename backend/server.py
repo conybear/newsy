@@ -24,7 +24,7 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 # Create the main app without a prefix
-app = FastAPI(title="Newsy - Digital Newspaper Platform")
+app = FastAPI(title="Acta Diurna - Personal Daily Chronicle")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -53,6 +53,14 @@ class Subscriber(BaseModel):
 class SubscriberCreate(BaseModel):
     email: EmailStr
 
+class InviteFriends(BaseModel):
+    emails: List[EmailStr]
+    message: Optional[str] = "You've been invited to join Acta Diurna!"
+
+class InviteResponse(BaseModel):
+    message: str
+    sent_count: int
+
 class NewsletterResponse(BaseModel):
     message: str
     story_count: int
@@ -68,18 +76,18 @@ async def get_weekly_stories():
     return [Story(**story) for story in stories]
 
 def compile_newspaper_flipbook(stories: List[Story]) -> str:
-    """Generate flipbook-style HTML for weekly newspaper"""
+    """Generate flipbook-style HTML for weekly chronicle"""
     flipbook_html = """
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Weekly Newspaper - Flipbook Edition</title>
+        <title>Weekly Chronicle - Acta Diurna</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             body {
                 font-family: 'Georgia', serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
                 margin: 0;
                 padding: 20px;
                 min-height: 100vh;
@@ -93,7 +101,7 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
                 overflow: hidden;
             }
             .header {
-                background: #2c3e50;
+                background: #92400e;
                 color: white;
                 text-align: center;
                 padding: 30px 20px;
@@ -104,10 +112,15 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
                 font-size: 2.5em;
                 text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             }
+            .header .subtitle {
+                margin-top: 10px;
+                font-size: 1.2em;
+                opacity: 0.9;
+            }
             .header .date {
                 margin-top: 10px;
                 font-size: 1.1em;
-                opacity: 0.9;
+                opacity: 0.8;
             }
             .flipbook {
                 position: relative;
@@ -122,8 +135,8 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
                 display: block;
             }
             .page h2 {
-                color: #2c3e50;
-                border-bottom: 3px solid #3498db;
+                color: #92400e;
+                border-bottom: 3px solid #f59e0b;
                 padding-bottom: 10px;
                 margin-bottom: 20px;
                 font-size: 1.8em;
@@ -136,22 +149,31 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
                 justify-content: space-between;
                 align-items: center;
             }
+            .page .author {
+                background: #fef3c7;
+                color: #92400e;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.9em;
+                font-weight: 500;
+            }
             .page .content {
                 line-height: 1.8;
                 font-size: 1.1em;
                 text-align: justify;
                 margin-bottom: 30px;
+                color: #374151;
             }
             .navigation {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 padding: 20px 40px;
-                background: #ecf0f1;
-                border-top: 1px solid #ddd;
+                background: #fef3c7;
+                border-top: 1px solid #f59e0b;
             }
             .nav-btn {
-                background: #3498db;
+                background: #f59e0b;
                 color: white;
                 border: none;
                 padding: 12px 24px;
@@ -160,9 +182,10 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
                 font-size: 1em;
                 transition: all 0.3s ease;
                 box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                font-weight: 600;
             }
             .nav-btn:hover:not(:disabled) {
-                background: #2980b9;
+                background: #d97706;
                 transform: translateY(-2px);
                 box-shadow: 0 6px 12px rgba(0,0,0,0.3);
             }
@@ -173,7 +196,7 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
                 box-shadow: none;
             }
             .page-indicator {
-                background: #34495e;
+                background: #92400e;
                 color: white;
                 padding: 8px 16px;
                 border-radius: 20px;
@@ -187,6 +210,16 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
             .no-stories h3 {
                 font-size: 1.5em;
                 margin-bottom: 10px;
+                color: #92400e;
+            }
+            .friends-badge {
+                display: inline-block;
+                background: #fef3c7;
+                color: #92400e;
+                padding: 4px 12px;
+                border-radius: 15px;
+                font-size: 0.8em;
+                margin-top: 10px;
             }
             @keyframes fadeIn {
                 from { opacity: 0; transform: translateY(20px); }
@@ -206,14 +239,21 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
                 .header h1 {
                     font-size: 2em;
                 }
+                .page .meta {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 8px;
+                }
             }
         </style>
     </head>
     <body>
         <div class="flipbook-container">
             <div class="header">
-                <h1>📰 Weekly Newspaper</h1>
-                <div class="date">Flipbook Edition - """ + datetime.now().strftime("%B %d, %Y") + """</div>
+                <h1>📜 Acta Diurna</h1>
+                <div class="subtitle">Weekly Chronicle</div>
+                <div class="date">""" + datetime.now().strftime("%B %d, %Y") + """</div>
+                <div class="friends-badge">Stories from Friends</div>
             </div>
             <div class="flipbook">
     """
@@ -221,8 +261,9 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
     if not stories:
         flipbook_html += '''
             <div class="page active no-stories">
-                <h3>No stories this week</h3>
-                <p>Check back next week for new stories!</p>
+                <h3>No stories this week from your circle</h3>
+                <p>Encourage your friends to share their experiences and thoughts!</p>
+                <p style="color: #92400e; font-weight: 500;">Remember: Only invited friends can share stories in your Acta Diurna.</p>
             </div>
         '''
     else:
@@ -232,8 +273,8 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
             <div class="page {active_class}">
                 <h2>{story.title}</h2>
                 <div class="meta">
-                    <span><strong>By:</strong> {story.author}</span>
-                    <span><strong>Published:</strong> {story.timestamp.strftime("%B %d, %Y at %I:%M %p")}</span>
+                    <div class="author">📝 {story.author}</div>
+                    <span><strong>Shared:</strong> {story.timestamp.strftime("%B %d, %Y at %I:%M %p")}</span>
                 </div>
                 <div class="content">
                     {story.content}
@@ -297,8 +338,95 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
     '''
     return flipbook_html
 
+async def send_friend_invitations(emails: List[str], custom_message: str = ""):
+    """Send invitation emails to friends"""
+    try:
+        # Email configuration
+        sender_email = os.environ.get('NEWSLETTER_EMAIL', 'your_email@example.com')
+        sender_password = os.environ.get('NEWSLETTER_PASSWORD', 'your_email_password')
+        smtp_server = os.environ.get('SMTP_SERVER', 'smtp.gmail.com')
+        smtp_port = int(os.environ.get('SMTP_PORT', '587'))
+        
+        sent_count = 0
+        
+        for email in emails:
+            try:
+                message = MIMEMultipart("alternative")
+                message["Subject"] = "You're Invited to Join Acta Diurna - Your Friends' Chronicle!"
+                message["From"] = sender_email
+                message["To"] = email
+                
+                # Create invitation HTML
+                invitation_html = f"""
+                <html>
+                <head>
+                    <style>
+                        body {{ font-family: Georgia, serif; line-height: 1.6; color: #374151; }}
+                        .container {{ max-width: 600px; margin: 0 auto; background: white; }}
+                        .header {{ background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; padding: 30px; text-align: center; }}
+                        .content {{ padding: 30px; }}
+                        .button {{ background: #f59e0b; color: white; padding: 12px 24px; text-decoration: none; border-radius: 25px; display: inline-block; font-weight: bold; }}
+                        .footer {{ background: #fef3c7; padding: 20px; text-align: center; color: #92400e; }}
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>📜 Acta Diurna</h1>
+                            <p>You've been invited to join a private chronicle!</p>
+                        </div>
+                        <div class="content">
+                            <h2>Welcome to Your Circle of Friends</h2>
+                            <p>A friend has invited you to join their Acta Diurna - a private daily chronicle where close friends share stories, experiences, and thoughts.</p>
+                            
+                            <h3>What is Acta Diurna?</h3>
+                            <ul>
+                                <li>📝 Share personal stories and experiences with trusted friends</li>
+                                <li>📖 Read stories from your circle in an interactive flipbook format</li>
+                                <li>📧 Receive weekly chronicles with all your friends' stories</li>
+                                <li>👥 Private and secure - only invited friends can participate</li>
+                            </ul>
+                            
+                            {f'<p><strong>Personal message:</strong> {custom_message}</p>' if custom_message else ''}
+                            
+                            <p style="text-align: center; margin: 30px 0;">
+                                <a href="https://dddc6d0c-9b98-4632-81b7-760632b6b5b6.preview.emergentagent.com" class="button">
+                                    Join Your Circle
+                                </a>
+                            </p>
+                            
+                            <p><em>Start sharing your stories and stay connected with your friends in a meaningful way.</em></p>
+                        </div>
+                        <div class="footer">
+                            <p>Acta Diurna - Where Friends Share Stories</p>
+                            <p style="font-size: 0.9em;">This is a private invitation. Only invited members can access your circle.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """
+                
+                message.attach(MIMEText(invitation_html, "html"))
+                
+                with smtplib.SMTP(smtp_server, smtp_port) as server:
+                    server.starttls()
+                    server.login(sender_email, sender_password)
+                    server.sendmail(sender_email, email, message.as_string())
+                    
+                sent_count += 1
+                logging.info(f"Invitation sent to {email}")
+                
+            except Exception as e:
+                logging.error(f"Failed to send invitation to {email}: {str(e)}")
+                
+        return sent_count
+        
+    except Exception as e:
+        logging.error(f"Invitation sending failed: {str(e)}")
+        return 0
+
 async def send_newsletter():
-    """Send weekly newsletter to all subscribers"""
+    """Send weekly chronicle to all subscribers"""
     try:
         # Get weekly stories
         weekly_stories = await get_weekly_stories()
@@ -308,13 +436,13 @@ async def send_newsletter():
         subscribers = await cursor.to_list(1000)
         
         if not subscribers:
-            logging.info("No subscribers found for newsletter")
+            logging.info("No subscribers found for chronicle")
             return
         
-        # Generate newsletter content
+        # Generate chronicle content
         newsletter_content = compile_newspaper_flipbook(weekly_stories)
         
-        # Email configuration (you'll need to set these in .env)
+        # Email configuration
         sender_email = os.environ.get('NEWSLETTER_EMAIL', 'your_email@example.com')
         sender_password = os.environ.get('NEWSLETTER_PASSWORD', 'your_email_password')
         smtp_server = os.environ.get('SMTP_SERVER', 'smtp.gmail.com')
@@ -324,7 +452,7 @@ async def send_newsletter():
         for subscriber in subscribers:
             try:
                 message = MIMEMultipart("alternative")
-                message["Subject"] = "Weekly Newspaper - Flipbook Edition"
+                message["Subject"] = "Your Weekly Chronicle - Stories from Friends"
                 message["From"] = sender_email
                 message["To"] = subscriber['email']
                 
@@ -335,22 +463,22 @@ async def send_newsletter():
                     server.login(sender_email, sender_password)
                     server.sendmail(sender_email, subscriber['email'], message.as_string())
                     
-                logging.info(f"Newsletter sent to {subscriber['email']}")
+                logging.info(f"Chronicle sent to {subscriber['email']}")
                 
             except Exception as e:
-                logging.error(f"Failed to send newsletter to {subscriber['email']}: {str(e)}")
+                logging.error(f"Failed to send chronicle to {subscriber['email']}: {str(e)}")
                 
     except Exception as e:
-        logging.error(f"Newsletter sending failed: {str(e)}")
+        logging.error(f"Chronicle sending failed: {str(e)}")
 
 # API Routes
 @api_router.get("/")
 async def root():
-    return {"message": "Welcome to Newsy - Digital Newspaper Platform"}
+    return {"message": "Welcome to Acta Diurna - Your Personal Daily Chronicle"}
 
 @api_router.post("/stories", response_model=Story)
 async def create_story(story_input: StoryCreate):
-    """Submit a new story"""
+    """Share a new story with friends"""
     story_dict = story_input.dict()
     story = Story(**story_dict)
     
@@ -359,27 +487,43 @@ async def create_story(story_input: StoryCreate):
 
 @api_router.get("/stories", response_model=List[Story])
 async def get_stories(limit: int = 50, skip: int = 0):
-    """Get all stories with pagination"""
+    """Get all stories from friends with pagination"""
     cursor = db.stories.find().sort("timestamp", -1).skip(skip).limit(limit)
     stories = await cursor.to_list(limit)
     return [Story(**story) for story in stories]
 
 @api_router.get("/stories/weekly", response_model=List[Story])
 async def get_weekly_stories_endpoint():
-    """Get stories from the past week"""
+    """Get stories from friends from the past week"""
     return await get_weekly_stories()
 
 @api_router.get("/newspaper/flipbook")
 async def get_flipbook_newspaper():
-    """Get the flipbook version of weekly newspaper"""
+    """Get the flipbook version of weekly chronicle"""
     from starlette.responses import HTMLResponse
     weekly_stories = await get_weekly_stories()
     flipbook_html = compile_newspaper_flipbook(weekly_stories)
     return HTMLResponse(content=flipbook_html)
 
+@api_router.post("/invite-friends", response_model=InviteResponse)
+async def invite_friends(invite_data: InviteFriends):
+    """Send invitations to friends to join your circle"""
+    if len(invite_data.emails) > 50:
+        raise HTTPException(status_code=400, detail="Cannot invite more than 50 friends at once")
+    
+    sent_count = await send_friend_invitations(
+        [email.lower() for email in invite_data.emails],
+        invite_data.message
+    )
+    
+    return InviteResponse(
+        message=f"Successfully sent {sent_count} invitation(s)",
+        sent_count=sent_count
+    )
+
 @api_router.post("/subscribe", response_model=Subscriber)
-async def subscribe_to_newsletter(subscriber_input: SubscriberCreate):
-    """Subscribe to newsletter"""
+async def subscribe_to_chronicle(subscriber_input: SubscriberCreate):
+    """Subscribe to weekly chronicle"""
     # Check if email already exists
     existing = await db.subscribers.find_one({"email": subscriber_input.email})
     if existing:
@@ -390,8 +534,8 @@ async def subscribe_to_newsletter(subscriber_input: SubscriberCreate):
     return subscriber
 
 @api_router.delete("/unsubscribe/{email}")
-async def unsubscribe_from_newsletter(email: str):
-    """Unsubscribe from newsletter"""
+async def unsubscribe_from_chronicle(email: str):
+    """Unsubscribe from chronicle"""
     result = await db.subscribers.delete_one({"email": email})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Email not found")
@@ -406,11 +550,11 @@ async def get_subscribers():
 
 @api_router.post("/newsletter/send")
 async def send_newsletter_manually():
-    """Manually trigger newsletter sending"""
+    """Manually trigger chronicle sending"""
     await send_newsletter()
     weekly_stories = await get_weekly_stories()
     return NewsletterResponse(
-        message="Newsletter sent successfully",
+        message="Chronicle sent successfully",
         story_count=len(weekly_stories)
     )
 
@@ -435,7 +579,7 @@ logger = logging.getLogger(__name__)
 @app.on_event("startup")
 async def startup_event():
     """Initialize scheduler on startup"""
-    # Schedule weekly newsletter (every Monday at 9 AM)
+    # Schedule weekly chronicle (every Monday at 9 AM)
     scheduler.add_job(
         send_newsletter,
         'cron',
@@ -444,7 +588,7 @@ async def startup_event():
         minute=0
     )
     scheduler.start()
-    logger.info("Newsletter scheduler started")
+    logger.info("Chronicle scheduler started")
 
 @app.on_event("shutdown")
 async def shutdown_event():
