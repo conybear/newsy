@@ -305,81 +305,177 @@ const SubmitStory = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
-      <div className="max-w-2xl mx-auto px-6 py-12">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Share Your Story</h1>
-          <p className="text-gray-600 mb-8">Share your experiences, thoughts, or news with your circle of friends</p>
-
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
-              {error}
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <div className="grid lg:grid-cols-3 gap-8">
+          
+          {/* Drafts Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow-lg p-6 sticky top-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-4">📝 Saved Drafts</h3>
+              
+              {drafts.length === 0 ? (
+                <p className="text-gray-500 text-sm">No saved drafts yet</p>
+              ) : (
+                <div className="space-y-3">
+                  {drafts.map((draft) => (
+                    <div key={draft.id} className="border border-gray-200 rounded-lg p-3 hover:border-amber-300 transition-colors">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 cursor-pointer" onClick={() => loadDraft(draft.id)}>
+                          <h4 className="font-semibold text-sm text-gray-800 mb-1 line-clamp-1">
+                            {draft.title || 'Untitled Draft'}
+                          </h4>
+                          <p className="text-xs text-gray-500 mb-1">
+                            By {draft.author || 'Anonymous'}
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            {new Date(draft.updated_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => deleteDraft(draft.id)}
+                          className="text-red-400 hover:text-red-600 ml-2"
+                          title="Delete draft"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                      {selectedDraft === draft.id && (
+                        <div className="mt-2 px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded">
+                          Currently editing
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                Story Title *
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                placeholder="What happened? Give your story a compelling title"
-                required
-              />
-            </div>
+          {/* Main Form */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">Share Your Story</h1>
+              <p className="text-gray-600 mb-8">Share your experiences, thoughts, or news with your circle of friends</p>
 
-            <div>
-              <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
-                Your Name
-              </label>
-              <input
-                type="text"
-                id="author"
-                name="author"
-                value={formData.author}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                placeholder="Your name (optional - defaults to Anonymous)"
-              />
-            </div>
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+                  {error}
+                </div>
+              )}
 
-            <div>
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-                Your Story *
-              </label>
-              <textarea
-                id="content"
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                rows={10}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-y"
-                placeholder="Share your story with your friends... What happened? How did it make you feel? What did you learn?"
-                required
-              />
-            </div>
+              {draftSuccess && (
+                <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700">
+                  Draft saved successfully!
+                </div>
+              )}
 
-            <div className="flex gap-4">
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex-1 px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {loading ? 'Sharing...' : 'Share Story'}
-              </button>
-              <Link
-                to="/"
-                className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-center"
-              >
-                Cancel
-              </Link>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                    Story Title *
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="What happened? Give your story a compelling title"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
+                    Your Name
+                  </label>
+                  <input
+                    type="text"
+                    id="author"
+                    name="author"
+                    value={formData.author}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="Your name (optional - defaults to Anonymous)"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+                    Your Story *
+                  </label>
+                  
+                  {/* Rich Text Editor Toolbar */}
+                  <div className="border border-gray-300 rounded-t-lg bg-gray-50 px-4 py-2 flex items-center space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => formatText('bold')}
+                      className="px-3 py-1 bg-white border border-gray-300 rounded text-sm font-bold hover:bg-gray-100"
+                      title="Bold"
+                    >
+                      B
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => formatText('italic')}
+                      className="px-3 py-1 bg-white border border-gray-300 rounded text-sm italic hover:bg-gray-100"
+                      title="Italic"
+                    >
+                      I
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => formatText('underline')}
+                      className="px-3 py-1 bg-white border border-gray-300 rounded text-sm underline hover:bg-gray-100"
+                      title="Underline"
+                    >
+                      U
+                    </button>
+                    <div className="text-gray-400 text-xs ml-4">
+                      Select text and click formatting buttons
+                    </div>
+                  </div>
+                  
+                  {/* Rich Text Editor */}
+                  <div
+                    id="contentEditor"
+                    contentEditable
+                    onInput={handleEditorInput}
+                    className="w-full min-h-[300px] px-4 py-3 border-l border-r border-b border-gray-300 rounded-b-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-y overflow-y-auto"
+                    style={{ outline: 'none' }}
+                    data-placeholder="Share your story with your friends... What happened? How did it make you feel? What did you learn?"
+                  />
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
+                  >
+                    {loading ? 'Sharing...' : 'Share Story'}
+                  </button>
+                  
+                  <button
+                    type="button"
+                    onClick={saveDraft}
+                    disabled={draftLoading}
+                    className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {draftLoading ? 'Saving...' : 'Save Draft'}
+                  </button>
+                  
+                  <Link
+                    to="/"
+                    className="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-center"
+                  >
+                    Cancel
+                  </Link>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
