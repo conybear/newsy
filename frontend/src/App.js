@@ -32,7 +32,7 @@ const HomePage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600"></div>
       </div>
     );
   }
@@ -45,7 +45,7 @@ const HomePage = () => {
           <p className="text-gray-600">{error}</p>
           <button
             onClick={fetchStories}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="mt-4 px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
           >
             Try Again
           </button>
@@ -55,13 +55,13 @@ const HomePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
+      <div className="bg-gradient-to-r from-amber-600 to-orange-700 text-white py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-6">📰 Newsy</h1>
-          <p className="text-xl mb-8 opacity-90">Your Digital Newspaper Platform</p>
-          <p className="text-lg opacity-80">Share stories, read the latest news, and stay informed</p>
+          <h1 className="text-5xl font-bold mb-6">📜 Acta Diurna</h1>
+          <p className="text-xl mb-8 opacity-90">Your Personal Daily Chronicle</p>
+          <p className="text-lg opacity-80">Share stories and read the latest news from your friends</p>
         </div>
       </div>
 
@@ -69,16 +69,19 @@ const HomePage = () => {
       <div className="bg-white shadow-lg">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <nav className="flex space-x-8">
-            <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">
-              Latest Stories
+            <Link to="/" className="text-amber-600 hover:text-amber-800 font-medium">
+              Friend Stories
             </Link>
-            <Link to="/submit" className="text-gray-600 hover:text-blue-800 font-medium">
-              Submit Story
+            <Link to="/submit" className="text-gray-600 hover:text-amber-800 font-medium">
+              Share Story
             </Link>
-            <Link to="/flipbook" className="text-gray-600 hover:text-blue-800 font-medium">
-              Weekly Flipbook
+            <Link to="/flipbook" className="text-gray-600 hover:text-amber-800 font-medium">
+              Weekly Chronicle
             </Link>
-            <Link to="/subscribe" className="text-gray-600 hover:text-blue-800 font-medium">
+            <Link to="/invite" className="text-gray-600 hover:text-amber-800 font-medium">
+              Invite Friends
+            </Link>
+            <Link to="/subscribe" className="text-gray-600 hover:text-amber-800 font-medium">
               Subscribe
             </Link>
           </nav>
@@ -88,26 +91,34 @@ const HomePage = () => {
       {/* Stories Section */}
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Latest Stories</h2>
-          <p className="text-gray-600">Discover the most recent stories from our community</p>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">Latest Stories from Friends</h2>
+          <p className="text-gray-600">Discover the most recent stories shared by your circle of friends</p>
         </div>
 
         {stories.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">📝</div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">No stories yet</h3>
-            <p className="text-gray-500 mb-6">Be the first to share a story!</p>
-            <Link
-              to="/submit"
-              className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Submit Your Story
-            </Link>
+            <div className="text-6xl mb-4">📖</div>
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">No stories yet from your friends</h3>
+            <p className="text-gray-500 mb-6">Be the first to share a story with your circle!</p>
+            <div className="space-x-4">
+              <Link
+                to="/submit"
+                className="inline-block px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
+              >
+                Share Your Story
+              </Link>
+              <Link
+                to="/invite"
+                className="inline-block px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+              >
+                Invite Friends
+              </Link>
+            </div>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {stories.map((story) => (
-              <div key={story.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div key={story.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow story-card">
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
                     {story.title}
@@ -170,15 +181,15 @@ const SubmitStory = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 flex items-center justify-center">
         <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md">
           <div className="text-6xl mb-4">✅</div>
-          <h2 className="text-2xl font-bold text-green-600 mb-4">Story Submitted!</h2>
-          <p className="text-gray-600 mb-6">Your story has been successfully submitted and will appear in the latest stories.</p>
+          <h2 className="text-2xl font-bold text-green-600 mb-4">Story Shared!</h2>
+          <p className="text-gray-600 mb-6">Your story has been successfully shared and will appear in your friends' chronicles.</p>
           <div className="space-y-3">
             <Link
               to="/"
-              className="block w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="block w-full px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
             >
               View All Stories
             </Link>
@@ -186,7 +197,7 @@ const SubmitStory = () => {
               onClick={() => setSuccess(false)}
               className="block w-full px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
             >
-              Submit Another Story
+              Share Another Story
             </button>
           </div>
         </div>
@@ -195,11 +206,11 @@ const SubmitStory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       <div className="max-w-2xl mx-auto px-6 py-12">
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Submit Your Story</h1>
-          <p className="text-gray-600 mb-8">Share your news, experiences, or insights with our community</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Share Your Story</h1>
+          <p className="text-gray-600 mb-8">Share your experiences, thoughts, or news with your circle of friends</p>
 
           {error && (
             <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
@@ -218,15 +229,15 @@ const SubmitStory = () => {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter an engaging title for your story"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                placeholder="What happened? Give your story a compelling title"
                 required
               />
             </div>
 
             <div>
               <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
-                Author Name
+                Your Name
               </label>
               <input
                 type="text"
@@ -234,14 +245,14 @@ const SubmitStory = () => {
                 name="author"
                 value={formData.author}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                 placeholder="Your name (optional - defaults to Anonymous)"
               />
             </div>
 
             <div>
               <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-                Story Content *
+                Your Story *
               </label>
               <textarea
                 id="content"
@@ -249,8 +260,8 @@ const SubmitStory = () => {
                 value={formData.content}
                 onChange={handleChange}
                 rows={10}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
-                placeholder="Tell your story... What happened? Who was involved? When did it occur? Where did it take place? Why is it important?"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-y"
+                placeholder="Share your story with your friends... What happened? How did it make you feel? What did you learn?"
                 required
               />
             </div>
@@ -259,9 +270,9 @@ const SubmitStory = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {loading ? 'Submitting...' : 'Submit Story'}
+                {loading ? 'Sharing...' : 'Share Story'}
               </button>
               <Link
                 to="/"
@@ -303,7 +314,7 @@ const Flipbook = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600"></div>
       </div>
     );
   }
@@ -320,32 +331,32 @@ const Flipbook = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">📖 Weekly Flipbook</h1>
-          <p className="text-xl text-gray-600">Experience this week's stories in an interactive flipbook format</p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">📜 Weekly Chronicle</h1>
+          <p className="text-xl text-gray-600">Experience this week's stories from your friends in an interactive chronicle format</p>
         </div>
 
         <div className="bg-white rounded-lg shadow-xl p-8 text-center">
           <div className="mb-8">
-            <div className="text-8xl mb-4">📰</div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Interactive Newspaper Experience</h2>
+            <div className="text-8xl mb-4">📖</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Friends' Weekly Chronicle</h2>
             <p className="text-gray-600 mb-8">
-              Click below to open this week's newspaper in a beautiful flipbook format. 
-              Use the navigation buttons or keyboard arrow keys to flip through pages.
+              Click below to open this week's collection of stories from your circle of friends. 
+              Navigate through pages using the buttons or keyboard arrow keys to read each story.
             </p>
           </div>
 
           <div className="space-y-4">
             <button
               onClick={openFlipbook}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg text-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg"
+              className="px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-lg text-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all transform hover:scale-105 shadow-lg"
             >
-              Open Weekly Flipbook
+              Open Weekly Chronicle
             </button>
             <p className="text-sm text-gray-500">
-              The flipbook will open in a new tab for the best reading experience
+              The chronicle will open in a new tab for the best reading experience
             </p>
           </div>
         </div>
@@ -362,9 +373,207 @@ const Flipbook = () => {
             <p className="text-gray-600 text-sm">Optimized for all screen sizes</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="text-3xl mb-3">🎨</div>
-            <h3 className="font-semibold text-gray-800 mb-2">Beautiful Design</h3>
-            <p className="text-gray-600 text-sm">Elegant newspaper-style layout</p>
+            <div className="text-3xl mb-3">👥</div>
+            <h3 className="font-semibold text-gray-800 mb-2">Friends Only</h3>
+            <p className="text-gray-600 text-sm">Stories from your invited circle</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Invite Friends Component
+const InviteFriends = () => {
+  const [emails, setEmails] = useState(['']);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const [successCount, setSuccessCount] = useState(0);
+
+  const addEmailField = () => {
+    if (emails.length < 50) {
+      setEmails([...emails, '']);
+    }
+  };
+
+  const removeEmailField = (index) => {
+    const newEmails = emails.filter((_, i) => i !== index);
+    setEmails(newEmails.length > 0 ? newEmails : ['']);
+  };
+
+  const handleEmailChange = (index, value) => {
+    const newEmails = [...emails];
+    newEmails[index] = value;
+    setEmails(newEmails);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validEmails = emails.filter(email => email.trim() && email.includes('@'));
+    
+    if (validEmails.length === 0) {
+      setError('Please enter at least one valid email address');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const inviteData = {
+        emails: validEmails,
+        message: "You've been invited to join Acta Diurna, a private chronicle where friends share stories!"
+      };
+      
+      const response = await axios.post(`${API}/invite-friends`, inviteData);
+      setSuccessCount(response.data.sent_count);
+      setSuccess(true);
+      setEmails(['']);
+    } catch (error) {
+      console.error('Error sending invites:', error);
+      setError('Failed to send invitations. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const importFromText = (text) => {
+    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+    const extractedEmails = text.match(emailRegex) || [];
+    const uniqueEmails = [...new Set(extractedEmails)].slice(0, 50);
+    setEmails(uniqueEmails.length > 0 ? uniqueEmails : ['']);
+  };
+
+  if (success) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md">
+          <div className="text-6xl mb-4">🎉</div>
+          <h2 className="text-2xl font-bold text-green-600 mb-4">Invitations Sent!</h2>
+          <p className="text-gray-600 mb-6">
+            Successfully sent {successCount} invitation{successCount !== 1 ? 's' : ''} to your friends. 
+            They'll receive an email with instructions to join your Acta Diurna circle.
+          </p>
+          <div className="space-y-3">
+            <Link
+              to="/"
+              className="block w-full px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
+            >
+              Back to Stories
+            </Link>
+            <button
+              onClick={() => setSuccess(false)}
+              className="block w-full px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+            >
+              Invite More Friends
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-4">👥</div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">Invite Friends to Your Circle</h1>
+            <p className="text-gray-600">
+              Invite up to 50 friends to join your private Acta Diurna chronicle. Only invited friends can share and read stories.
+            </p>
+          </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Friends' Email Addresses ({emails.filter(e => e.trim()).length}/50)
+              </label>
+              
+              <div className="space-y-3">
+                {emails.map((email, index) => (
+                  <div key={index} className="flex gap-2">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => handleEmailChange(index, e.target.value)}
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                      placeholder="friend@example.com"
+                    />
+                    {emails.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeEmailField(index)}
+                        className="px-3 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-lg hover:bg-red-50"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {emails.length < 50 && (
+                <button
+                  type="button"
+                  onClick={addEmailField}
+                  className="mt-3 px-4 py-2 text-amber-600 hover:text-amber-800 border border-amber-300 rounded-lg hover:bg-amber-50"
+                >
+                  + Add Another Email
+                </button>
+              )}
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-gray-800 mb-2">Quick Import</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Paste a list of email addresses (separated by commas, spaces, or new lines) to import them automatically:
+              </p>
+              <textarea
+                className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                rows="3"
+                placeholder="friend1@email.com, friend2@email.com, friend3@email.com"
+                onChange={(e) => importFromText(e.target.value)}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
+            >
+              {loading ? 'Sending Invitations...' : `Send ${emails.filter(e => e.trim()).length} Invitation${emails.filter(e => e.trim()).length !== 1 ? 's' : ''}`}
+            </button>
+          </form>
+
+          <div className="mt-8 bg-amber-50 p-6 rounded-lg">
+            <h3 className="font-semibold text-gray-800 mb-3">What your friends will receive:</h3>
+            <ul className="space-y-2 text-gray-600">
+              <li className="flex items-center">
+                <span className="mr-2">📧</span>
+                Personal invitation email with join instructions
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2">🔒</span>
+                Access to your private circle of friends
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2">📖</span>
+                Ability to share stories and read friends' chronicles
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2">📅</span>
+                Weekly chronicle emails with everyone's stories
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -406,17 +615,17 @@ const Subscribe = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 flex items-center justify-center">
         <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md">
           <div className="text-6xl mb-4">🎉</div>
           <h2 className="text-2xl font-bold text-green-600 mb-4">Successfully Subscribed!</h2>
           <p className="text-gray-600 mb-6">
-            You'll receive our weekly newspaper flipbook every Monday at 9 AM.
+            You'll receive the weekly chronicle with all your friends' stories every Monday at 9 AM.
           </p>
           <div className="space-y-3">
             <Link
               to="/"
-              className="block w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="block w-full px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
             >
               Back to Stories
             </Link>
@@ -433,14 +642,14 @@ const Subscribe = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       <div className="max-w-2xl mx-auto px-6 py-12">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">📧</div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">Subscribe to Our Newsletter</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">Subscribe to Your Chronicle</h1>
             <p className="text-gray-600">
-              Get the weekly flipbook newspaper delivered to your inbox every Monday
+              Get the weekly chronicle with stories from your circle of friends delivered every Monday
             </p>
           </div>
 
@@ -460,7 +669,7 @@ const Subscribe = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent text-lg"
                 placeholder="Enter your email address"
                 required
               />
@@ -469,9 +678,9 @@ const Subscribe = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
+              className="w-full px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
             >
-              {loading ? 'Subscribing...' : 'Subscribe to Newsletter'}
+              {loading ? 'Subscribing...' : 'Subscribe to Chronicle'}
             </button>
           </form>
 
@@ -480,19 +689,19 @@ const Subscribe = () => {
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center">
                 <span className="mr-2">📅</span>
-                Weekly newsletter every Monday at 9 AM
+                Weekly chronicle every Monday at 9 AM
               </li>
               <li className="flex items-center">
-                <span className="mr-2">📖</span>
-                Beautiful flipbook format with all stories from the week
+                <span className="mr-2">📜</span>
+                Beautiful chronicle format with all friends' stories
               </li>
               <li className="flex items-center">
                 <span className="mr-2">📧</span>
                 HTML email that works on all devices
               </li>
               <li className="flex items-center">
-                <span className="mr-2">🔒</span>
-                Your email is safe and secure with us
+                <span className="mr-2">👥</span>
+                Stories only from your invited circle of friends
               </li>
             </ul>
           </div>
@@ -511,6 +720,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/submit" element={<SubmitStory />} />
           <Route path="/flipbook" element={<Flipbook />} />
+          <Route path="/invite" element={<InviteFriends />} />
           <Route path="/subscribe" element={<Subscribe />} />
         </Routes>
       </BrowserRouter>
