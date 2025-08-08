@@ -369,7 +369,7 @@ async def get_weekly_stories_endpoint():
     """Get stories from the past week"""
     return await get_weekly_stories()
 
-@api_router.get("/newspaper/flipbook", response_class=HTMLResponse)
+@api_router.get("/newspaper/flipbook")
 async def get_flipbook_newspaper():
     """Get the flipbook version of weekly newspaper"""
     from starlette.responses import HTMLResponse
