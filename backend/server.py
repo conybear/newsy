@@ -45,6 +45,24 @@ class StoryCreate(BaseModel):
     content: str
     author: str = "Anonymous"
 
+class Draft(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    content: str
+    author: str = "Anonymous"
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class DraftCreate(BaseModel):
+    title: str
+    content: str
+    author: str = "Anonymous"
+
+class DraftUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    author: Optional[str] = None
+
 class Subscriber(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     email: EmailStr
@@ -163,6 +181,15 @@ def compile_newspaper_flipbook(stories: List[Story]) -> str:
                 text-align: justify;
                 margin-bottom: 30px;
                 color: #374151;
+            }
+            .page .content strong {
+                font-weight: bold;
+            }
+            .page .content em {
+                font-style: italic;
+            }
+            .page .content u {
+                text-decoration: underline;
             }
             .navigation {
                 display: flex;
@@ -496,6 +523,48 @@ async def get_stories(limit: int = 50, skip: int = 0):
 async def get_weekly_stories_endpoint():
     """Get stories from friends from the past week"""
     return await get_weekly_stories()
+
+# Draft endpoints
+@api_router.post("/drafts", response_model=Draft)
+async def create_draft(draft_input: DraftCreate):
+    """Save a story draft"""
+    draft_dict = draft_input.dict()
+    draft = Draft(**draft_dict)
+    
+    await db.drafts.insert_one(draft.dict())
+    return draft
+
+@api_router.get("/drafts", response_model=List[Draft])
+async def get_drafts():
+    """Get all saved drafts"""
+    cursor = db.drafts.find().sort("updated_at", -1)
+    drafts = await cursor.to_list(1000)
+    return [Draft(**draft) for draft in drafts]
+
+@api_router.put("/drafts/{draft_id}", response_model=Draft)
+async def update_draft(draft_id: str, draft_update: DraftUpdate):
+    """Update a saved draft"""
+    update_data = {k: v for k, v in draft_update.dict().items() if v is not None}
+    update_data["updated_at"] = datetime.utcnow()
+    
+    result = await db.drafts.update_one(
+        {"id": draft_id}, 
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Draft not found")
+    
+    updated_draft = await db.drafts.find_one({"id": draft_id})
+    return Draft(**updated_draft)
+
+@api_router.delete("/drafts/{draft_id}")
+async def delete_draft(draft_id: str):
+    """Delete a saved draft"""
+    result = await db.drafts.delete_one({"id": draft_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Draft not found")
+    return {"message": "Draft deleted successfully"}
 
 @api_router.get("/newspaper/flipbook")
 async def get_flipbook_newspaper():
