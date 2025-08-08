@@ -177,22 +177,53 @@
     background: linear-gradient(45deg, #f59e0b 0%, #ea580c 50%, #dc2626 100%);
 }
 
-/* Success animation */
-@keyframes bounce {
-    0%, 20%, 53%, 80%, 100% {
-        transform: translate3d(0,0,0);
-    }
-    40%, 43% {
-        transform: translate3d(0, -20px, 0);
-    }
-    70% {
-        transform: translate3d(0, -10px, 0);
-    }
-    90% {
-        transform: translate3d(0, -4px, 0);
-    }
+/* Rich Text Editor Styles */
+#contentEditor {
+    font-family: inherit;
+    line-height: 1.6;
 }
 
-.bounce {
-    animation: bounce 1s ease-in-out;
+#contentEditor:empty:before {
+    content: attr(data-placeholder);
+    color: #9ca3af;
+    font-style: italic;
+}
+
+#contentEditor:focus:before {
+    content: none;
+}
+
+#contentEditor strong {
+    font-weight: bold;
+}
+
+#contentEditor em {
+    font-style: italic;
+}
+
+#contentEditor u {
+    text-decoration: underline;
+}
+
+/* Draft item styles */
+.draft-item {
+    transition: all 0.2s ease;
+}
+
+.draft-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Toolbar button styles */
+.toolbar-btn {
+    transition: all 0.2s ease;
+}
+
+.toolbar-btn:hover {
+    transform: translateY(-1px);
+}
+
+.toolbar-btn:active {
+    transform: translateY(0);
 }
