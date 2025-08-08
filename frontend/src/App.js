@@ -81,9 +81,6 @@ const HomePage = () => {
             <Link to="/invite" className="text-gray-600 hover:text-amber-800 font-medium">
               Invite Friends
             </Link>
-            <Link to="/subscribe" className="text-gray-600 hover:text-amber-800 font-medium">
-              Subscribe
-            </Link>
           </nav>
         </div>
       </div>
