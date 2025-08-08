@@ -912,7 +912,6 @@ function App() {
           <Route path="/submit" element={<SubmitStory />} />
           <Route path="/flipbook" element={<Flipbook />} />
           <Route path="/invite" element={<InviteFriends />} />
-          <Route path="/subscribe" element={<Subscribe />} />
         </Routes>
       </BrowserRouter>
     </div>
