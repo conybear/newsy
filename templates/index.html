@@ -1,59 +1,457 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Newsy - Weekly Newspaper</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📜 Acta Diurna - Your Personal Daily Chronicle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            min-height: 100vh;
+            color: #374151;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #92400e 0%, #7c2d12 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #92400e;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #f59e0b;
+            padding-bottom: 10px;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+            transform: translateY(-1px);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Stories Display */
+        .stories-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .stories-section h2 {
+            color: #92400e;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 3px solid #f59e0b;
+            padding-bottom: 15px;
+        }
+
+        .story-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #f59e0b;
+            transition: transform 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateX(5px);
+        }
+
+        .story-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+
+        .story-meta {
+            font-size: 0.9em;
+            color: #7c2d12;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .story-content {
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .no-stories {
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            padding: 40px 20px;
+        }
+
+        /* Success Messages */
+        .success-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .friends-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Rich Text Styling */
+        .story-content strong {
+            font-weight: bold;
+        }
+
+        .story-content em {
+            font-style: italic;
+        }
+
+        .story-content u {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Weekly Newspaper</h1>
-    <form id="storyForm">
-        <input type="text" name="title" placeholder="Title" required>
-        <input type="text" name="author" placeholder="Author">
-        <textarea name="content" placeholder="Story content" required></textarea>
-        <button type="submit">Submit Story</button>
-    </form>
-    <h2>Stories This Week</h2>
-    <ul>
-        {% for story in stories %}
-            <li>
-                <h3>{{ story.title }}</h3>
-                <p><strong>Author:</strong> {{ story.author }}</p>
-                <p>{{ story.content }}</p>
-            </li>
-        {% else %}
-            <li>No stories this week.</li>
-        {% endfor %}
-    </ul>
-    <h2>Subscribe</h2>
-    <form id="subscribeForm">
-        <input type="email" name="email" placeholder="Your email" required>
-        <button type="submit">Subscribe</button>
-    </form>
+    <div class="header">
+        <div class="container">
+            <h1>📜 Acta Diurna</h1>
+            <div class="subtitle">Your Personal Daily Chronicle</div>
+            <div class="friends-badge">Share stories and read the latest news from your friends</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <!-- Success/Error Messages -->
+            <div id="messages"></div>
+
+            <div class="grid">
+                <!-- Story Submission Form -->
+                <div class="card fade-in">
+                    <h2>📝 Share Your Story</h2>
+                    <form id="storyForm">
+                        <div class="form-group">
+                            <label for="title">Story Title *</label>
+                            <input type="text" id="title" name="title" class="form-input" 
+                                   placeholder="What happened? Give your story a compelling title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="author">Your Name</label>
+                            <input type="text" id="author" name="author" class="form-input" 
+                                   placeholder="Your name (optional - defaults to Anonymous)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="content">Your Story *</label>
+                            <textarea id="content" name="content" class="form-input" 
+                                      placeholder="Share your story with your friends... What happened? How did it make you feel? What did you learn?" 
+                                      required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Share Your Story</button>
+                    </form>
+                </div>
+
+                <!-- Newsletter Subscription -->
+                <div class="card fade-in">
+                    <h2>📧 Subscribe to Chronicle</h2>
+                    <p style="margin-bottom: 20px; color: #6b7280; line-height: 1.6;">
+                        Get the weekly chronicle with stories from your circle of friends delivered every Monday.
+                    </p>
+                    <form id="subscribeForm">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input" 
+                                   placeholder="Enter your email address" required>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Subscribe to Chronicle</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Stories Display -->
+            <div class="stories-section fade-in">
+                <h2>📖 Latest Stories from Friends</h2>
+                <div id="storiesContainer">
+                    {% if stories %}
+                        {% for story in stories %}
+                        <div class="story-card">
+                            <div class="story-title">{{ story.title }}</div>
+                            <div class="story-meta">
+                                By {{ story.author }} • {{ story.timestamp.strftime('%B %d, %Y at %I:%M %p') }}
+                            </div>
+                            <div class="story-content">{{ story.content | safe }}</div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-stories">
+                            <h3>No stories yet from your friends</h3>
+                            <p>Be the first to share a story with your circle!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>Acta Diurna - Where Friends Share Stories</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.7;">
+                Your private chronicle for meaningful connections
+            </p>
+        </div>
+    </div>
+
     <script>
-        document.getElementById('storyForm').onsubmit = async function(e) {
+        // Story Form Submission
+        document.getElementById('storyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const formData = new FormData(e.target);
             const data = {
-                title: this.title.value,
-                author: this.author.value,
-                content: this.content.value
+                title: formData.get('title'),
+                content: formData.get('content'),
+                author: formData.get('author') || 'Anonymous'
             };
-            const res = await fetch('/submit', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-            alert((await res.json()).message || 'Error');
-            location.reload();
-        };
-        document.getElementById('subscribeForm').onsubmit = async function(e) {
+
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showMessage('Story shared successfully! 🎉', 'success');
+                    e.target.reset();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    const error = await response.json();
+                    showMessage(error.message || 'Failed to share story', 'error');
+                }
+            } catch (error) {
+                showMessage('Network error. Please try again.', 'error');
+            }
+        });
+
+        // Subscribe Form Submission
+        document.getElementById('subscribeForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const data = { email: this.email.value };
-            const res = await fetch('/subscribe', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
+            
+            const formData = new FormData(e.target);
+            const data = {
+                email: formData.get('email')
+            };
+
+            try {
+                const response = await fetch('/subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showMessage('Successfully subscribed to the chronicle! 📧', 'success');
+                    e.target.reset();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.message || 'Subscription failed', 'error');
+                }
+            } catch (error) {
+                showMessage('Network error. Please try again.', 'error');
+            }
+        });
+
+        // Show Messages
+        function showMessage(text, type) {
+            const messagesDiv = document.getElementById('messages');
+            const messageClass = type === 'success' ? 'success-message' : 'error-message';
+            
+            messagesDiv.innerHTML = `<div class="${messageClass}">${text}</div>`;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messagesDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Add animation classes after page load
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.card, .stories-section');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 200);
             });
-            alert((await res.json()).message || 'Error');
-        };
+        });
     </script>
 </body>
 </html>
