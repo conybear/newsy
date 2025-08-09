@@ -1,0 +1,8 @@
+{
+  "name": "newsy-frontend",
+  "version": "1.0.0",
+  "description": "Flask-based newspaper frontend",
+  "scripts": {
+    "start": "echo 'Using Flask app instead of React'"
+  }
+}
