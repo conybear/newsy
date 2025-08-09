@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Newsy - Weekly Newspaper</title>
+</head>
+<body>
+    <h1>Weekly Newspaper</h1>
+    <form id="storyForm">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="author" placeholder="Author">
+        <textarea name="content" placeholder="Story content" required></textarea>
+        <button type="submit">Submit Story</button>
+    </form>
+    <h2>Stories This Week</h2>
+    <ul>
+        {% for story in stories %}
+            <li>
+                <h3>{{ story.title }}</h3>
+                <p><strong>Author:</strong> {{ story.author }}</p>
+                <p>{{ story.content }}</p>
+            </li>
+        {% else %}
+            <li>No stories this week.</li>
+        {% endfor %}
+    </ul>
+    <h2>Subscribe</h2>
+    <form id="subscribeForm">
+        <input type="email" name="email" placeholder="Your email" required>
+        <button type="submit">Subscribe</button>
+    </form>
+    <script>
+        document.getElementById('storyForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const data = {
+                title: this.title.value,
+                author: this.author.value,
+                content: this.content.value
+            };
+            const res = await fetch('/submit', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            alert((await res.json()).message || 'Error');
+            location.reload();
+        };
+        document.getElementById('subscribeForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const data = { email: this.email.value };
+            const res = await fetch('/subscribe', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            alert((await res.json()).message || 'Error');
+        };
+    </script>
+</body>
+</html>
