@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Flask-based newspaper frontend",
   "scripts": {
-    "start": "echo 'Using Flask app instead of React'"
-  }
+    "start": "echo 'Using Flask app instead of React'",
+    "build": "echo 'No build needed for Flask app' && exit 0",
+    "test": "echo 'No tests configured' && exit 0"
+  },
+  "license": "MIT"
 }
