@@ -1,11 +1,15 @@
 {
   "name": "newsy-frontend",
   "version": "1.0.0",
-  "description": "Flask-based newspaper frontend",
+  "description": "Flask-based newspaper frontend - Emergent deployment compatible",
   "scripts": {
     "start": "echo 'Using Flask app instead of React'",
     "build": "cd .. && ./build.sh",
     "test": "echo 'No tests configured' && exit 0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "_comments": {
+    "build": "Creates /app/build directory as required by Emergent/kaniko deployment system",
+    "structure": "Output must be /app/build (not /app/frontend/build) for deployment compatibility"
+  }
 }
