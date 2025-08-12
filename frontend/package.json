@@ -1,15 +1,15 @@
 {
-  "name": "newsy-frontend",
+  "name": "newsy-frontend", 
   "version": "1.0.0",
   "description": "Flask-based newspaper frontend - Emergent deployment compatible",
   "scripts": {
     "start": "echo 'Using Flask app instead of React'",
-    "build": "cd .. && ./build.sh",
+    "build": "node -e \"const fs=require('fs'); const path=require('path'); const buildDir='../build'; const staticDir=path.join(buildDir,'static'); fs.rmSync(buildDir,{recursive:true,force:true}); fs.mkdirSync(path.join(staticDir,'js'),{recursive:true}); fs.mkdirSync(path.join(staticDir,'css'),{recursive:true}); fs.mkdirSync(path.join(staticDir,'media'),{recursive:true}); fs.writeFileSync(path.join(buildDir,'index.html'),'<!DOCTYPE html><html><head><title>Flask App</title><meta http-equiv=\\\"refresh\\\" content=\\\"0; url=/\\\"></head><body><p>Redirecting...</p></body></html>'); fs.writeFileSync(path.join(staticDir,'css','main.css'),'body{font-family:Arial,sans-serif;}'); fs.writeFileSync(path.join(staticDir,'js','main.js'),'console.log(\\\"Flask app loaded\\\");'); fs.writeFileSync(path.join(buildDir,'manifest.json'),JSON.stringify({short_name:'Acta Diurna',name:'Acta Diurna - Personal Daily Chronicle',start_url:'.',display:'standalone',theme_color:'#f59e0b',background_color:'#ffffff'})); fs.writeFileSync(path.join(buildDir,'asset-manifest.json'),JSON.stringify({files:{'main.css':'/static/css/main.css','main.js':'/static/js/main.js','index.html':'/index.html'},entrypoints:['static/css/main.css','static/js/main.js']})); console.log('Build completed successfully');\"",
     "test": "echo 'No tests configured' && exit 0"
   },
   "license": "MIT",
   "_comments": {
-    "build": "Creates /app/build directory as required by Emergent/kaniko deployment system",
-    "structure": "Output must be /app/build (not /app/frontend/build) for deployment compatibility"
+    "build": "Creates /app/build directory using Node.js (no bash dependencies)",
+    "structure": "Output must be /app/build for Emergent/kaniko deployment compatibility"
   }
 }
