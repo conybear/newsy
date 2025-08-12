@@ -1,0 +1,10 @@
+# Ignore unnecessary files but ensure build directory is included
+node_modules/
+*.pyc
+__pycache__/
+*.log
+.DS_Store
+
+# Don't ignore build directory - it's needed for deployment
+!build/
+!build/**
