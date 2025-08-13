@@ -4,8 +4,10 @@
   "description": "Flask-based newspaper frontend - Emergent deployment compatible",
   "scripts": {
     "start": "echo 'Using Flask app instead of React'",
+    "prebuild": "echo 'Preparing build environment...' && mkdir -p ../build/static/{js,css,media}",
     "build": "node build.js",
-    "test": "echo 'No tests configured' && exit 0"
+    "test": "echo 'No tests configured' && exit 0",
+    "verify": "node ../verify-build.js"
   },
   "license": "MIT",
   "_comments": {
