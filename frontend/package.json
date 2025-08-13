@@ -1,17 +1,11 @@
 {
-  "name": "newsy-frontend", 
+  "name": "acta-diurna-frontend",
   "version": "1.0.0",
-  "description": "Flask-based newspaper frontend - Emergent deployment compatible",
+  "description": "Acta Diurna deployment compatibility package",
   "scripts": {
-    "start": "echo 'Using Flask app instead of React'",
-    "prebuild": "echo 'Preparing build environment...' && mkdir -p ../build/static/{js,css,media}",
-    "build": "node build.js",
-    "test": "echo 'No tests configured' && exit 0",
-    "verify": "node ../verify-build.js"
+    "start": "echo 'Flask app handles all frontend functionality'",
+    "build": "echo 'Build directory exists as static files'",
+    "test": "echo 'No tests configured'"
   },
-  "license": "MIT",
-  "_comments": {
-    "build": "Creates /app/build directory using Node.js (no bash dependencies)",
-    "structure": "Output must be /app/build for Emergent/kaniko deployment compatibility"
-  }
+  "license": "MIT"
 }
