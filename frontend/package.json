@@ -1,10 +1,10 @@
 {
   "name": "acta-diurna-frontend",
   "version": "1.0.0",
-  "description": "Acta Diurna deployment compatibility package",
+  "description": "Acta Diurna - Self-contained Flask application",
   "scripts": {
-    "start": "echo 'Flask app handles all frontend functionality'",
-    "build": "echo 'Build directory exists as static files'",
+    "start": "echo 'Flask app handles all functionality - no frontend build needed'",
+    "build": "echo 'No build required - Flask serves everything'",
     "test": "echo 'No tests configured'"
   },
   "license": "MIT"
