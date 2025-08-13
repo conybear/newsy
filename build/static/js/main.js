@@ -1,2 +1,2 @@
-// Acta Diurna - Static JS for deployment
-console.log('Acta Diurna loaded');
+// Minimal JS for build compatibility
+console.log('Acta Diurna build assets loaded');
