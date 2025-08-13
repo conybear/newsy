@@ -1,24 +1,10 @@
 {
   "short_name": "Acta Diurna",
   "name": "Acta Diurna - Your Personal Daily Chronicle",
-  "description": "Share stories and read the latest news from your friends",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#f59e0b",
   "background_color": "#ffffff",
-  "orientation": "portrait",
-  "scope": "/",
-  "lang": "en",
-  "icons": [
-    {
-      "src": "/static/media/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/static/media/icon-512.png", 
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "description": "Share stories and read the latest news from your friends",
+  "icons": []
 }
