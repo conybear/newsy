@@ -93,23 +93,41 @@ def home():
 @app.route('/build/<path:filename>')
 def serve_build_files(filename):
     """Serve files from build directory for deployment compatibility"""
-    build_dir = os.path.join(os.path.dirname(__file__), 'build')
-    try:
-        return send_from_directory(build_dir, filename)
-    except Exception:
-        logger.warning(f"Build file not found: {filename}")
-        return "File not found", 404
+    # Try multiple possible build directories
+    possible_dirs = ['build', 'dist', 'assets', 'static', 'public', 'www']
+    
+    for dirname in possible_dirs:
+        build_dir = os.path.join(os.path.dirname(__file__), dirname)
+        if os.path.exists(build_dir):
+            try:
+                return send_from_directory(build_dir, filename)
+            except Exception:
+                continue
+    
+    logger.warning(f"Build file not found in any directory: {filename}")
+    return "File not found", 404
 
 @app.route('/static/<path:filename>')  
 def serve_static_files(filename):
     """Serve static files for deployment compatibility"""
-    build_static_dir = os.path.join(os.path.dirname(__file__), 'build', 'static')
-    if os.path.exists(build_static_dir):
-        try:
-            return send_from_directory(build_static_dir, filename)
-        except Exception:
-            pass
-    return "File not found", 404
+    # Try multiple static directories
+    possible_static_dirs = [
+        os.path.join('build', 'static'),
+        os.path.join('dist', 'static'), 
+        os.path.join('assets', 'static'),
+        'static',
+        os.path.join('public', 'static')
+    ]
+    
+    for static_dir in possible_static_dirs:
+        full_path = os.path.join(os.path.dirname(__file__), static_dir)
+        if os.path.exists(full_path):
+            try:
+                return send_from_directory(full_path, filename)
+            except Exception:
+                continue
+                
+    return "Static file not found", 404
 
 @app.route('/submit', methods=['POST'])
 def submit_story():
