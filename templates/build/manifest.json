@@ -1,0 +1,8 @@
+{
+  "short_name": "Acta Diurna",
+  "name": "Acta Diurna - Your Personal Daily Chronicle",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#f59e0b",
+  "background_color": "#ffffff"
+}
