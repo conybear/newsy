@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Acta Diurna - Flask App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acta Diurna - Your Personal Daily Chronicle</title>
+    <meta name="description" content="Share stories and read the latest news from your friends">
     <meta http-equiv="refresh" content="0; url=/">
-    <meta name="description" content="Acta Diurna - Your Personal Daily Chronicle">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
-    <p>Redirecting to Acta Diurna...</p>
+    <div style="text-align: center; padding: 50px; font-family: Georgia, serif;">
+        <h1>📜 Acta Diurna</h1>
+        <p>Redirecting to your personal daily chronicle...</p>
+        <p><a href="/">Click here if not redirected automatically</a></p>
+    </div>
+    <script src="/static/js/main.js"></script>
     <script>
-        setTimeout(function() {
-            window.location.href = '/';
-        }, 100);
+        // Immediate redirect
+        window.location.href = '/';
     </script>
 </body>
 </html>
