@@ -5,12 +5,13 @@
   "main": "app.py",
   "scripts": {
     "start": "python app.py",
-    "build": "echo '🔨 Starting Acta Diurna build process...' && cd frontend && yarn install && yarn build && cd .. && echo '✅ Build completed - verifying output...' && ls -la build/ && echo '🎉 Build verification complete!'",
-    "prebuild": "echo '📋 Pre-build: Ensuring build environment...' && mkdir -p build/static/{js,css,media}",
-    "postbuild": "echo '🔍 Post-build: Verifying build output...' && ls -la build/ && test -f build/index.html && test -f build/manifest.json && echo '✅ All required build files present'",
-    "install": "cd frontend && yarn install",
-    "test": "echo 'Flask application ready for deployment' && python -c 'import app; print(\"✅ Flask app imports successfully\")'",
-    "verify": "node verify-build.js"
+    "build": "echo '🔨 STARTING ROOT BUILD PROCESS' && echo 'Working directory:' && pwd && echo 'Directory contents:' && ls -la && ./build-production.sh",
+    "prebuild": "echo '📋 Pre-build: Ensuring build environment...' && mkdir -p build/static/{js,css,media} && echo '✅ Pre-build environment ready'",
+    "postbuild": "echo '🔍 Post-build: Final verification...' && ./debug-build.sh",
+    "install": "echo '📥 Installing dependencies...' && cd frontend && yarn install && echo '✅ Dependencies installed'",
+    "test": "echo 'Testing Flask application...' && python -c 'import app; print(\"✅ Flask app imports successfully\")' && echo '✅ All tests passed'",
+    "verify": "node verify-build.js",
+    "debug": "./debug-build.sh"
   },
   "engines": {
     "node": ">=14.0.0",
