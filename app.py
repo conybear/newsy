@@ -9,9 +9,16 @@ import logging
 
 app = Flask(__name__)
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
+# Setup logging for production
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s: %(message)s'
+)
 logger = logging.getLogger(__name__)
+
+# Log startup information
+logger.info("🎉 Acta Diurna Flask application starting...")
+logger.info(f"🌐 Environment: {'Production' if os.environ.get('PORT') else 'Development'}")
 
 # In-memory storage for stories and subscribers
 stories = []
@@ -20,6 +27,12 @@ subscribers = []
 # Load sensitive data from environment variables
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
 SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD")
+
+# Log email configuration status
+if SENDER_EMAIL and SENDER_PASSWORD:
+    logger.info("📧 Email configuration: ENABLED")
+else:
+    logger.info("📧 Email configuration: DISABLED (environment variables not set)")
 
 # Helper function to compile a weekly newspaper
 def compile_newspaper():
