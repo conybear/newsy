@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from apscheduler.schedulers.background import BackgroundScheduler
 import smtplib
 from email.mime.text import MIMEText
@@ -19,6 +19,35 @@ logger = logging.getLogger(__name__)
 # Log startup information
 logger.info("🎉 Acta Diurna Flask application starting...")
 logger.info(f"🌐 Environment: {'Production' if os.environ.get('PORT') else 'Development'}")
+
+# Create build directory if it doesn't exist (for deployment compatibility)
+build_dir = os.path.join(os.path.dirname(__file__), 'build')
+if not os.path.exists(build_dir):
+    logger.info("📁 Creating build directory for deployment compatibility...")
+    try:
+        os.makedirs(os.path.join(build_dir, 'static', 'css'), exist_ok=True)
+        os.makedirs(os.path.join(build_dir, 'static', 'js'), exist_ok=True)
+        os.makedirs(os.path.join(build_dir, 'static', 'media'), exist_ok=True)
+        
+        # Create minimal required files
+        with open(os.path.join(build_dir, 'index.html'), 'w') as f:
+            f.write('<!DOCTYPE html><html><head><title>Acta Diurna</title><meta http-equiv="refresh" content="0; url=/"></head><body><p>Loading...</p></body></html>')
+        
+        with open(os.path.join(build_dir, 'manifest.json'), 'w') as f:
+            f.write('{"short_name":"Acta Diurna","name":"Acta Diurna","start_url":"/"}')
+            
+        with open(os.path.join(build_dir, 'asset-manifest.json'), 'w') as f:
+            f.write('{"files":{"main.css":"/static/css/main.css","main.js":"/static/js/main.js"}}')
+            
+        with open(os.path.join(build_dir, 'static', 'css', 'main.css'), 'w') as f:
+            f.write('body{font-family:serif}')
+            
+        with open(os.path.join(build_dir, 'static', 'js', 'main.js'), 'w') as f:
+            f.write('console.log("Acta Diurna")')
+            
+        logger.info("✅ Build directory created successfully")
+    except Exception as e:
+        logger.error(f"❌ Failed to create build directory: {e}")
 
 # In-memory storage for stories and subscribers
 stories = []
