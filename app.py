@@ -111,6 +111,28 @@ scheduler.start()
 def home():
     return render_template('index.html', stories=stories)
 
+# Build directory compatibility routes
+@app.route('/build/<path:filename>')
+def serve_build_files(filename):
+    """Serve files from build directory for deployment compatibility"""
+    build_dir = os.path.join(os.path.dirname(__file__), 'build')
+    try:
+        return send_from_directory(build_dir, filename)
+    except Exception:
+        logger.warning(f"Build file not found: {filename}")
+        return "File not found", 404
+
+@app.route('/static/<path:filename>')  
+def serve_static_files(filename):
+    """Serve static files for deployment compatibility"""
+    build_static_dir = os.path.join(os.path.dirname(__file__), 'build', 'static')
+    if os.path.exists(build_static_dir):
+        try:
+            return send_from_directory(build_static_dir, filename)
+        except Exception:
+            pass
+    return "File not found", 404
+
 @app.route('/submit', methods=['POST'])
 def submit_story():
     story_data = request.json
