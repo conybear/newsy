@@ -1,9 +1,2 @@
-/* Acta Diurna Build CSS - Deployment Compatibility */
-body { 
-  font-family: Georgia, serif; 
-  margin: 0; 
-  padding: 0; 
-}
-.build-notice { 
-  display: none; 
-}
+/* Acta Diurna - Static CSS for deployment */
+body { font-family: Georgia, serif; }

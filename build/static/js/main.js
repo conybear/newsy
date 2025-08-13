@@ -1,5 +1,2 @@
-// Acta Diurna Build JS - Deployment Compatibility
-console.log('Acta Diurna Flask application loaded successfully');
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Build system: Emergent deployment ready');
-});
+// Acta Diurna - Static JS for deployment
+console.log('Acta Diurna loaded');

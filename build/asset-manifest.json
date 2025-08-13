@@ -2,8 +2,7 @@
   "files": {
     "main.css": "/static/css/main.css",
     "main.js": "/static/js/main.js",
-    "index.html": "/index.html",
-    "manifest.json": "/manifest.json"
+    "index.html": "/index.html"
   },
   "entrypoints": [
     "static/css/main.css",

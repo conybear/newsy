@@ -4,7 +4,5 @@
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#f59e0b",
-  "background_color": "#ffffff",
-  "description": "Share stories and read the latest news from your friends",
-  "icons": []
+  "background_color": "#ffffff"
 }
